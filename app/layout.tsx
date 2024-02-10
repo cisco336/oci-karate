@@ -1,35 +1,39 @@
-import { GeistSans } from "geist/font/sans";
-import "./globals.css";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
+import { GeistSans } from 'geist/font/sans';
+import './globals.scss';
+import Nav from '@/components/Nav';
+import Footer from '@/components/Footer';
 
 // import Font Awesome CSS
-import "@fortawesome/fontawesome-svg-core/styles.css";
-import { config } from "@fortawesome/fontawesome-svg-core";
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import { config } from '@fortawesome/fontawesome-svg-core';
 config.autoAddCss = false;
 
 const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+    ? `https://${process.env.VERCEL_URL}`
+    : 'http://localhost:3000';
 
 export const metadata = {
-  metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+    metadataBase: new URL(defaultUrl),
+    title: 'Next.js and Supabase Starter Kit',
+    description: 'The fastest way to build apps with Next.js and Supabase',
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  return (
-    <html lang="en" className={GeistSans.className}>
-      <body className="bg-background text-foreground flex flex-col min-h-screen">
-        <Nav />
-        <main className="flex flex-col items-center flex-1">{children}</main>
-        <Footer />
-      </body>
-    </html>
-  );
+    return (
+        <html
+            lang="en"
+            className={GeistSans.className}>
+            <body className="bg-background text-foreground flex flex-col min-h-screen">
+                <Nav />
+                <main className="flex flex-col items-center flex-1">
+                    {children}
+                </main>
+                <Footer />
+            </body>
+        </html>
+    );
 }

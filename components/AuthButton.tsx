@@ -1,8 +1,8 @@
-import { createClient } from "@/utils/supabase/server";
-import Link from "next/link";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import SignUpRedirectButton from "./SignUpRedirectButton";
+import { createClient } from '@/utils/supabase/server';
+import Link from 'next/link';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import SignUpRedirectButton from './SignUpRedirectButton';
 
 export default async function AuthButton() {
   const cookieStore = cookies();
@@ -13,12 +13,12 @@ export default async function AuthButton() {
   } = await supabase.auth.getUser();
 
   const signOut = async () => {
-    "use server";
+    'use server';
 
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
     await supabase.auth.signOut();
-    return redirect("/login");
+    return redirect('/login');
   };
 
   return user ? (
@@ -34,8 +34,7 @@ export default async function AuthButton() {
     <div className="flex row-auto items-center justify-end gap-2">
       <Link
         href="/login"
-        className="border border-foreground/20 py-2 px-3 flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover"
-      >
+        className="border border-foreground/20 py-2 px-3 flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover">
         Sign In
       </Link>
       <SignUpRedirectButton />
