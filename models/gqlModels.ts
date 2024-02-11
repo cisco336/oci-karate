@@ -9,6 +9,7 @@ export interface iArticle {
     updatedAt: string;
     slug: string;
     abstract?: string;
+    tag?: string[];
     asset?: {
         url: string;
     };
