@@ -6,7 +6,7 @@ const Quote = (props: iQuote) => {
     return (
         <div
             className="flex flex-col p-2
-            mx-auto max-w-[30rem] border-l-4">
+            max-w-[30rem] border-l-4">
             <i className="font-thin">{content}</i>
             <div className="flex justify-end py-2">
                 {author.map((a) => (
