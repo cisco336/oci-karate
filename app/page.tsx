@@ -31,11 +31,14 @@ export default async function Index() {
         slug: 'quote-manos-vacias',
     });
 
-    const mainQuote = mainquote && <Quote {...mainquote} />;
+    const mainQuote = mainquote && (
+        <div className="mx-auto hidden sm:flex px-4">
+            <Quote {...mainquote} />
+        </div>
+    );
 
     return (
         <div className="w-full flex flex-col gap-20 items-center py-4">
-            {mainQuote}
             <div className="flex flex-wrap max-w-[1200px]">
                 {importantArticles.length &&
                     importantArticles.map((article: iArticle) => (
@@ -45,6 +48,7 @@ export default async function Index() {
                         />
                     ))}
             </div>
+            {mainQuote}
         </div>
     );
 }

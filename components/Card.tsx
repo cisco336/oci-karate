@@ -3,9 +3,10 @@ import { iArticle } from '@/models/gqlModels';
 import React, { useState } from 'react';
 import Button from './Button';
 import { basicTypes } from '@/constants/enums';
+import Link from 'next/link';
 
 const Card = (props: iArticle) => {
-    const { articleTitle, abstract, asset } = props;
+    const { articleTitle, abstract, asset, slug } = props;
     const [isLoading, setLoading] = useState(false);
     return (
         <div className="flex flex-col overflow-clip justify-center sm:min-h-[500px] md:w-1/4 sm:w-1/3 md:w-10:rem relative group/item">
@@ -25,15 +26,17 @@ const Card = (props: iArticle) => {
                 <p className="">{abstract}</p>
             </div>
             <div className="absolute bottom-0 right-0 p-4">
-                <Button
-                    callback={() => {
-                        setLoading(!isLoading);
-                        setTimeout(() => setLoading(false), 3000);
-                    }}
-                    label="Ver más"
-                    type={basicTypes.Primary}
-                    loading={isLoading}
-                />
+                <Link href={`${slug}`}>
+                    <Button
+                        callback={() => {
+                            setLoading(!isLoading);
+                            setTimeout(() => setLoading(false), 3000);
+                        }}
+                        label="Ver más"
+                        type={basicTypes.Primary}
+                        loading={isLoading}
+                    />
+                </Link>
             </div>
         </div>
     );

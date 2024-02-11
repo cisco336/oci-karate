@@ -49,6 +49,26 @@ export const articlesByTagQuery = gql`
     }
 `;
 
+export const getSingleArticleBySlug = gql`
+    query Article($slug: String!) {
+        articleSchema(where: { slug: $slug }) {
+            articleTitle
+            createdAt
+            updatedAt
+            tag
+            asset {
+                url
+            }
+            images {
+                url
+            }
+            articleContent {
+                html
+            }
+        }
+    }
+`;
+
 export const quoteQueryBySlug = gql`
     query Quote($slug: String!) {
         quoteSchema(where: { slug: $slug }) {
