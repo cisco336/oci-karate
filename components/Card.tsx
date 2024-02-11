@@ -1,9 +1,12 @@
 'use client';
-import { iArticle } from '@/app/models/gqlModels';
-import React from 'react';
+import { iArticle } from '@/models/gqlModels';
+import React, { useState } from 'react';
+import Button from './Button';
+import { basicTypes } from '@/constants/enums';
 
 const Card = (props: iArticle) => {
     const { articleTitle, abstract, asset } = props;
+    const [isLoading, setLoading] = useState(false);
     return (
         <div className="flex flex-col overflow-clip justify-center sm:min-h-[500px] md:w-1/4 sm:w-1/3 md:w-10:rem relative group/item">
             {asset?.url && (
@@ -20,6 +23,17 @@ const Card = (props: iArticle) => {
                     {articleTitle}
                 </h1>
                 <p className="">{abstract}</p>
+            </div>
+            <div className="absolute bottom-0 right-0 p-4">
+                <Button
+                    callback={() => {
+                        setLoading(!isLoading);
+                        setTimeout(() => setLoading(false), 3000);
+                    }}
+                    label="Ver más"
+                    type={basicTypes.Primary}
+                    loading={isLoading}
+                />
             </div>
         </div>
     );

@@ -12,6 +12,30 @@ export const articlesQuery = gql`
             slug
             updatedAt
             abstract
+            tag
+            asset {
+                url
+            }
+            images {
+                url
+            }
+            articleContent {
+                html
+            }
+        }
+    }
+`;
+
+export const articlesByTagQuery = gql`
+    query Articles($tag: [Tags!]) {
+        articleSchemas(where: { tag_contains_all: $tag }) {
+            id
+            articleTitle
+            createdAt
+            slug
+            updatedAt
+            abstract
+            tag
             asset {
                 url
             }

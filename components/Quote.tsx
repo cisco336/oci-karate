@@ -1,4 +1,4 @@
-import { iQuote } from '@/app/models/gqlModels';
+import { iQuote } from '@/models/gqlModels';
 import React from 'react';
 
 const Quote = (props: iQuote) => {

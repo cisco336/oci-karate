@@ -6,14 +6,27 @@ import {
     articlesQuery,
     getServerSideProps,
     quoteQueryBySlug,
+    articlesByTagQuery,
 } from '../services/hygraph.service';
 import { useEffect } from 'react';
 import Card from '../components/Card';
 import Quote from '@/components/Quote';
-import { iArticle, iArticlesResponse, iQuote } from './models/gqlModels';
+import { iArticle, iArticlesResponse, iQuote } from '../models/gqlModels';
 
 export default async function Index() {
-    const articles: iArticlesResponse = await getServerSideProps(articlesQuery);
+    const articles: iArticlesResponse = await getServerSideProps(
+        articlesByTagQuery,
+        { tag: ['main_page'] }
+    );
+    const importantArticles: iArticle[] | null = [];
+    const otherArticles: iArticle[] | null = [];
+    articles.articleSchemas.forEach((article) => {
+        if (article?.tag?.includes('important')) {
+            importantArticles.push(article);
+        } else {
+            otherArticles.push(article);
+        }
+    });
     const mainquote: iQuote = await getServerSideProps(quoteQueryBySlug, {
         slug: 'quote-manos-vacias',
     });
@@ -21,12 +34,11 @@ export default async function Index() {
     const mainQuote = mainquote && <Quote {...mainquote} />;
 
     return (
-        <div className="w-full flex flex-col gap-20 items-center p-3">
-            <h1>Main page</h1>
+        <div className="w-full flex flex-col gap-20 items-center py-4">
             {mainQuote}
-            <div className="flex flex-wrap">
-                {articles &&
-                    articles.articleSchemas.map((article: iArticle) => (
+            <div className="flex flex-wrap max-w-[1200px]">
+                {importantArticles.length &&
+                    importantArticles.map((article: iArticle) => (
                         <Card
                             {...article}
                             key={article.id}
