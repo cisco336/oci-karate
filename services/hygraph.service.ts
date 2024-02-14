@@ -1,4 +1,4 @@
-import { GraphQLClient, RequestOptions, gql } from 'graphql-request';
+import { GraphQLClient, gql } from 'graphql-request';
 
 const url = `${process.env.HYGRAPH_URL}`;
 const graphConnect = new GraphQLClient(url);

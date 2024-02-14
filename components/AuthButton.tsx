@@ -2,42 +2,36 @@ import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import SignUpRedirectButton from './SignUpRedirectButton';
+import Button from './Button';
+import { basicTypes } from '@/constants/enums';
+import { isUserAuthenticated } from '@/services/auth.service';
+import { iUser } from '@/models/entity.models';
 
 export default async function AuthButton() {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
+    const user: iUser = await isUserAuthenticated(true);
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    const signOut = async () => {
+        'use server';
 
-  const signOut = async () => {
-    'use server';
+        const cookieStore = cookies();
+        const supabase = createClient(cookieStore);
+        await supabase.auth.signOut();
+        return redirect('/login');
+    };
 
-    const cookieStore = cookies();
-    const supabase = createClient(cookieStore);
-    await supabase.auth.signOut();
-    return redirect('/login');
-  };
-
-  return user ? (
-    <div className="flex items-center gap-4">
-      Hey, {user.email}!
-      <form action={signOut}>
-        <button className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover">
-          Logout
-        </button>
-      </form>
-    </div>
-  ) : (
-    <div className="flex row-auto items-center justify-end gap-2">
-      <Link
-        href="/login"
-        className="border border-foreground/20 py-2 px-3 flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover">
-        Sign In
-      </Link>
-      <SignUpRedirectButton />
-    </div>
-  );
+    return user ? (
+        <div className="flex items-center gap-4">
+            Hey, {user?.data?.firstName} {user?.data?.lastName}
+            <form action={signOut}>
+                <Button type={basicTypes.Text}>Cerrar sesión</Button>
+            </form>
+        </div>
+    ) : (
+        <div className="flex row-auto items-center justify-end gap-2">
+            <Link href="/login">
+                <Button type={basicTypes.Text}>Iniciar sesión</Button>
+            </Link>
+            {/* <SignUpRedirectButton /> */}
+        </div>
+    );
 }

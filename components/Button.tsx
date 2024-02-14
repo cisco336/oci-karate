@@ -1,8 +1,8 @@
 import { basicTypes } from '@/constants/enums';
 import { iButton } from '@/models/components.models';
-import React from 'react';
+import React, { Children, PropsWithChildren } from 'react';
 
-const Button = (props: iButton) => {
+const Button = (props: PropsWithChildren<iButton>) => {
     const { label, icon, loading, disabled, callback, type } = props;
     const buttonClass = `
          ${type !== basicTypes.Text ? 'border rounded-md' : ''} ${
@@ -21,7 +21,7 @@ const Button = (props: iButton) => {
             disabled={disabled || loading}
             onClick={callback}>
             {loading && loadingIndicator}
-            {label || 'Button'}
+            {props.children}
         </button>
     );
 };
