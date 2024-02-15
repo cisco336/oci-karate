@@ -3,7 +3,8 @@ import { iButton } from '@/models/components.models';
 import React, { Children, PropsWithChildren } from 'react';
 
 const Button = (props: PropsWithChildren<iButton>) => {
-    const { label, icon, loading, disabled, callback, type } = props;
+    const { label, icon, loading, disabled, callback, type, buttonType } =
+        props;
     const buttonClass = `
          ${type !== basicTypes.Text ? 'border rounded-md' : ''} ${
         loading && 'opacity-50'
@@ -18,6 +19,7 @@ const Button = (props: PropsWithChildren<iButton>) => {
     return (
         <button
             className={buttonClass}
+            type={buttonType || 'button'}
             disabled={disabled || loading}
             onClick={callback}>
             {loading && loadingIndicator}

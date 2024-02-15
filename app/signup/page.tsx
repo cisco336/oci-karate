@@ -21,7 +21,6 @@ export default function SignUp({
         const phone = formData.get('phone') as string;
         const cookieStore = cookies();
         const supabase = createClient(cookieStore);
-        const prismaClient = new PrismaClient();
 
         const { error, data } = await supabase.auth.signUp({
             email,
@@ -36,7 +35,7 @@ export default function SignUp({
         }
 
         if (data?.user?.id) {
-            const userData = await prismaClient.userData.create({
+            const userData = await prisma?.userData.create({
                 data: {
                     firstName: first_name,
                     lastName: last_name,

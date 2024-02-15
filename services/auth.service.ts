@@ -1,10 +1,11 @@
+import { iUser } from '@/models/entity.models';
 import { createClient } from '@/utils/supabase/server';
-import { PrismaClient } from '@prisma/client';
 import { cookies } from 'next/headers';
 import { redirect as redirecting } from 'next/navigation';
 
-export const isUserAuthenticated = async (redirect?: boolean) => {
-    const prismaClient = new PrismaClient();
+export const isUserAuthenticated = async (
+    redirect?: boolean
+): Promise<iUser> => {
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
     const {
@@ -12,13 +13,13 @@ export const isUserAuthenticated = async (redirect?: boolean) => {
     } = await supabase.auth.getUser();
     let userWithData = { main: { ...user }, data: {} };
     if (user && user.aud === 'authenticated' && user.id) {
-        const userData = await prismaClient.userData.findFirstOrThrow({
+        const userData = await prisma.userData.findFirstOrThrow({
             where: { userId: user.id },
         });
         userWithData.data = { ...userData };
     } else {
         if (redirect) {
-            return redirecting('/');
+            // return redirecting('/');
         }
     }
     return userWithData;

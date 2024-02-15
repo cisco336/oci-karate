@@ -13,8 +13,8 @@ interface userMain {
     confirmation_sent_at?: string;
     confirmed_at?: string;
     last_sign_in_at?: string;
-    app_metadata?: Appmetadata | {};
-    user_metadata?: Usermetadata | {};
+    app_metadata?: Appmetadata | null;
+    user_metadata?: Usermetadata | null;
     identities?: any[];
     created_at?: string;
     updated_at?: string;
@@ -38,9 +38,12 @@ interface userData {
     danDataId?: any;
 }
 
-interface Usermetadata {}
+interface Usermetadata {
+    provider?: string;
+    providers?: any[];
+}
 
 interface Appmetadata {
-    provider: string;
-    providers: any[];
+    provider?: string;
+    providers?: string[];
 }
