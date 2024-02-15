@@ -18,7 +18,8 @@ export const isUserAuthenticated = async (redirect?: boolean) => {
         userWithData.data = { ...userData };
     } else {
         if (redirect) {
-            return redirecting('/');
+            // TODO: Fix this
+            // return redirecting('/');
         }
     }
     return userWithData;
