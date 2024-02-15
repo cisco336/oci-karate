@@ -32,10 +32,10 @@ const Card = (props: iArticle) => {
                             setLoading(!isLoading);
                             setTimeout(() => setLoading(false), 3000);
                         }}
-                        label="Ver más"
                         type={basicTypes.Primary}
-                        loading={isLoading}
-                    />
+                        loading={isLoading}>
+                        {'Ver más'}
+                    </Button>
                 </Link>
             </div>
         </div>

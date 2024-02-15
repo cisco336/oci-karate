@@ -1,12 +1,90 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
+  schemas      = ["public"]
+}
+
+model UserData {
+  id          Int          @id @default(autoincrement())
+  bio         String?
+  userId      String       @unique
+  birthDate   DateTime?
+  firstName   String
+  lastName    String
+  kyu         kyuDan?
+  dan         kyuDan?
+  belt        BeltColors?
+  degree      String[]
+  children    String[]
+  medicalData String[]
+  agreedTerms Boolean
+  setPasswd   Boolean
+  isChild     Boolean
+  parents     String[]
+  MedicalData MedicalData?
+  kyuDataId   Int?
+  danDataId   Int?
+
+  @@index([danDataId])
+  @@index([kyuDataId])
+  @@schema("public")
+}
+
+model MedicalData {
+  id                    Int      @id @default(autoincrement())
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  user                  UserData @relation(fields: [userId], references: [userId])
+  userId                String   @unique
+  blodType              String
+  eps                   String
+  prepaidMedicine       String
+  specialCondition      String
+  emergencyContactName  String
+  emergencyContactPhone String
+
+  @@schema("public")
+}
+
+enum Role {
+  ADMIN
+  SENSEI
+  PARENT
+  STUDENT
+  PARENT_AND_STUDENT
+
+  @@schema("public")
+}
+
+enum BeltColors {
+  BLANCO
+  AMARILLO
+  NARANJA
+  AZUL
+  VERDE
+  VIOLETA
+  MARRON
+  NEGRO
+
+  @@schema("public")
+}
+
+enum kyuDan {
+  NOVENO
+  OCTAVO
+  SEPTIMO
+  SEXTO
+  QUINTO
+  CUARTO
+  TERCER
+  SEGUNDO
+  PRIMERO
+
+  @@schema("public")
 }

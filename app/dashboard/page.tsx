@@ -1,7 +1,9 @@
-import React from "react";
+import { isUserAuthenticated } from '@/services/auth.service';
+import React from 'react';
 
-const Dashboard = () => {
-  return <div>Dashboard</div>;
+const Dashboard = async () => {
+    const user = await isUserAuthenticated(true);
+    return <div>Dashboard</div>;
 };
 
 export default Dashboard;

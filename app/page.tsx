@@ -1,14 +1,9 @@
-import DeployButton from '../components/DeployButton';
 import AuthButton from '../components/AuthButton';
-import { createClient } from '@/utils/supabase/server';
-import { cookies } from 'next/headers';
 import {
-    articlesQuery,
     getServerSideProps,
     quoteQueryBySlug,
     articlesByTagQuery,
 } from '../services/hygraph.service';
-import { useEffect } from 'react';
 import Card from '../components/Card';
 import Quote from '@/components/Quote';
 import { iArticle, iArticlesResponse, iQuote } from '../models/gqlModels';
