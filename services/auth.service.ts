@@ -1,26 +1,47 @@
-import { iUser } from '@/models/entity.models';
+import { iUser, iUserData } from '@/models/entity.models';
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
-import { redirect as redirecting } from 'next/navigation';
+import prisma from '../prisma/prisma.client';
+import {
+    Session,
+    createServerComponentClient,
+} from '@supabase/auth-helpers-nextjs';
 
-export const isUserAuthenticated = async (
-    redirect?: boolean
-): Promise<iUser> => {
+export const isUserAuthenticated = async (): Promise<void> => {
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
     const {
         data: { user },
     } = await supabase.auth.getUser();
-    let userWithData = { main: { ...user }, data: {} };
+    let data = { main: { ...user }, data: {} };
     if (user && user.aud === 'authenticated' && user.id) {
-        const userData = await prisma.userData.findFirstOrThrow({
-            where: { userId: user.id },
-        });
-        userWithData.data = { ...userData };
-    } else {
-        if (redirect) {
-            // return redirecting('/');
-        }
+        prisma.userData
+            .findFirstOrThrow({
+                where: { userId: user.id },
+            })
+            .then((res: iUserData) => {
+                data.data = { ...res };
+            })
+            .catch((e: any) => {
+                console.log('Error: ', e);
+            });
     }
+    userWithData = data;
+};
+
+let userWithData: iUser | null = null;
+
+export const getUser = async (): Promise<iUser | null> => {
+    userWithData ?? (await isUserAuthenticated());
+
     return userWithData;
+};
+
+export const checkSessionIsValid = async (): Promise<Session | null> => {
+    const supabase = createServerComponentClient({ cookies });
+    const {
+        data: { session },
+    } = await supabase.auth.getSession();
+
+    return session;
 };

@@ -1,9 +1,9 @@
 export interface iUser {
-    main?: userMain;
-    data?: userData;
+    main?: iUserMain;
+    data?: iUserData;
 }
 
-interface userMain {
+export interface iUserMain {
     id?: string;
     aud?: string;
     role?: string;
@@ -20,7 +20,7 @@ interface userMain {
     updated_at?: string;
 }
 
-interface userData {
+export interface iUserData {
     id?: number;
     bio?: any;
     userId?: string;

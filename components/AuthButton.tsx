@@ -4,12 +4,12 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import Button from './Button';
 import { basicTypes } from '@/constants/enums';
-import { isUserAuthenticated } from '@/services/auth.service';
-import { iUser } from '@/models/entity.models';
+import { getUser, checkSessionIsValid } from '@/services/auth.service';
 import DropDown from './DropDown';
 
 export default async function AuthButton() {
-    const user: iUser = await isUserAuthenticated(true);
+    const user = await getUser();
+    const session = await checkSessionIsValid();
 
     const signOut = async () => {
         'use server';
@@ -25,8 +25,12 @@ export default async function AuthButton() {
             isOpen={false}
             position={'up'}
             closeOnSelect={false}
-            label={`Hola ${user.data?.firstName}`}>
+            label={`Hola ${user?.data?.firstName}`}>
             <form action={signOut}>
+                <Link href="/profile">
+                    <Button type={basicTypes.Text}>Mi cuenta</Button>
+                </Link>
+                <hr />
                 <Button
                     buttonType="submit"
                     type={basicTypes.Text}>
@@ -42,23 +46,5 @@ export default async function AuthButton() {
         </Link>
     );
 
-    return user?.main?.id ? dropdown : login;
-
-    // return user?.main?.id ? (
-    //     <div className="flex items-center gap-4">
-    //         Hey, {user?.data?.firstName} {user?.data?.lastName}
-    //         <Button
-    //             callback={signOut}
-    //             type={basicTypes.Text}>
-    //             Cerrar sesión
-    //         </Button>
-    //     </div>
-    // ) : (
-    //     <div className="flex row-auto items-center justify-end gap-2">
-    //         <Link href="/login">
-    //             <Button type={basicTypes.Text}>Iniciar sesión</Button>
-    //         </Link>
-    //         {/* <SignUpRedirectButton /> */}
-    //     </div>
-    // );
+    return session ? dropdown : login;
 }

@@ -27,25 +27,36 @@ export default function SignUp({
             password,
             options: {
                 emailRedirectTo: `${origin}/auth/callback`,
+                data: {
+                    firstName: first_name,
+                    lastName: last_name,
+                    agreedTerms: false,
+                    setPasswd: false,
+                    isChild: false,
+                    phone,
+                },
             },
         });
 
         if (error) {
+            console.log(error);
             return redirect('/signup?message=Could not authenticate user');
         }
 
-        if (data?.user?.id) {
-            const userData = await prisma?.userData.create({
-                data: {
-                    firstName: first_name,
-                    lastName: last_name,
-                    userId: data.user.id,
-                    agreedTerms: false,
-                    setPasswd: false,
-                    isChild: false,
-                },
-            });
-        }
+        // if (data?.user?.id) {
+        //     const userData = await prisma?.userData.create({
+        //         data: {
+        //             firstName: first_name,
+        //             lastName: last_name,
+        //             userId: data.user.id,
+        //             agreedTerms: false,
+        //             setPasswd: false,
+        //             isChild: false,
+        //             phone,
+        //         },
+        //     });
+        //     console.log(userData);
+        // }
 
         return redirect(
             '/signup?message=Check email to continue sign in process'

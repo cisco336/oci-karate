@@ -17,8 +17,7 @@ model UserData {
   birthDate   DateTime?
   firstName   String
   lastName    String
-  kyu         kyuDan?
-  dan         kyuDan?
+  phone       String
   belt        BeltColors?
   degree      String[]
   children    String[]
@@ -28,11 +27,10 @@ model UserData {
   isChild     Boolean
   parents     String[]
   MedicalData MedicalData?
-  kyuDataId   Int?
-  danDataId   Int?
+  kyu         kyuDan       @default(NOVENO)
+  dan         kyuDan       @default(NA)
+  role        Role         @default(STUDENT)
 
-  @@index([danDataId])
-  @@index([kyuDataId])
   @@schema("public")
 }
 
@@ -85,6 +83,7 @@ enum kyuDan {
   TERCER
   SEGUNDO
   PRIMERO
+  NA
 
   @@schema("public")
 }
