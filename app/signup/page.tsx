@@ -30,9 +30,9 @@ export default function SignUp({
                 data: {
                     firstName: first_name,
                     lastName: last_name,
-                    agreedTerms: 'False',
-                    setPasswd: 'False',
-                    isChild: 'False',
+                    agreedTerms: false,
+                    setPasswd: false,
+                    isChild: false,
                     phone,
                 },
             },

@@ -23,7 +23,7 @@ const Button = (props: PropsWithChildren<iButton>) => {
             disabled={disabled || loading}
             onClick={callback}>
             {loading && loadingIndicator}
-            {props.children}
+            {props.children || label}
         </button>
     );
 };

@@ -1,23 +1,17 @@
-import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 import Button from './Button';
 import { basicTypes } from '@/constants/enums';
-import { getUser, checkSessionIsValid } from '@/services/auth.service';
+import { checkSessionIsValid, signOut } from '@/services/auth.service';
 import DropDown from './DropDown';
 
 export default async function AuthButton() {
-    const user = await getUser();
     const session = await checkSessionIsValid();
 
-    const signOut = async () => {
-        'use server';
+    const user = session?.user?.user_metadata;
 
-        const cookieStore = cookies();
-        const supabase = createClient(cookieStore);
-        await supabase.auth.signOut();
-        return redirect('/login');
+    const signOutHandler = async () => {
+        'use server';
+        await signOut();
     };
 
     const dropdown = (
@@ -25,8 +19,8 @@ export default async function AuthButton() {
             isOpen={false}
             position={'up'}
             closeOnSelect={false}
-            label={`Hola ${user?.data?.firstName}`}>
-            <form action={signOut}>
+            label={`Hola ${user?.firstName}`}>
+            <form action={signOutHandler}>
                 <Link href="/profile">
                     <Button type={basicTypes.Text}>Mi cuenta</Button>
                 </Link>
