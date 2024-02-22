@@ -1,4 +1,4 @@
-import { BeltColors, Role, kyuDan } from '@prisma/client';
+import { BeltColors, IdType, Role, kyuDan } from '@prisma/client';
 
 interface iSession {
     provider_token?: string | null | undefined;
@@ -62,6 +62,8 @@ interface Identitydata {
 
 export interface iUserData {
     id?: number | null;
+    userNationalID?: number | null;
+    userNationalIDType?: IdType | null;
     bio?: string | null;
     userId?: string | null;
     birthDate?: Date | null;

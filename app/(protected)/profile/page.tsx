@@ -1,70 +1,83 @@
-import { checkSessionIsValid } from '@/services/auth.service';
-import { redirect } from 'next/navigation';
-import React from 'react';
+'use client';
+import Button from '@/components/Button';
+import { basicTypes } from '@/constants/enums';
 import { iUserData } from '@/models/entity.models';
+import { Role, BeltColors, kyuDan, IdType } from '@prisma/client';
+import { Session } from '@supabase/supabase-js';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import React, { useEffect, useState } from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
+import PersonalForm from './personalForm';
+import KarateForm from './karateForm';
 
-const Profile = async () => {
-    const session = await checkSessionIsValid();
-    if (!session) {
-        return redirect('/');
-    }
-    const data: iUserData | undefined = await prisma?.userData.findFirstOrThrow(
-        {
-            where: { userId: session.user.id },
+export const Profile = () => {
+    const [userData, setUserData] = useState<iUserData | null>(null);
+    const [session, setSession] = useState<Session | null>(null);
+    useEffect(() => {
+        const getData = async () => {
+            const fetching = await await fetch('/api/profile');
+            const getData: { userData: iUserData; session: Session } | any =
+                await fetching.json();
+            setSession(getData.session);
+            setUserData(getData.userData);
+        };
+        if (!userData) {
+            getData();
         }
-    );
-    console.log(data);
-    const saveChanges = () => {};
+    }, [userData]);
+    const handleSubmit = (values: any) => {
+        const post = fetch('/api/profile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: values,
+        }).then((res: any) => {
+            res.json().then((r: any) => console.log(r));
+        });
+    };
+    if (!userData) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <>
-            <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
-                <div className="flex flex-col gap-1">
-                    <label
-                        className="text-md"
-                        htmlFor="first_name">
-                        Nombre
-                    </label>
-                    <input
-                        className="rounded-md px-4 py-2 bg-inherit border mb-6 w-full"
-                        type="first_name"
-                        name="first_name"
-                        placeholder={data?.firstName || ''}
-                        value={data?.firstName || ''}
-                    />
-                </div>
-                <div className="flex flex-col gap-1">
-                    <label
-                        className="text-md"
-                        htmlFor="last_name">
-                        Apellido
-                    </label>
-                    <input
-                        className="rounded-md px-4 py-2 bg-inherit border mb-6 w-full"
-                        type="last_name"
-                        name="last_name"
-                        placeholder={data?.lastName || ''}
-                        value={data?.lastName || ''}
-                    />
-                </div>
-                <div className="flex flex-col gap-1">
-                    <label
-                        className="text-md"
-                        htmlFor="last_name">
-                        Sobre mi
-                    </label>
-                    <textarea
-                        className="rounded-md px-4 py-2 bg-inherit border mb-6 w-full"
-                        name="last_name"
-                        placeholder={data?.bio || ''}
-                        value={data?.bio || ''}
-                    />
-                </div>
-                <div className="flex gap-2 items-stretch">
-                    <button className="bg-green-700 rounded-md px-4 py-2 text-foreground flex-1">
-                        Guardar cambios
-                    </button>
-                </div>
-            </form>
+            <Formik
+                onSubmit={handleSubmit}
+                initialValues={{
+                    Nombre: userData?.firstName || '',
+                    Apellido: userData?.lastName || '',
+                    Cedula: userData?.userNationalID || '',
+                    Tipo_Cedula:
+                        IdType[
+                            userData?.userNationalIDType
+                                ? userData?.userNationalIDType
+                                : 'CEDULA_CIUDADANIA'
+                        ],
+                    Bio: userData?.bio || '',
+                    Cinturon:
+                        BeltColors[userData?.belt ? userData.belt : 'BLANCO'],
+                    Cumpleaños: userData?.birthDate || null,
+                    Telefono: userData?.phone || null,
+                    Menor_de_edad: userData?.isChild,
+                    Padres: userData?.parents || [],
+                    Rol: Role[userData?.role ? userData.role : 'STUDENT'],
+                    Kyu: kyuDan[userData?.kyu ? userData.kyu : 'NA'],
+                    Dan: kyuDan[userData?.dan ? userData.dan : 'NA'],
+                }}>
+                {({ isSubmitting }) => (
+                    <Form className="w-[80%] py-[2rem]">
+                        <PersonalForm />
+                        <KarateForm />
+                        <Button
+                            type={basicTypes.Primary}
+                            buttonType="submit"
+                            disabled={false}>
+                            Guardar cambios
+                        </Button>
+                    </Form>
+                )}
+            </Formik>
         </>
     );
 };

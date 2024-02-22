@@ -5,7 +5,7 @@ import {
     createServerComponentClient,
 } from '@supabase/auth-helpers-nextjs';
 import { redirect } from 'next/navigation';
-import { AuthResponse, SignOut, UserResponse } from '@supabase/supabase-js';
+import { AuthResponse, SignOut } from '@supabase/supabase-js';
 
 export const checkSessionIsValid = async (): Promise<Session | null> => {
     `use server`;
