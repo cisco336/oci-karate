@@ -1,75 +1,79 @@
+import { capitalizeFirstLetter } from '@/helpers/capitalize';
+import { IdType } from '@prisma/client';
 import { Form, Field, ErrorMessage, FastFieldProps, FieldProps } from 'formik';
 import React from 'react';
 import DatePicker from 'react-datepicker';
 
 const PersonalForm = () => {
     let IDTypes: string[] = [];
-    for (var type in IDTypes) {
+    for (var type in IdType) {
         IDTypes.push(type);
     }
     return (
         <>
             <div className="flex flex-col gap-1 mb-[1rem]">
-                <label htmlFor="Nombre">Nombre</label>
+                <label htmlFor="firstName">Nombre</label>
                 <Field
                     className="border border-slate-500 rounded-md py-2 px-3"
                     type="text"
-                    name="Nombre"
+                    name="firstName"
                 />
                 <ErrorMessage
-                    name="Nombre"
+                    name="firstName"
                     component="div"
                 />
             </div>
             <div className="flex flex-col gap-1 mb-[1rem]">
-                <label htmlFor="Apellido">Apellido</label>
+                <label htmlFor="lastName">Apellido</label>
                 <Field
                     className="border border-slate-500 rounded-md py-2 px-3"
                     type="text"
-                    name="Apellido"
+                    name="lastName"
                 />
                 <ErrorMessage
-                    name="Apellido"
+                    name="lastName"
                     component="div"
                 />
             </div>
             <div className="flex flex-col gap-1 mb-[1rem]">
-                <label htmlFor="Cedula">Cédula / Pasaporte</label>
+                <label htmlFor="userNationalID">Cédula / Pasaporte</label>
                 <Field
                     className="border border-slate-500 rounded-md py-2 px-3"
                     type="text"
-                    name="Cedula"
+                    name="userNationalID"
                 />
                 <ErrorMessage
-                    name="Cedula"
+                    name="userNationalID"
                     component="div"
                 />
             </div>
             <div className="flex flex-col gap-1 mb-[1rem]">
-                <label htmlFor="Tipo_Cedula">Tipo Cédula</label>
+                <label htmlFor="userNationalIDType">Tipo Cédula</label>
                 <Field
                     className="border border-slate-500 rounded-md py-2 px-3"
                     type="text"
-                    name="Tipo_Cedula"
+                    name="userNationalIDType"
                     component="select">
                     {IDTypes.map((c) => (
                         <option
                             key={c}
                             value={c}>
-                            {c}
+                            {capitalizeFirstLetter(
+                                c.replaceAll('_', ' ').toString()
+                            )}
                         </option>
                     ))}
                 </Field>
                 <ErrorMessage
-                    name="Tipo_Cedula"
+                    name="userNationalIDType"
                     component="div"
                 />
             </div>
             <div className="flex flex-col gap-1 mb-[1rem]">
-                <label htmlFor="Cumpleaños">Cumpleaños</label>
+                <label htmlFor="birthDate">Cumpleaños</label>
                 <Field
                     type="date"
-                    name="Cumpleaños">
+                    name="birthDate">
                     {(props: FieldProps) => {
                         return (
                             <DatePicker
@@ -88,44 +92,44 @@ const PersonalForm = () => {
                     }}
                 </Field>
                 <ErrorMessage
-                    name="Cumpleaños"
+                    name="birthDate"
                     component="div"
                 />
             </div>
             <div className="flex flex-col gap-1 mb-[1rem]">
-                <label htmlFor="Telefono">Teléfono</label>
+                <label htmlFor="phone">Teléfono</label>
                 <Field
                     className="border border-slate-500 rounded-md py-2 px-3"
                     type="text"
-                    name="Telefono"
+                    name="phone"
                 />
                 <ErrorMessage
-                    name="Telefono"
+                    name="phone"
                     component="div"
                 />
             </div>
             <div className="flex flex-col gap-1 mb-[1rem]">
-                <label htmlFor="Menor_de_edad">Menor de edad?</label>
+                <label htmlFor="isChild">Menor de edad?</label>
                 <Field
                     className="border border-slate-500 rounded-md py-2 px-3"
                     type="checkbox"
-                    name="Menor_de_edad"
+                    name="isChild"
                 />
                 <ErrorMessage
-                    name="Menor_de_edad"
+                    name="isChild"
                     component="div"
                 />
             </div>
             <div className="flex flex-col gap-1 mb-[1rem]">
-                <label htmlFor="Bio">Bio</label>
+                <label htmlFor="bio">Bio</label>
                 <Field
                     className="border border-slate-500 rounded-md py-2 px-3"
                     type="text"
-                    name="Bio"
+                    name="bio"
                     component="textarea"
                 />
                 <ErrorMessage
-                    name="Bio"
+                    name="bio"
                     component="div"
                 />
             </div>

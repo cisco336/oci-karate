@@ -4,13 +4,15 @@ import { basicTypes } from '@/constants/enums';
 import { iUserData } from '@/models/entity.models';
 import { Role, BeltColors, kyuDan, IdType } from '@prisma/client';
 import { Session } from '@supabase/supabase-js';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form } from 'formik';
 import React, { useEffect, useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import PersonalForm from './personalForm';
 import KarateForm from './karateForm';
+import { useRouter } from 'next/navigation';
 
 export const Profile = () => {
+    const router = useRouter();
     const [userData, setUserData] = useState<iUserData | null>(null);
     const [session, setSession] = useState<Session | null>(null);
     useEffect(() => {
@@ -18,6 +20,9 @@ export const Profile = () => {
             const fetching = await await fetch('/api/profile');
             const getData: { userData: iUserData; session: Session } | any =
                 await fetching.json();
+            if (getData.session === null) {
+                router.push('/login');
+            }
             setSession(getData.session);
             setUserData(getData.userData);
         };
@@ -25,17 +30,19 @@ export const Profile = () => {
             getData();
         }
     }, [userData]);
-    const handleSubmit = (values: any) => {
-        const post = fetch('/api/profile', {
+
+    const handleSubmit = async (values: any) => {
+        const response = await fetch('/api/profile', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'content-type': 'application/json',
             },
-            body: values,
-        }).then((res: any) => {
-            res.json().then((r: any) => console.log(r));
+            body: JSON.stringify(values),
         });
+        const parsedResponse = await response.json();
+        console.log(parsedResponse);
     };
+
     if (!userData) {
         return <div>Loading...</div>;
     }
@@ -45,38 +52,41 @@ export const Profile = () => {
             <Formik
                 onSubmit={handleSubmit}
                 initialValues={{
-                    Nombre: userData?.firstName || '',
-                    Apellido: userData?.lastName || '',
-                    Cedula: userData?.userNationalID || '',
-                    Tipo_Cedula:
+                    firstName: userData?.firstName || '',
+                    lastName: userData?.lastName || '',
+                    userNationalID: userData?.userNationalID || '',
+                    userNationalIDType:
                         IdType[
                             userData?.userNationalIDType
                                 ? userData?.userNationalIDType
-                                : 'CEDULA_CIUDADANIA'
+                                : IdType.CEDULA_CIUDADANIA
                         ],
-                    Bio: userData?.bio || '',
-                    Cinturon:
-                        BeltColors[userData?.belt ? userData.belt : 'BLANCO'],
-                    Cumpleaños: userData?.birthDate || null,
-                    Telefono: userData?.phone || null,
-                    Menor_de_edad: userData?.isChild,
-                    Padres: userData?.parents || [],
-                    Rol: Role[userData?.role ? userData.role : 'STUDENT'],
-                    Kyu: kyuDan[userData?.kyu ? userData.kyu : 'NA'],
-                    Dan: kyuDan[userData?.dan ? userData.dan : 'NA'],
+                    bio: userData?.bio || '',
+                    belt: BeltColors[
+                        userData?.belt ? userData.belt : BeltColors.BLANCO
+                    ],
+                    birthDate: userData?.birthDate || null,
+                    phone: userData?.phone || null,
+                    isChild: userData?.isChild,
+                    parents: userData?.parents || [],
+                    role: Role[userData?.role ? userData.role : Role.STUDENT],
+                    kyu: kyuDan[userData?.kyu ? userData.kyu : kyuDan.NA],
+                    dan: kyuDan[userData?.dan ? userData.dan : kyuDan.NA],
                 }}>
-                {({ isSubmitting }) => (
-                    <Form className="w-[80%] py-[2rem]">
-                        <PersonalForm />
-                        <KarateForm />
-                        <Button
-                            type={basicTypes.Primary}
-                            buttonType="submit"
-                            disabled={false}>
-                            Guardar cambios
-                        </Button>
-                    </Form>
-                )}
+                {(formProps) => {
+                    return (
+                        <Form className="w-[80%] py-[2rem]">
+                            <PersonalForm />
+                            <KarateForm />
+                            <Button
+                                type={basicTypes.Primary}
+                                buttonType="submit"
+                                disabled={false}>
+                                Guardar cambios
+                            </Button>
+                        </Form>
+                    );
+                }}
             </Formik>
         </>
     );

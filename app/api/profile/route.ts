@@ -1,6 +1,8 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import prisma from '@/prisma/prisma.client';
+import { NextResponse, NextRequest } from 'next/server';
+import { iUserData } from '@/models/entity.models';
 
 // To handle a GET request to /api
 export async function GET(request: Request) {
@@ -15,9 +17,21 @@ export async function GET(request: Request) {
 }
 
 // To handle a POST request to /api
-export async function POST(request: Request) {
-    // Do whatever you want
-    return Response.json({ body: request.body }, { status: 200 });
+export async function POST(req: NextRequest) {
+    try {
+        const supabase = await createServerComponentClient({ cookies });
+        const {
+            data: { session },
+        } = await supabase.auth.getSession();
+        const data = await req.json();
+        const query = await prisma.userData.update({
+            where: { userId: session?.user.id },
+            data: {
+                ...data,
+            },
+        });
+        return NextResponse.json(query);
+    } catch (e) {
+        return NextResponse.json(e);
+    }
 }
-
-// Same logic to add a `PATCH`, `DELETE`...
