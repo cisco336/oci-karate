@@ -3,10 +3,9 @@ import AuthButton from './AuthButton';
 import Link from 'next/link';
 import { basicTypes } from '@/constants/enums';
 import Button from './Button';
-import { checkSessionIsValid } from '@/services/auth.service';
 
 const Nav = async () => {
-    const session = await checkSessionIsValid();
+    const session = true;
 
     return (
         <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">

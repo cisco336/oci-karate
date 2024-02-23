@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 // import Font Awesome CSS
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
+import Providers from './providers';
 config.autoAddCss = false;
 
 const defaultUrl = process.env.VERCEL_URL
@@ -28,13 +29,15 @@ export default function RootLayout({
             lang="en"
             className={GeistSans.className}>
             <body className="bg-background text-foreground flex flex-col min-h-screen">
-                <div className="z-10">
-                    <Nav />
-                </div>
-                <main className="flex flex-col items-center flex-1">
-                    {children}
-                </main>
-                <Footer />
+                <Providers>
+                    <div className="z-10">
+                        <Nav />
+                    </div>
+                    <main className="flex flex-col items-center flex-1">
+                        {children}
+                    </main>
+                    <Footer />
+                </Providers>
             </body>
         </html>
     );

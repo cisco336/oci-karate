@@ -1,38 +1,28 @@
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+'use client';
+import { signIn } from 'next-auth/react';
 import BackButton from '@/components/BackButton';
 
-export default function Login({
+export default async function Login({
     searchParams,
 }: {
     searchParams: { message: string };
 }) {
-    const signIn = async (formData: FormData) => {
-        'use server';
-
+    const submit = async (formData: FormData) => {
         const email = formData.get('email') as string;
         const password = formData.get('password') as string;
-        const cookieStore = cookies();
-
-        // const { error } = await supabase.auth.signInWithPassword({
-        //     email,
-        //     password,
-        // });
-
-        // if (error) {
-        //     return redirect('/login?message=Could not authenticate user');
-        // }
-
-        // await supabase.auth.refreshSession();
-
-        // return redirect('/dashboard');
+        const result = await signIn('credentials', {
+            email,
+            password,
+            redirect: true,
+            callbackUrl: '/',
+        });
     };
 
     return (
         <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
             <div className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
                 <form
-                    action={signIn}
+                    action={submit}
                     className="animate-in flex flex-col w-full justify-center gap-2 text-foreground mb-8">
                     <label
                         className="text-md"

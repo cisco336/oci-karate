@@ -9,8 +9,11 @@ import 'react-datepicker/dist/react-datepicker.css';
 import PersonalForm from './personalForm';
 import KarateForm from './karateForm';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 export const Profile = () => {
+    const sessionAuth = useSession();
+    console.log(sessionAuth);
     const router = useRouter();
     const [userData, setUserData] = useState<iUserData | null>(null);
     const [session, setSession] = useState<any | null>(null);

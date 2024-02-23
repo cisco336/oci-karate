@@ -1,8 +1,9 @@
-import { NextResponse, type NextRequest } from 'next/server';
-import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-export async function middleware(req: NextRequest) {
-    return new Response();
+// This function can be marked `async` if using `await` inside
+export function middleware(request: NextRequest) {
+    return NextResponse.next();
 }
 
 export const config = {
