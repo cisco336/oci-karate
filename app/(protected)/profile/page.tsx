@@ -3,7 +3,6 @@ import Button from '@/components/Button';
 import { basicTypes } from '@/constants/enums';
 import { iUserData } from '@/models/entity.models';
 import { Role, BeltColors, kyuDan, IdType } from '@prisma/client';
-import { Session } from '@supabase/supabase-js';
 import { Formik, Form } from 'formik';
 import React, { useEffect, useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -14,11 +13,11 @@ import { useRouter } from 'next/navigation';
 export const Profile = () => {
     const router = useRouter();
     const [userData, setUserData] = useState<iUserData | null>(null);
-    const [session, setSession] = useState<Session | null>(null);
+    const [session, setSession] = useState<any | null>(null);
     useEffect(() => {
         const getData = async () => {
             const fetching = await await fetch('/api/profile');
-            const getData: { userData: iUserData; session: Session } | any =
+            const getData: { userData: iUserData; session: any } | any =
                 await fetching.json();
             if (getData.session === null) {
                 router.push('/login');

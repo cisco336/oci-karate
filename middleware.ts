@@ -1,24 +1,8 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { createClient } from '@/utils/supabase/middleware';
 import { cookies } from 'next/headers';
 
 export async function middleware(req: NextRequest) {
-    const { supabase, response } = createClient(req);
-    let {
-        data: { session },
-    } = await supabase.auth.getSession();
-
-    if (session) {
-        if (!session.user.user_metadata.agreedTerms) {
-            if (cookies().get('agreedTerms')) {
-                await supabase.auth.refreshSession();
-            } else {
-                return NextResponse.rewrite(new URL('/terms', req.url));
-            }
-        }
-    }
-
-    return response;
+    return new Response();
 }
 
 export const config = {
