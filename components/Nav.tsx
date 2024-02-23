@@ -3,10 +3,10 @@ import AuthButton from './AuthButton';
 import Link from 'next/link';
 import { basicTypes } from '@/constants/enums';
 import Button from './Button';
-import { isUserAuthenticated } from '@/services/auth.service';
+import { checkSessionIsValid } from '@/services/auth.service';
 
 const Nav = async () => {
-    const user = await isUserAuthenticated();
+    const session = await checkSessionIsValid();
 
     return (
         <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
@@ -16,7 +16,7 @@ const Nav = async () => {
                     <Link href={'/'}>
                         <Button type={basicTypes.Text}>Inicio</Button>
                     </Link>
-                    {user?.main?.id && (
+                    {session && (
                         <Link href={'/dashboard'}>
                             <Button type={basicTypes.Text}>My panel</Button>
                         </Link>

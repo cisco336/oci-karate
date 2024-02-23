@@ -21,31 +21,25 @@ export default function SignUp({
         const phone = formData.get('phone') as string;
         const cookieStore = cookies();
         const supabase = createClient(cookieStore);
-        const prismaClient = new PrismaClient();
 
-        const { error, data } = await supabase.auth.signUp({
+        const { error, data: signUpData } = await supabase.auth.signUp({
             email,
             password,
             options: {
                 emailRedirectTo: `${origin}/auth/callback`,
+                data: {
+                    firstName: first_name,
+                    lastName: last_name,
+                    agreedTerms: false,
+                    setPasswd: false,
+                    isChild: false,
+                    phone,
+                },
             },
         });
 
         if (error) {
             return redirect('/signup?message=Could not authenticate user');
-        }
-
-        if (data?.user?.id) {
-            const userData = await prismaClient.userData.create({
-                data: {
-                    firstName: first_name,
-                    lastName: last_name,
-                    userId: data.user.id,
-                    agreedTerms: false,
-                    setPasswd: false,
-                    isChild: false,
-                },
-            });
         }
 
         return redirect(

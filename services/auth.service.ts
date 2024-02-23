@@ -1,26 +1,40 @@
 import { createClient } from '@/utils/supabase/server';
-import { PrismaClient } from '@prisma/client';
 import { cookies } from 'next/headers';
-import { redirect as redirecting } from 'next/navigation';
+import {
+    Session,
+    createServerComponentClient,
+} from '@supabase/auth-helpers-nextjs';
+import { redirect } from 'next/navigation';
+import { AuthResponse, SignOut } from '@supabase/supabase-js';
 
-export const isUserAuthenticated = async (redirect?: boolean) => {
-    const prismaClient = new PrismaClient();
+export const checkSessionIsValid = async (): Promise<Session | null> => {
+    `use server`;
+    const supabase = createServerComponentClient({ cookies });
+    const {
+        data: { session },
+    } = await supabase.auth.getSession();
+
+    return session;
+};
+
+export const userAcceptedTerms = async (
+    agreedTerms: boolean
+): Promise<AuthResponse | null> => {
+    `use server`;
+    const supabase = createServerComponentClient({ cookies });
+    cookies().set('agreedTerms', 'true', { secure: true });
+    await supabase.auth.updateUser({
+        data: {
+            agreedTerms: agreedTerms,
+        },
+    });
+    return await supabase.auth.refreshSession();
+};
+
+export const signOut = async (option?: SignOut) => {
+    `use server`;
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
-    let userWithData = { main: { ...user }, data: {} };
-    if (user && user.aud === 'authenticated' && user.id) {
-        const userData = await prismaClient.userData.findFirstOrThrow({
-            where: { userId: user.id },
-        });
-        userWithData.data = { ...userData };
-    } else {
-        if (redirect) {
-            // TODO: Fix this
-            // return redirecting('/');
-        }
-    }
-    return userWithData;
+    await supabase.auth.signOut(option);
+    return redirect('/login');
 };

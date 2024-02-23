@@ -28,7 +28,9 @@ export default function RootLayout({
             lang="en"
             className={GeistSans.className}>
             <body className="bg-background text-foreground flex flex-col min-h-screen">
-                <Nav />
+                <div className="z-10">
+                    <Nav />
+                </div>
                 <main className="flex flex-col items-center flex-1">
                     {children}
                 </main>
