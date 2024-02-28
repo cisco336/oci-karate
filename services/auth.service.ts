@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 
 export const checkSessionIsValid = async (): Promise<any | null> => {
@@ -13,6 +13,6 @@ export const userAcceptedTerms = async (
     return new Promise((res: any, rej: any) => res(true));
 };
 
-export const signOut = async (option?: any) => {
-    return new Promise((res: any, rej: any) => res(true));
+export const signOut = (option?: any) => {
+    return redirect('/api/auth/signout');
 };

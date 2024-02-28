@@ -1,7 +1,7 @@
 'use client';
 import Button from '@/components/Button';
 import { basicTypes } from '@/constants/enums';
-import { iUserData } from '@/models/entity.models';
+import { iSessionData } from '@/models/entity.models';
 import { Role, BeltColors, kyuDan, IdType } from '@prisma/client';
 import { Formik, Form } from 'formik';
 import React, { useEffect, useState } from 'react';
@@ -13,25 +13,15 @@ import { useSession } from 'next-auth/react';
 
 export const Profile = () => {
     const sessionAuth = useSession();
-    console.log(sessionAuth);
     const router = useRouter();
-    const [userData, setUserData] = useState<iUserData | null>(null);
+    const [user, setUser] = useState<iSessionData | null>(null);
     const [session, setSession] = useState<any | null>(null);
     useEffect(() => {
-        const getData = async () => {
-            const fetching = await await fetch('/api/profile');
-            const getData: { userData: iUserData; session: any } | any =
-                await fetching.json();
-            if (getData.session === null) {
-                router.push('/login');
-            }
-            setSession(getData.session);
-            setUserData(getData.userData);
-        };
-        if (!userData) {
-            getData();
+        setSession(sessionAuth);
+        if (session?.data != null) {
+            setUser(session.data);
         }
-    }, [userData]);
+    }, [user, sessionAuth]);
 
     const handleSubmit = async (values: any) => {
         const response = await fetch('/api/profile', {
@@ -39,13 +29,13 @@ export const Profile = () => {
             headers: {
                 'content-type': 'application/json',
             },
-            body: JSON.stringify(values),
+            body: JSON.stringify({ id: session?.data?.id, ...values }),
         });
         const parsedResponse = await response.json();
         console.log(parsedResponse);
     };
 
-    if (!userData) {
+    if (!sessionAuth || sessionAuth?.status === 'loading' || !user) {
         return <div>Loading...</div>;
     }
 
@@ -54,26 +44,40 @@ export const Profile = () => {
             <Formik
                 onSubmit={handleSubmit}
                 initialValues={{
-                    firstName: userData?.firstName || '',
-                    lastName: userData?.lastName || '',
-                    userNationalID: userData?.userNationalID || '',
+                    firstName: user?.personalData?.firstName,
+                    lastName: user?.personalData?.lastName
+                        ? user?.personalData?.lastName
+                        : '',
+                    userNationalID: user?.personalData?.idNumber
+                        ? user?.personalData?.idNumber
+                        : '',
                     userNationalIDType:
                         IdType[
-                            userData?.userNationalIDType
-                                ? userData?.userNationalIDType
+                            user?.personalData?.idType
+                                ? user?.personalData?.idType
                                 : IdType.CEDULA_CIUDADANIA
                         ],
-                    bio: userData?.bio || '',
+                    bio: user?.personalData?.bio ? user?.personalData?.bio : '',
                     belt: BeltColors[
-                        userData?.belt ? userData.belt : BeltColors.BLANCO
+                        user?.karateData?.cinturon
+                            ? user.karateData.cinturon
+                            : BeltColors.BLANCO
                     ],
-                    birthDate: userData?.birthDate || null,
-                    phone: userData?.phone || null,
-                    isChild: userData?.isChild,
-                    parents: userData?.parents || [],
-                    role: Role[userData?.role ? userData.role : Role.STUDENT],
-                    kyu: kyuDan[userData?.kyu ? userData.kyu : kyuDan.NA],
-                    dan: kyuDan[userData?.dan ? userData.dan : kyuDan.NA],
+                    birthDate: user?.personalData?.birthDay
+                        ? user?.personalData?.birthDay
+                        : '',
+                    phone: user?.personalData?.phone
+                        ? user?.personalData?.phone
+                        : '',
+                    isChild: user?.isChild,
+                    parents: user?.parents || [],
+                    role: Role[user?.role ? user.role[0] : Role.STUDENT],
+                    kyu: kyuDan[
+                        user?.karateData?.kyu ? user.karateData.kyu : kyuDan.NA
+                    ],
+                    dan: kyuDan[
+                        user?.karateData?.dan ? user.karateData.dan : kyuDan.NA
+                    ],
                 }}>
                 {(formProps) => {
                     return (

@@ -1,6 +1,7 @@
+'use client';
 import { capitalizeFirstLetter } from '@/helpers/capitalize';
 import { IdType } from '@prisma/client';
-import { Form, Field, ErrorMessage, FastFieldProps, FieldProps } from 'formik';
+import { Field, ErrorMessage, FieldProps } from 'formik';
 import React from 'react';
 import DatePicker from 'react-datepicker';
 

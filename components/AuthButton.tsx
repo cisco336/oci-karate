@@ -3,11 +3,14 @@ import Button from './Button';
 import { basicTypes } from '@/constants/enums';
 import { checkSessionIsValid, signOut } from '@/services/auth.service';
 import DropDown from './DropDown';
+import { auth } from '@/auth';
 
 export default async function AuthButton() {
-    const session = await checkSessionIsValid();
+    const session = await auth();
 
-    const user = session?.user?.user_metadata;
+    // console.log('Session: ', session);
+
+    const user = session?.user?.email;
 
     const signOutHandler = async () => {
         'use server';
@@ -19,7 +22,7 @@ export default async function AuthButton() {
             isOpen={false}
             position={'up'}
             closeOnSelect={false}
-            label={`Hola ${user?.firstName}`}>
+            label={`Hola ${user}`}>
             <form action={signOutHandler}>
                 <Link href="/profile">
                     <Button type={basicTypes.Text}>Mi cuenta</Button>

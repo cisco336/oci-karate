@@ -1,7 +1,8 @@
-import NextAuth, { NextAuthConfig } from 'next-auth';
+import NextAuth, { NextAuthConfig, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { compare, hash } from 'bcrypt';
+import { compare, hash } from 'bcryptjs';
 import { GraphQLClient, gql } from 'graphql-request';
+import { iSessionData } from './models/entity.models';
 
 const client = new GraphQLClient(
     process.env.HYGRAPH_URL ? process.env.HYGRAPH_URL : '',
@@ -17,6 +18,26 @@ const GetUserByEmail = gql`
         user: userModel(where: { email: $email }, stage: DRAFT) {
             id
             password
+            role
+            isChild
+            agreedTerms
+            setPasswd
+            personalData {
+                id
+                idType
+                lastName
+                motherFamilyName
+                secondName
+                firstName
+                birthDay
+                idNumber
+            }
+            karateData {
+                id
+                cinturon
+                dan
+                kyu
+            }
         }
     }
 `;
@@ -30,10 +51,10 @@ const CreateNextUserByEmail = gql`
 `;
 
 export const config = {
+    session: { strategy: 'jwt' },
     providers: [
         CredentialsProvider({
             name: 'Credentials',
-
             credentials: {
                 email: {
                     label: 'Email',
@@ -46,7 +67,10 @@ export const config = {
                     placeholder: 'Password',
                 },
             },
-            authorize: async (credentials, req): Promise<{} | null> => {
+            authorize: async (
+                credentials,
+                req
+            ): Promise<{ user: User } | null> => {
                 const { user } = await client.request<Promise<{ user: any }>>(
                     GetUserByEmail,
                     {
@@ -55,18 +79,25 @@ export const config = {
                 );
 
                 if (!user && typeof credentials.password === 'string') {
-                    const { newUser } = await client.request<Promise<{} | any>>(
-                        CreateNextUserByEmail,
-                        {
-                            email: credentials.email,
-                            password: await hash(credentials.password, 12),
-                        }
-                    );
+                    const { newUser } = await client.request<
+                        Promise<iSessionData | any>
+                    >(CreateNextUserByEmail, {
+                        email: credentials.email,
+                        password: await hash(credentials.password, 12),
+                    });
 
                     return {
-                        id: newUser.id,
-                        username: credentials.email,
-                        email: credentials.email,
+                        user: {
+                            id: newUser.id,
+                            email: newUser.email,
+                            role: newUser.role,
+                            agreedTerms: newUser.agreedTerms,
+                            setPasswd: newUser.setPasswd,
+                            isChild: newUser.isChild,
+                            personalData: newUser.personalData,
+                            karateData: newUser.karateData,
+                            medicalData: newUser.medicalData,
+                        },
                     };
                 }
 
@@ -81,23 +112,39 @@ export const config = {
                 }
 
                 return {
-                    id: user.id,
-                    username: credentials.email,
-                    email: credentials.email,
+                    user: {
+                        id: user.id,
+                        email: user.email,
+                        role: user.role,
+                        isChild: user.isChild,
+                        agreedTerms: user.agreedTerms,
+                        setPasswd: user.setPasswd,
+                        personalData: user.personalData,
+                        karateData: user.karateData,
+                        medicalData: user.medicalData,
+                    },
                 };
             },
         }),
     ],
     callbacks: {
         authorized({ request, auth }) {
-            console.log('authorized');
+            // console.log('is authorized?: ', auth);
             const { pathname } = request.nextUrl;
             if (pathname === '/middleware-example') return !!auth;
             return true;
         },
+        async session({ session, token }) {
+            // Send properties to the client, like an access_token and user id from a provider.
+            return { ...session, ...token };
+        },
+        async jwt({ token, user }) {
+            return { ...token, ...user };
+        },
     },
+    events: {},
     pages: {
         signIn: '/login',
     },
 } satisfies NextAuthConfig;
-export const { handlers, auth, signIn, signOut } = NextAuth(config);
+export const { handlers, auth } = NextAuth(config);
