@@ -31,6 +31,8 @@ const GetUserByEmail = gql`
                 firstName
                 birthDay
                 idNumber
+                bio
+                phone
             }
             karateData {
                 id
@@ -129,13 +131,13 @@ export const config = {
     ],
     callbacks: {
         authorized({ request, auth }) {
-            // console.log('is authorized?: ', auth);
             const { pathname } = request.nextUrl;
-            if (pathname === '/middleware-example') return !!auth;
+            if (protectedRoutes.includes(pathname)) {
+                return auth !== null;
+            }
             return true;
         },
         async session({ session, token }) {
-            // Send properties to the client, like an access_token and user id from a provider.
             return { ...session, ...token };
         },
         async jwt({ token, user }) {
@@ -147,4 +149,7 @@ export const config = {
         signIn: '/login',
     },
 } satisfies NextAuthConfig;
+
+const protectedRoutes = ['/dashboard', '/profile'];
+
 export const { handlers, auth } = NextAuth(config);

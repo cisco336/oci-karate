@@ -109,19 +109,19 @@ const PersonalForm = () => {
                     component="div"
                 />
             </div>
-            <div className="flex flex-col gap-1 mb-[1rem]">
-                <label htmlFor="isChild">Menor de edad?</label>
+            <div className="flex flex-row gap-4 mb-[1rem]">
                 <Field
                     className="border border-slate-500 rounded-md py-2 px-3"
                     type="checkbox"
                     name="isChild"
                 />
+                <label htmlFor="isChild">Menor de edad?</label>
                 <ErrorMessage
                     name="isChild"
                     component="div"
                 />
             </div>
-            <div className="flex flex-col gap-1 mb-[1rem]">
+            <div className="flex flex-col gap-1 mb-[1rem] col-span-full">
                 <label htmlFor="bio">Bio</label>
                 <Field
                     className="border border-slate-500 rounded-md py-2 px-3"

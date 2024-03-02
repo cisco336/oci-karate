@@ -1,6 +1,5 @@
 import { handlers } from '@/auth';
 import type { NextRequest } from 'next/server';
-import { auth } from '@/auth';
 
 // export const { GET, POST } = handlers;
 const { GET: AuthGET, POST } = handlers;

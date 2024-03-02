@@ -8,20 +8,18 @@ import React, { useEffect, useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import PersonalForm from './personalForm';
 import KarateForm from './karateForm';
-import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
 export const Profile = () => {
     const sessionAuth = useSession();
-    const router = useRouter();
     const [user, setUser] = useState<iSessionData | null>(null);
     const [session, setSession] = useState<any | null>(null);
     useEffect(() => {
         setSession(sessionAuth);
-        if (session?.data != null) {
-            setUser(session.data);
+        if (session?.data?.user != null) {
+            setUser(session.data.user);
         }
-    }, [user, sessionAuth]);
+    }, [setUser, sessionAuth?.status, session?.data?.user]);
 
     const handleSubmit = async (values: any) => {
         const response = await fetch('/api/profile', {
@@ -29,10 +27,15 @@ export const Profile = () => {
             headers: {
                 'content-type': 'application/json',
             },
-            body: JSON.stringify({ id: session?.data?.id, ...values }),
+            body: JSON.stringify({
+                id: session?.data?.user?.id,
+                karateId: session?.data?.user?.karateData?.id,
+                personalDataId: session?.data?.user?.personalData?.id,
+                ...values,
+            }),
         });
         const parsedResponse = await response.json();
-        console.log(parsedResponse);
+        await sessionAuth.update({ ...sessionAuth, user: { ...values } });
     };
 
     if (!sessionAuth || sessionAuth?.status === 'loading' || !user) {
@@ -48,6 +51,8 @@ export const Profile = () => {
                     lastName: user?.personalData?.lastName
                         ? user?.personalData?.lastName
                         : '',
+                    motherFamilyName: user?.personalData?.motherFamilyName,
+                    secondName: user?.personalData?.secondName,
                     userNationalID: user?.personalData?.idNumber
                         ? user?.personalData?.idNumber
                         : '',
@@ -81,13 +86,25 @@ export const Profile = () => {
                 }}>
                 {(formProps) => {
                     return (
-                        <Form className="w-[80%] py-[2rem]">
-                            <PersonalForm />
-                            <KarateForm />
+                        <Form className="max-w-[1200px] py-[2rem]">
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <h2 className="col-span-full">
+                                    Información personal
+                                </h2>
+                                <PersonalForm />
+                            </div>
+                            <div className="grid md:grid-cols-3 gap-4">
+                                <h2 className="col-span-full">
+                                    Información de Karate
+                                </h2>
+                                <KarateForm />
+                            </div>
                             <Button
                                 type={basicTypes.Primary}
                                 buttonType="submit"
-                                disabled={false}>
+                                disabled={
+                                    !formProps.isValid || !formProps.dirty
+                                }>
                                 Guardar cambios
                             </Button>
                         </Form>

@@ -18,14 +18,19 @@ const client = new GraphQLClient(
 const UpdateUserData = gql`
     mutation UpdateUserData(
         $id: ID
+        $karateId: ID
+        $personalDataId: ID
         $role: [Role!]
         $isChild: Boolean
+        $setPasswd: Boolean
+        $agreedTerms: Boolean
         $bio: String
         $firstName: String
         $lastName: String
         $motherFamilyName: String
         $secondName: String
         $birthDay: Date
+        $phone: String
         $idType: IdType!
         $idNumber: String!
         $belt: Cinturon
@@ -36,6 +41,8 @@ const UpdateUserData = gql`
             data: {
                 role: $role
                 isChild: $isChild
+                setPasswd: $setPasswd
+                agreedTerms: $agreedTerms
                 personalData: {
                     upsert: {
                         data: {
@@ -48,6 +55,7 @@ const UpdateUserData = gql`
                                 bio: $bio
                                 idType: $idType
                                 idNumber: $idNumber
+                                phone: $phone
                             }
                             update: {
                                 firstName: $firstName
@@ -58,9 +66,10 @@ const UpdateUserData = gql`
                                 bio: $bio
                                 idType: $idType
                                 idNumber: $idNumber
+                                phone: $phone
                             }
                         }
-                        where: { id: $id }
+                        where: { id: $personalDataId }
                     }
                 }
                 karateData: {
@@ -69,15 +78,13 @@ const UpdateUserData = gql`
                             create: { cinturon: $belt, dan: $dan, kyu: $kyu }
                             update: { cinturon: $belt, dan: $dan, kyu: $kyu }
                         }
-                        where: { id: $id }
+                        where: { id: $karateId }
                     }
                 }
             }
             where: { id: $id }
         ) {
             id
-            role
-            isChild
         }
     }
 `;
@@ -93,6 +100,7 @@ export async function POST(req: NextRequest) {
             firstName: data.firstName,
             lastName: data.lastName,
             motherFamilyName: data.motherFamilyName,
+            phone: data.phone,
             secondName: data.secondName,
             birthDay: new Date(data.birthDay || new Date()),
             idType: data.userNationalIDType,
@@ -101,6 +109,10 @@ export async function POST(req: NextRequest) {
             dan: data.dan,
             kyu: data.kyu,
             isChild: Boolean(data.isChild),
+            setPasswd: Boolean(data.setPasswd),
+            agreedTerms: Boolean(data.agreedTerms),
+            karateId: data.karateId,
+            personalDataId: data.personalDataId,
         });
         return NextResponse.json(query);
     } catch (e) {
