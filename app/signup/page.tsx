@@ -1,5 +1,4 @@
 import BackButton from '@/components/BackButton';
-import { createClient } from '@/utils/supabase/server';
 import { PrismaClient } from '@prisma/client';
 import { headers, cookies } from 'next/headers';
 import Link from 'next/link';
@@ -20,31 +19,30 @@ export default function SignUp({
         const last_name = formData.get('last_name') as string;
         const phone = formData.get('phone') as string;
         const cookieStore = cookies();
-        const supabase = createClient(cookieStore);
 
-        const { error, data: signUpData } = await supabase.auth.signUp({
-            email,
-            password,
-            options: {
-                emailRedirectTo: `${origin}/auth/callback`,
-                data: {
-                    firstName: first_name,
-                    lastName: last_name,
-                    agreedTerms: false,
-                    setPasswd: false,
-                    isChild: false,
-                    phone,
-                },
-            },
-        });
+        // const { error, data: signUpData } = await supabase.auth.signUp({
+        //     email,
+        //     password,
+        //     options: {
+        //         emailRedirectTo: `${origin}/auth/callback`,
+        //         data: {
+        //             firstName: first_name,
+        //             lastName: last_name,
+        //             agreedTerms: false,
+        //             setPasswd: false,
+        //             isChild: false,
+        //             phone,
+        //         },
+        //     },
+        // });
 
-        if (error) {
-            return redirect('/signup?message=Could not authenticate user');
-        }
+        // if (error) {
+        //     return redirect('/signup?message=Could not authenticate user');
+        // }
 
-        return redirect(
-            '/signup?message=Check email to continue sign in process'
-        );
+        // return redirect(
+        //     '/signup?message=Check email to continue sign in process'
+        // );
     };
 
     return (

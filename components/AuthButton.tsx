@@ -1,17 +1,15 @@
+'use client';
 import Link from 'next/link';
 import Button from './Button';
 import { basicTypes } from '@/constants/enums';
-import { checkSessionIsValid, signOut } from '@/services/auth.service';
 import DropDown from './DropDown';
+import { signOut, useSession } from 'next-auth/react';
 
-export default async function AuthButton() {
-    const session = await checkSessionIsValid();
+export default function AuthButton() {
+    const user = useSession();
 
-    const user = session?.user?.user_metadata;
-
-    const signOutHandler = async () => {
-        'use server';
-        await signOut();
+    const loginOut = () => {
+        signOut({ redirect: true, callbackUrl: '/' });
     };
 
     const dropdown = (
@@ -19,18 +17,16 @@ export default async function AuthButton() {
             isOpen={false}
             position={'up'}
             closeOnSelect={false}
-            label={`Hola ${user?.firstName}`}>
-            <form action={signOutHandler}>
-                <Link href="/profile">
-                    <Button type={basicTypes.Text}>Mi cuenta</Button>
-                </Link>
-                <hr />
-                <Button
-                    buttonType="submit"
-                    type={basicTypes.Text}>
-                    Cerrar sesión
-                </Button>
-            </form>
+            label={`Hola ${user?.data?.user?.personalData?.firstName}`}>
+            <Link href="/profile">
+                <Button type={basicTypes.Text}>Mi cuenta</Button>
+            </Link>
+            <hr />
+            <Button
+                type={basicTypes.Text}
+                callback={() => loginOut()}>
+                Cerrar sesión
+            </Button>
         </DropDown>
     );
 
@@ -40,5 +36,5 @@ export default async function AuthButton() {
         </Link>
     );
 
-    return session ? dropdown : login;
+    return user?.status === 'authenticated' ? dropdown : login;
 }

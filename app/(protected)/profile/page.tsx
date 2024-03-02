@@ -1,35 +1,25 @@
 'use client';
 import Button from '@/components/Button';
 import { basicTypes } from '@/constants/enums';
-import { iUserData } from '@/models/entity.models';
+import { iSessionData } from '@/models/entity.models';
 import { Role, BeltColors, kyuDan, IdType } from '@prisma/client';
-import { Session } from '@supabase/supabase-js';
 import { Formik, Form } from 'formik';
 import React, { useEffect, useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import PersonalForm from './personalForm';
 import KarateForm from './karateForm';
-import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 export const Profile = () => {
-    const router = useRouter();
-    const [userData, setUserData] = useState<iUserData | null>(null);
-    const [session, setSession] = useState<Session | null>(null);
+    const sessionAuth = useSession();
+    const [user, setUser] = useState<iSessionData | null>(null);
+    const [session, setSession] = useState<any | null>(null);
     useEffect(() => {
-        const getData = async () => {
-            const fetching = await await fetch('/api/profile');
-            const getData: { userData: iUserData; session: Session } | any =
-                await fetching.json();
-            if (getData.session === null) {
-                router.push('/login');
-            }
-            setSession(getData.session);
-            setUserData(getData.userData);
-        };
-        if (!userData) {
-            getData();
+        setSession(sessionAuth);
+        if (session?.data?.user != null) {
+            setUser(session.data.user);
         }
-    }, [userData]);
+    }, [setUser, sessionAuth?.status, session?.data?.user]);
 
     const handleSubmit = async (values: any) => {
         const response = await fetch('/api/profile', {
@@ -37,13 +27,18 @@ export const Profile = () => {
             headers: {
                 'content-type': 'application/json',
             },
-            body: JSON.stringify(values),
+            body: JSON.stringify({
+                id: session?.data?.user?.id,
+                karateId: session?.data?.user?.karateData?.id,
+                personalDataId: session?.data?.user?.personalData?.id,
+                ...values,
+            }),
         });
         const parsedResponse = await response.json();
-        console.log(parsedResponse);
+        await sessionAuth.update({ ...sessionAuth, user: { ...values } });
     };
 
-    if (!userData) {
+    if (!sessionAuth || sessionAuth?.status === 'loading' || !user) {
         return <div>Loading...</div>;
     }
 
@@ -52,36 +47,64 @@ export const Profile = () => {
             <Formik
                 onSubmit={handleSubmit}
                 initialValues={{
-                    firstName: userData?.firstName || '',
-                    lastName: userData?.lastName || '',
-                    userNationalID: userData?.userNationalID || '',
+                    firstName: user?.personalData?.firstName,
+                    lastName: user?.personalData?.lastName
+                        ? user?.personalData?.lastName
+                        : '',
+                    motherFamilyName: user?.personalData?.motherFamilyName,
+                    secondName: user?.personalData?.secondName,
+                    userNationalID: user?.personalData?.idNumber
+                        ? user?.personalData?.idNumber
+                        : '',
                     userNationalIDType:
                         IdType[
-                            userData?.userNationalIDType
-                                ? userData?.userNationalIDType
+                            user?.personalData?.idType
+                                ? user?.personalData?.idType
                                 : IdType.CEDULA_CIUDADANIA
                         ],
-                    bio: userData?.bio || '',
+                    bio: user?.personalData?.bio ? user?.personalData?.bio : '',
                     belt: BeltColors[
-                        userData?.belt ? userData.belt : BeltColors.BLANCO
+                        user?.karateData?.cinturon
+                            ? user.karateData.cinturon
+                            : BeltColors.BLANCO
                     ],
-                    birthDate: userData?.birthDate || null,
-                    phone: userData?.phone || null,
-                    isChild: userData?.isChild,
-                    parents: userData?.parents || [],
-                    role: Role[userData?.role ? userData.role : Role.STUDENT],
-                    kyu: kyuDan[userData?.kyu ? userData.kyu : kyuDan.NA],
-                    dan: kyuDan[userData?.dan ? userData.dan : kyuDan.NA],
+                    birthDate: user?.personalData?.birthDay
+                        ? user?.personalData?.birthDay
+                        : '',
+                    phone: user?.personalData?.phone
+                        ? user?.personalData?.phone
+                        : '',
+                    isChild: user?.isChild,
+                    parents: user?.parents || [],
+                    role: Role[user?.role ? user.role[0] : Role.STUDENT],
+                    kyu: kyuDan[
+                        user?.karateData?.kyu ? user.karateData.kyu : kyuDan.NA
+                    ],
+                    dan: kyuDan[
+                        user?.karateData?.dan ? user.karateData.dan : kyuDan.NA
+                    ],
                 }}>
                 {(formProps) => {
                     return (
-                        <Form className="w-[80%] py-[2rem]">
-                            <PersonalForm />
-                            <KarateForm />
+                        <Form className="max-w-[1200px] py-[2rem]">
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <h2 className="col-span-full">
+                                    Información personal
+                                </h2>
+                                <PersonalForm />
+                            </div>
+                            <div className="grid md:grid-cols-3 gap-4">
+                                <h2 className="col-span-full">
+                                    Información de Karate
+                                </h2>
+                                <KarateForm />
+                            </div>
                             <Button
                                 type={basicTypes.Primary}
                                 buttonType="submit"
-                                disabled={false}>
+                                disabled={
+                                    !formProps.isValid || !formProps.dirty
+                                }>
                                 Guardar cambios
                             </Button>
                         </Form>
