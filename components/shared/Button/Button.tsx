@@ -1,5 +1,5 @@
 import { basicTypes } from '@/constants/enums';
-import React, { Children, PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from 'react';
 import { iButton } from './iButton';
 
 export const Button = (props: PropsWithChildren<iButton>) => {
