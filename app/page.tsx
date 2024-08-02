@@ -4,7 +4,7 @@ import {
     quoteQueryBySlug,
     articlesByTagQuery,
 } from '../services/hygraph.service';
-import Card from '../components/Card';
+import Card from '../components/shared/Card';
 import Quote from '@/components/Quote';
 import { iArticle, iArticlesResponse, iQuote } from '../models/gqlModels';
 

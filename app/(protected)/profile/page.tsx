@@ -1,5 +1,5 @@
 'use client';
-import Button from '@/components/Button';
+import { Button } from '@/components/Button';
 import { basicTypes } from '@/constants/enums';
 import { iSessionData } from '@/models/entity.models';
 import { Role, BeltColors, kyuDan, IdType } from '@prisma/client';

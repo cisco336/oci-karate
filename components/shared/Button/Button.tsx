@@ -1,8 +1,8 @@
 import { basicTypes } from '@/constants/enums';
-import { iButton } from '@/models/components.models';
 import React, { Children, PropsWithChildren } from 'react';
+import { iButton } from './iButton';
 
-const Button = (props: PropsWithChildren<iButton>) => {
+export const Button = (props: PropsWithChildren<iButton>) => {
     const { label, icon, loading, disabled, callback, type, buttonType } =
         props;
     const buttonClass = `
@@ -18,7 +18,7 @@ const Button = (props: PropsWithChildren<iButton>) => {
     );
     return (
         <button
-            className={buttonClass}
+            className={`hover:animate-pulse ${buttonClass}`}
             type={buttonType || 'button'}
             disabled={disabled || loading}
             onClick={callback}>
@@ -27,5 +27,3 @@ const Button = (props: PropsWithChildren<iButton>) => {
         </button>
     );
 };
-
-export default Button;

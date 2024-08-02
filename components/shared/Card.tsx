@@ -1,7 +1,7 @@
 'use client';
 import { iArticle } from '@/models/gqlModels';
 import React, { useState } from 'react';
-import Button from './Button';
+import { Button } from './Button/Button';
 import { basicTypes } from '@/constants/enums';
 import Link from 'next/link';
 

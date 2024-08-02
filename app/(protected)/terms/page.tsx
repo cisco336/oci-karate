@@ -1,4 +1,4 @@
-import Button from '@/components/Button';
+import { Button } from '@/components/Button';
 import CheckBox from '@/components/CheckBox';
 import { basicTypes } from '@/constants/enums';
 import React from 'react';
