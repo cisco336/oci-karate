@@ -1,5 +1,4 @@
-import { iButton } from '@/components/shared/Button/iButton';
-import { basicTypes } from '@/constants/enums';
+import { iButton } from '@/components/shared/Button';
 
 export interface iDropdown extends iButton {
     isOpen: boolean;

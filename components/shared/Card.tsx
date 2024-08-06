@@ -1,8 +1,7 @@
 'use client';
 import { iArticle } from '@/models/gqlModels';
 import React, { useState } from 'react';
-import { Button } from './Button/Button';
-import { basicTypes } from '@/constants/enums';
+import { Button, basicTypes } from './Button';
 import Link from 'next/link';
 
 const Card = (props: iArticle) => {
@@ -28,7 +27,7 @@ const Card = (props: iArticle) => {
             <div className="absolute bottom-0 right-0 p-4">
                 <Link href={`${slug}`}>
                     <Button
-                        callback={() => {
+                        onClick={() => {
                             setLoading(!isLoading);
                             setTimeout(() => setLoading(false), 3000);
                         }}

@@ -1,7 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { Button } from './shared/Button/Button';
-import { basicTypes } from '@/constants/enums';
+import { Button, basicTypes } from './shared/Button/Button';
 import DropDown from './shared/DropDown';
 import { signOut, useSession } from 'next-auth/react';
 

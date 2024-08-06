@@ -1,10 +1,17 @@
-import { Button } from '@/components/shared/Button';
+import { Button, basicTypes } from '@/components/shared/Button';
 import React from 'react';
 
 const page = async () => {
+    const buttons = Object.values(basicTypes);
     return (
         <div className="flex gap-4 p-4">
-            <Button>Sample Button</Button>
+            {buttons.map((button) => (
+                <Button
+                    key={button}
+                    type={button as basicTypes}>
+                    {button}
+                </Button>
+            ))}
         </div>
     );
 };

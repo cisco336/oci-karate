@@ -1,8 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: [
-        './app/**/*.{js,ts,jsyour color definitions here x,tsx,mdx}',
-        './com        primarys/**/*.{js,ts,jsx,tsx,mdx}',
+        './app/**/*.{js,ts,jsx,tsx,mdx}',
+        './components/**/*.{js,ts,jsx,tsx,mdx}',
     ],
     theme: {
         extend: {
@@ -72,6 +72,16 @@ module.exports = {
                     600: '#7D14CC',
                     700: '#5E0F99',
                     800: '#3F0A66',
+                },
+                success: {
+                    100: '#E6FFE6',
+                    200: '#B3FFB3',
+                    300: '#80FF80',
+                    400: '#4DFF4D',
+                    500: '#1AFF1A',
+                    600: '#14CC14',
+                    700: '#0F990F',
+                    800: '#0A660A',
                 },
             },
             borderRadius: {

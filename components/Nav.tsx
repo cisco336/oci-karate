@@ -1,8 +1,7 @@
 import React from 'react';
 import AuthButton from './AuthButton';
 import Link from 'next/link';
-import { basicTypes } from '@/constants/enums';
-import { Button } from './shared/Button/Button';
+import { Button, basicTypes } from './shared/Button/Button';
 import { auth } from '@/auth';
 
 const Nav = async () => {

@@ -1,6 +1,4 @@
-import { Button } from '@/components/Button';
 import CheckBox from '@/components/CheckBox';
-import { basicTypes } from '@/constants/enums';
 import React from 'react';
 import {
     checkSessionIsValid,
@@ -8,6 +6,7 @@ import {
 } from '@/services/auth.service';
 import prisma from '../../../prisma/prisma.client';
 import { redirect } from 'next/navigation';
+import { Button, basicTypes, buttonTypes } from '@/components/shared/Button';
 
 const Terms = async () => {
     let accepted = false;
@@ -68,7 +67,7 @@ const Terms = async () => {
             <div className="flex gap-2 min-w-[100%] justify-end pt-[1rem]">
                 <Button type={basicTypes.Text}>Cancelar</Button>
                 <Button
-                    buttonType="submit"
+                    buttonType={buttonTypes.Submit}
                     type={basicTypes.Primary}>
                     Continuar
                 </Button>

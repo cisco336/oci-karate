@@ -1,6 +1,4 @@
 'use client';
-import { Button } from '@/components/Button';
-import { basicTypes } from '@/constants/enums';
 import { iSessionData } from '@/models/entity.models';
 import { Role, BeltColors, kyuDan, IdType } from '@prisma/client';
 import { Formik, Form } from 'formik';
@@ -9,6 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import PersonalForm from './personalForm';
 import KarateForm from './karateForm';
 import { useSession } from 'next-auth/react';
+import { Button, basicTypes, buttonTypes } from '@/components/shared/Button';
 
 export const Profile = () => {
     const sessionAuth = useSession();
@@ -101,7 +100,7 @@ export const Profile = () => {
                             </div>
                             <Button
                                 type={basicTypes.Primary}
-                                buttonType="submit"
+                                buttonType={buttonTypes.Submit}
                                 disabled={
                                     !formProps.isValid || !formProps.dirty
                                 }>
