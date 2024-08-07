@@ -1,14 +1,14 @@
 'use client';
-import { Button, basicTypes } from '@/components/shared/Button';
+import { Button, buttonClassType } from '@/components/shared/Button';
 import React from 'react';
 
 const buttons = () => {
-    const buttons = Object.values(basicTypes);
+    const buttons = Object.values(buttonClassType);
 
     return buttons.map((button) => (
         <Button
             key={button}
-            type={button as basicTypes}
+            type={button as buttonClassType}
             click={() => console.log(`Button ${button} clicked`)}>
             {button}
         </Button>

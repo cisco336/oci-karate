@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 
-export enum basicTypes {
+export enum buttonClassType {
     Primary = 'primary',
     Secondary = 'secondary',
     Info = 'info',
@@ -22,20 +22,20 @@ export interface iButton {
     disabled?: boolean;
     label?: string;
     icon?: string;
-    type?: basicTypes;
+    type?: buttonClassType;
     buttonType?: buttonTypes;
     click?: () => any;
 }
 
-export const buttonClass = (type: basicTypes) => {
+export const buttonClass = (type: buttonClassType) => {
     let classText = 'relative px-3 py-2 ';
     const textColor =
-        type === basicTypes.Warning || type === basicTypes.Info
+        type === buttonClassType.Warning || type === buttonClassType.Info
             ? 'text-gray-900'
             : 'text-gray-50';
-    const bgColor = type === basicTypes.Success ? 700 : 500;
+    const bgColor = type === buttonClassType.Success ? 700 : 500;
 
-    if (type === basicTypes.Text) {
+    if (type === buttonClassType.Text) {
         classText += `bg-transparent text-gray-50 hover:text-gray-300 active:text-gray-400`;
     } else {
         classText += `border rounded-md bg-${type}-${bgColor} ${textColor} hover:bg-${type}-${
@@ -52,7 +52,7 @@ export const Button = ({
     loading,
     disabled,
     click,
-    type = basicTypes.Primary,
+    type = buttonClassType.Primary,
     buttonType = buttonTypes.Button,
     children,
 }: PropsWithChildren<iButton>) => {

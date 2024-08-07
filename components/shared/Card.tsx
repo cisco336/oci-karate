@@ -1,7 +1,7 @@
 'use client';
 import { iArticle } from '@/models/gqlModels';
 import React, { useState } from 'react';
-import { Button, basicTypes } from './Button';
+import { Button, buttonClassType } from './Button';
 import Link from 'next/link';
 
 const Card = (props: iArticle) => {
@@ -31,7 +31,7 @@ const Card = (props: iArticle) => {
                             setLoading(!isLoading);
                             setTimeout(() => setLoading(false), 3000);
                         }}
-                        type={basicTypes.Primary}
+                        type={buttonClassType.Primary}
                         loading={isLoading}>
                         {'Ver más'}
                     </Button>
