@@ -1,49 +1,49 @@
-import AuthButton from '../components/AuthButton';
 import {
-    getServerSideProps,
+    getData,
     quoteQueryBySlug,
     articlesByTagQuery,
 } from '../services/hygraph.service';
-import Card from '../components/shared/Card';
+import Card from '../components/shared/Card/Card';
 import Quote from '@/components/Quote';
-import { iArticle, iArticlesResponse, iQuote } from '../models/gqlModels';
+import { iArticlesResponse, iQuote } from '../models/gqlModels';
+import { iArticle } from '@/components/shared/Card';
+import { Suspense } from 'react';
+
+export const mainquote: Promise<iQuote> = getData<iQuote>(quoteQueryBySlug, {
+    slug: 'quote-manos-vacias',
+});
+
+export const articles: Promise<iArticlesResponse> = getData<iArticlesResponse>(
+    articlesByTagQuery,
+    {
+        tag: ['main_page'],
+    }
+);
 
 export default async function Index() {
-    const articles: iArticlesResponse = await getServerSideProps(
-        articlesByTagQuery,
-        { tag: ['main_page'] }
-    );
-    const importantArticles: iArticle[] | null = [];
-    const otherArticles: iArticle[] | null = [];
-    articles.articleSchemas.forEach((article) => {
-        if (article?.tag?.includes('important')) {
-            importantArticles.push(article);
-        } else {
-            otherArticles.push(article);
-        }
-    });
-    const mainquote: iQuote = await getServerSideProps(quoteQueryBySlug, {
-        slug: 'quote-manos-vacias',
-    });
-
-    const mainQuote = mainquote && (
+    const [quote, contents] = await Promise.allSettled([mainquote, articles]);
+    const content =
+        contents.status === 'fulfilled' &&
+        contents.value.articleSchemas
+            .filter((article) => article?.tag?.includes('important'))
+            .map((article: iArticle) => (
+                <Card
+                    {...article}
+                    key={article.id}
+                />
+            ));
+    const mainQuote = quote.status === 'fulfilled' && (
         <div className="mx-auto hidden sm:flex px-4">
-            <Quote {...mainquote} />
+            <Quote {...quote.value} />
         </div>
     );
 
     return (
-        <div className="w-full flex flex-col gap-20 items-center py-4">
-            <div className="flex flex-wrap max-w-[1200px]">
-                {importantArticles.length &&
-                    importantArticles.map((article: iArticle) => (
-                        <Card
-                            {...article}
-                            key={article.id}
-                        />
-                    ))}
+        <Suspense fallback={<div className="text-white">Loading...</div>}>
+            <div className="w-full flex flex-col gap-20 items-center py-4">
+                <div className="flex flex-wrap max-w-[1200px]">{content}</div>
+                {mainQuote}
             </div>
-            {mainQuote}
-        </div>
+        </Suspense>
     );
 }

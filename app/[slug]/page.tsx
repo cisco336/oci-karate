@@ -1,12 +1,9 @@
-import {
-    getServerSideProps,
-    getSingleArticleBySlug,
-} from '@/services/hygraph.service';
+import { getData, getSingleArticleBySlug } from '@/services/hygraph.service';
 import React from 'react';
 import parse from 'html-react-parser';
 
 const SingleArticleBySlug = async ({ params }: any) => {
-    const { articleSchema } = await getServerSideProps(getSingleArticleBySlug, {
+    const { articleSchema } = await getData(getSingleArticleBySlug, {
         slug: params?.slug,
     });
     const {

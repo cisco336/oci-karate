@@ -78,8 +78,14 @@ export const quoteQueryBySlug = gql`
     }
 `;
 
-export async function getServerSideProps(query: string, parameters?: {}) {
-    const data = await graphConnect.request<any>(query, parameters);
+export async function getData<T>(
+    query: string,
+    parameters?: {
+        slug?: string;
+        tag?: string[];
+    }
+): Promise<T> {
+    const data = await graphConnect.request<T>(query, parameters);
 
     return data;
 }

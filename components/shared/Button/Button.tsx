@@ -33,7 +33,7 @@ export const Button = ({
             type={buttonType}
             disabled={disabled || loading}
             onClick={click}>
-            {!loading ? loadingIndicator : null}
+            {loading ? loadingIndicator : null}
             {icon ? icon : null}
             {children || label}
         </button>

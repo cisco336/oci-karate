@@ -1,11 +1,10 @@
 'use client';
-import { iArticle } from '@/models/gqlModels';
+import { iArticle } from '.';
 import React, { useState } from 'react';
-import { Button, buttonColor } from './Button';
+import { Button, buttonColor, buttonVariants } from '../Button';
 import Link from 'next/link';
 
-const Card = (props: iArticle) => {
-    const { articleTitle, abstract, asset, slug } = props;
+const Card = ({ articleTitle, abstract, asset, slug }: iArticle) => {
     const [isLoading, setLoading] = useState(false);
     return (
         <div className="flex flex-col overflow-clip justify-center sm:min-h-[500px] md:w-1/4 sm:w-1/3 md:w-10:rem relative group/item">
@@ -31,7 +30,8 @@ const Card = (props: iArticle) => {
                             setLoading(!isLoading);
                             setTimeout(() => setLoading(false), 3000);
                         }}
-                        type={buttonColor.Primary}
+                        color={buttonColor.Primary}
+                        variant={buttonVariants.Outline}
                         loading={isLoading}>
                         {'Ver más'}
                     </Button>
