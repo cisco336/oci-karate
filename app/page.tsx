@@ -5,10 +5,15 @@ import {
 } from '../services/hygraph.service';
 import Card from '../components/shared/Card/Card';
 import Quote from '@/components/Quote';
-import { iArticlesResponse, iQuote } from '../models/gqlModels';
+import { iQuote } from '../models/gqlModels';
 import { iArticle } from '@/components/shared/Card';
 import { Suspense } from 'react';
 import { ImportantArticles } from '@/components/ImportantArticles/ImportantArticles';
+import { ArticlesList } from '@/components/ArticlesList/ArticlesList';
+
+export interface iArticlesResponse {
+    articleSchemas: iArticle[];
+}
 
 export const mainquote: Promise<iQuote> = getData<iQuote>(quoteQueryBySlug, {
     slug: 'quote-manos-vacias',
@@ -31,14 +36,18 @@ export default async function Index() {
 
     return (
         <Suspense fallback={<div className="text-white">Loading...</div>}>
-            <div className="w-full flex flex-col gap-20 items-center py-4">
-                {contents.status === 'fulfilled' && (
-                    <ImportantArticles
-                        articles={contents.value.articleSchemas}
-                    />
+            {contents.status === 'fulfilled' &&
+                quote.status === 'fulfilled' && (
+                    <div className="w-full flex flex-col gap-20 items-center py-4">
+                        <ImportantArticles
+                            articles={contents.value.articleSchemas}
+                        />
+                        {mainQuote}
+                        <ArticlesList
+                            articles={contents.value.articleSchemas}
+                        />
+                    </div>
                 )}
-                {mainQuote}
-            </div>
         </Suspense>
     );
 }
