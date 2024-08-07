@@ -1,13 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import { tv } from 'tailwind-variants';
-import {
-    buttonColor,
-    buttonTypes,
-    buttonVariants,
-    iButton,
-    classes,
-    buttonConfig,
-} from '.';
+import { buttonColor, buttonTypes, buttonVariants, iButton, classes } from '.';
 
 export const Button = ({
     label,
@@ -20,7 +13,6 @@ export const Button = ({
     buttonType = buttonTypes.Button,
     children,
 }: PropsWithChildren<iButton>) => {
-    const classText = classes({ color, variant });
     const loadingIndicator = (
         <span className="absolute flex h-3 w-3 top-[-5px] right-[-5px]">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
@@ -28,11 +20,9 @@ export const Button = ({
         </span>
     );
 
-    buttonConfig();
-
     return (
         <button
-            className={`${classText}`}
+            className={`${classes({ color, variant })}`}
             type={buttonType}
             disabled={disabled || loading}
             onClick={click}>
