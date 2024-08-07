@@ -1,7 +1,7 @@
 import React from 'react';
 import AuthButton from './AuthButton';
 import Link from 'next/link';
-import { Button, buttonClassType } from './shared/Button/Button';
+import { Button, buttonClassType } from './shared/Button';
 import { auth } from '@/auth';
 
 const Nav = async () => {

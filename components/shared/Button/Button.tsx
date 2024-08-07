@@ -1,50 +1,12 @@
+'use client';
 import React, { PropsWithChildren } from 'react';
-
-export enum buttonClassType {
-    Primary = 'primary',
-    Secondary = 'secondary',
-    Info = 'info',
-    Success = 'success',
-    Warning = 'warning',
-    Danger = 'danger',
-    Text = 'text',
-    Accent = 'accent',
-}
-
-export enum buttonTypes {
-    Button = 'button',
-    Submit = 'submit',
-    Reset = 'reset',
-}
-
-export interface iButton {
-    loading?: boolean;
-    disabled?: boolean;
-    label?: string;
-    icon?: string;
-    type?: buttonClassType;
-    buttonType?: buttonTypes;
-    click?: () => any;
-}
-
-export const buttonClass = (type: buttonClassType) => {
-    let classText = 'relative px-3 py-2 ';
-    const textColor =
-        type === buttonClassType.Warning || type === buttonClassType.Info
-            ? 'text-gray-900'
-            : 'text-gray-50';
-    const bgColor = type === buttonClassType.Success ? 700 : 500;
-
-    if (type === buttonClassType.Text) {
-        classText += `bg-transparent text-gray-50 hover:text-gray-300 active:text-gray-400`;
-    } else {
-        classText += `border rounded-md bg-${type}-${bgColor} ${textColor} hover:bg-${type}-${
-            bgColor + 100
-        } active:bg-${type}-${bgColor + 200}`;
-    }
-
-    return classText;
-};
+import {
+    buttonClassType,
+    buttonTypes,
+    buttonVariants,
+    iButton,
+    buttonClass,
+} from '.';
 
 export const Button = ({
     label,
@@ -53,6 +15,7 @@ export const Button = ({
     disabled,
     click,
     type = buttonClassType.Primary,
+    variant = buttonVariants.Solid,
     buttonType = buttonTypes.Button,
     children,
 }: PropsWithChildren<iButton>) => {
@@ -65,7 +28,7 @@ export const Button = ({
 
     return (
         <button
-            className={`${buttonClass(type)}`}
+            className={`${buttonClass(type, variant)}`}
             type={buttonType}
             disabled={disabled || loading}
             onClick={click}>

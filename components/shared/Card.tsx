@@ -27,7 +27,7 @@ const Card = (props: iArticle) => {
             <div className="absolute bottom-0 right-0 p-4">
                 <Link href={`${slug}`}>
                     <Button
-                        onClick={() => {
+                        click={() => {
                             setLoading(!isLoading);
                             setTimeout(() => setLoading(false), 3000);
                         }}

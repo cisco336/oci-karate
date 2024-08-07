@@ -18,7 +18,7 @@ const DropDown = (props: PropsWithChildren<iDropdown>) => {
     const [open, toggleOpen] = useState(false);
     return (
         <div className="relative">
-            <Button callback={() => toggleOpen(!open)}>
+            <Button click={() => toggleOpen(!open)}>
                 {label || 'Dropdown'}
             </Button>
             <div

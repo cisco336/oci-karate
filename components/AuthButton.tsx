@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { Button, buttonClassType } from './shared/Button/Button';
+import { Button, buttonClassType } from './shared/Button';
 import DropDown from './shared/DropDown';
 import { signOut, useSession } from 'next-auth/react';
 
@@ -23,7 +23,7 @@ export default function AuthButton() {
             <hr />
             <Button
                 type={buttonClassType.Text}
-                callback={() => loginOut()}>
+                click={() => loginOut()}>
                 Cerrar sesión
             </Button>
         </DropDown>
