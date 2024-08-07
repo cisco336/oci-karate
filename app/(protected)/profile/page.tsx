@@ -7,11 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import PersonalForm from './personalForm';
 import KarateForm from './karateForm';
 import { useSession } from 'next-auth/react';
-import {
-    Button,
-    buttonClassType,
-    buttonTypes,
-} from '@/components/shared/Button';
+import { Button, buttonColor, buttonTypes } from '@/components/shared/Button';
 
 export const Profile = () => {
     const sessionAuth = useSession();
@@ -103,7 +99,7 @@ export const Profile = () => {
                                 <KarateForm />
                             </div>
                             <Button
-                                type={buttonClassType.Primary}
+                                color={buttonColor.Primary}
                                 buttonType={buttonTypes.Submit}
                                 disabled={
                                     !formProps.isValid || !formProps.dirty

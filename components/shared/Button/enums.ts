@@ -1,4 +1,4 @@
-export enum buttonClassType {
+export enum buttonColor {
     Primary = 'primary',
     Secondary = 'secondary',
     Info = 'info',

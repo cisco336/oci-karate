@@ -1,9 +1,9 @@
-'use client';
-import { buttonVariants, buttonClassType, Button } from './';
+import { buttonVariants, buttonColor, Button } from './';
 
 export const ButtonsExample = () => {
+    'use client';
     const variants = Object.values(buttonVariants);
-    const buttons = Object.values(buttonClassType);
+    const buttons = Object.values(buttonColor);
 
     return variants.map((variant) => (
         <div
@@ -16,7 +16,7 @@ export const ButtonsExample = () => {
                 {buttons.map((button) => (
                     <Button
                         key={button}
-                        type={button as buttonClassType}
+                        color={button as buttonColor}
                         variant={variant as buttonVariants}
                         click={() =>
                             console.log(

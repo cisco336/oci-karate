@@ -1,11 +1,12 @@
-'use client';
 import React, { PropsWithChildren } from 'react';
+import { tv } from 'tailwind-variants';
 import {
-    buttonClassType,
+    buttonColor,
     buttonTypes,
     buttonVariants,
     iButton,
-    buttonClass,
+    classes,
+    buttonConfig,
 } from '.';
 
 export const Button = ({
@@ -14,11 +15,12 @@ export const Button = ({
     loading,
     disabled,
     click,
-    type = buttonClassType.Primary,
+    color = buttonColor.Primary,
     variant = buttonVariants.Solid,
     buttonType = buttonTypes.Button,
     children,
 }: PropsWithChildren<iButton>) => {
+    const classText = classes({ color, variant });
     const loadingIndicator = (
         <span className="absolute flex h-3 w-3 top-[-5px] right-[-5px]">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
@@ -26,9 +28,11 @@ export const Button = ({
         </span>
     );
 
+    buttonConfig();
+
     return (
         <button
-            className={`${buttonClass(type, variant)}`}
+            className={`${classText}`}
             type={buttonType}
             disabled={disabled || loading}
             onClick={click}>

@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { Button, buttonClassType } from './shared/Button';
+import { Button, buttonColor } from './shared/Button';
 import DropDown from './shared/DropDown';
 import { signOut, useSession } from 'next-auth/react';
 
@@ -18,11 +18,11 @@ export default function AuthButton() {
             closeOnSelect={false}
             label={`Hola ${user?.data?.user?.personalData?.firstName}`}>
             <Link href="/profile">
-                <Button type={buttonClassType.Text}>Mi cuenta</Button>
+                <Button color={buttonColor.Text}>Mi cuenta</Button>
             </Link>
             <hr />
             <Button
-                type={buttonClassType.Text}
+                type={buttonColor.Text}
                 click={() => loginOut()}>
                 Cerrar sesión
             </Button>
@@ -31,7 +31,7 @@ export default function AuthButton() {
 
     const login = (
         <Link href="/login">
-            <Button type={buttonClassType.Text}>Iniciar sesión</Button>
+            <Button color={buttonColor.Text}>Iniciar sesión</Button>
         </Link>
     );
 

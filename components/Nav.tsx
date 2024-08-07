@@ -1,7 +1,7 @@
 import React from 'react';
 import AuthButton from './AuthButton';
 import Link from 'next/link';
-import { Button, buttonClassType } from './shared/Button';
+import { Button, buttonColor } from './shared/Button';
 import { auth } from '@/auth';
 
 const Nav = async () => {
@@ -13,13 +13,11 @@ const Nav = async () => {
                 <div className="flex gap-2 justify-start items-center">
                     <span>Logo y nombre</span>
                     <Link href={'/'}>
-                        <Button type={buttonClassType.Text}>Inicio</Button>
+                        <Button color={buttonColor.Text}>Inicio</Button>
                     </Link>
                     {session && (
                         <Link href={'/dashboard'}>
-                            <Button type={buttonClassType.Text}>
-                                My panel
-                            </Button>
+                            <Button color={buttonColor.Text}>My panel</Button>
                         </Link>
                     )}
                 </div>

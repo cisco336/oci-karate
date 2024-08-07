@@ -6,11 +6,7 @@ import {
 } from '@/services/auth.service';
 import prisma from '../../../prisma/prisma.client';
 import { redirect } from 'next/navigation';
-import {
-    Button,
-    buttonClassType,
-    buttonTypes,
-} from '@/components/shared/Button';
+import { Button, buttonColor, buttonTypes } from '@/components/shared/Button';
 
 const Terms = async () => {
     let accepted = false;
@@ -69,10 +65,10 @@ const Terms = async () => {
                 title="Acepto los terminos"
             />
             <div className="flex gap-2 min-w-[100%] justify-end pt-[1rem]">
-                <Button type={buttonClassType.Text}>Cancelar</Button>
+                <Button color={buttonColor.Text}>Cancelar</Button>
                 <Button
                     buttonType={buttonTypes.Submit}
-                    type={buttonClassType.Primary}>
+                    type={buttonColor.Primary}>
                     Continuar
                 </Button>
             </div>
