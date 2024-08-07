@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants';
 
-export const classes = tv({
-    base: 'rounded-md relative px-3 py-2 bg-transparent text-gray-50 hover:opacity-80 active:opacity-70',
+export const buttonClass = tv({
+    base: 'flex items-center gap-2 rounded-md relative px-3 py-2 bg-transparent text-gray-50 hover:opacity-80 active:opacity-70',
     variants: {
         color: {
             primary: 'border-primary-500 bg-primary-500',
