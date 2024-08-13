@@ -18,8 +18,9 @@ const SingleArticleBySlug = async ({ params }: any) => {
         asset,
         images,
         articleContent,
+        htmlContent,
     } = articleSchema;
-    const content = parse(articleContent.html);
+    const content = parse(htmlContent ? htmlContent : articleContent.html);
     return (
         <div className="p-[2rem] max-w-[600px]">
             <h1 className="text-6xl mb-[2rem] font-thin">{articleTitle}</h1>
