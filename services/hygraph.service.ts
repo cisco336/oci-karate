@@ -45,6 +45,7 @@ export const articlesByTagQuery = gql`
             articleContent {
                 html
             }
+            htmlContent
         }
     }
 `;
@@ -65,6 +66,7 @@ export const getSingleArticleBySlug = gql`
             articleContent {
                 html
             }
+            htmlContent
         }
     }
 `;

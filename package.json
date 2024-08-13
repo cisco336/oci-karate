@@ -1,9 +1,9 @@
 {
     "private": true,
     "scripts": {
-        "dev": "next dev",
+        "dev": "netlify dev",
         "build": "prisma generate && next build",
-        "start": "next start",
+        "start": "netlify start",
         "postinstall": "prisma generate"
     },
     "dependencies": {
@@ -19,6 +19,7 @@
         "graphql": "^16.8.1",
         "graphql-request": "^6.1.0",
         "html-react-parser": "^5.1.2",
+        "netlify-cli": "^17.34.0",
         "next": "latest",
         "next-auth": "^5.0.0-beta.13",
         "next-mdx-remote": "^4.4.1",
