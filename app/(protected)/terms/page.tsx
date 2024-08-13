@@ -68,7 +68,7 @@ const Terms = async () => {
                 <Button color={buttonColor.Text}>Cancelar</Button>
                 <Button
                     buttonType={buttonTypes.Submit}
-                    type={buttonColor.Primary}>
+                    color={buttonColor.Primary}>
                     Continuar
                 </Button>
             </div>

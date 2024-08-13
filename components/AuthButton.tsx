@@ -22,7 +22,7 @@ export default function AuthButton() {
             </Link>
             <hr />
             <Button
-                type={buttonColor.Text}
+                color={buttonColor.Text}
                 click={() => loginOut()}>
                 Cerrar sesión
             </Button>

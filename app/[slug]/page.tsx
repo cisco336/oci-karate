@@ -1,11 +1,15 @@
 import { getData, getSingleArticleBySlug } from '@/services/hygraph.service';
 import React from 'react';
 import parse from 'html-react-parser';
+import { iArticle } from '@/components/shared/Card';
 
 const SingleArticleBySlug = async ({ params }: any) => {
-    const { articleSchema } = await getData(getSingleArticleBySlug, {
-        slug: params?.slug,
-    });
+    const { articleSchema } = await getData<{ articleSchema: any }>(
+        getSingleArticleBySlug,
+        {
+            slug: params?.slug,
+        }
+    );
     const {
         articleTitle,
         createdAt,
