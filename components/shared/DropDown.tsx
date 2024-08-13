@@ -9,7 +9,7 @@ const DropDown = (props: PropsWithChildren<iDropdown>) => {
         disabled,
         label,
         icon,
-        type,
+        color,
         isOpen,
         position,
         closeOnSelect,

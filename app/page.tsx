@@ -15,18 +15,17 @@ export interface iArticlesResponse {
     articleSchemas: iArticle[];
 }
 
-export const mainquote: Promise<iQuote> = getData<iQuote>(quoteQueryBySlug, {
-    slug: 'quote-manos-vacias',
-});
+async function Index() {
+    const mainquote: Promise<iQuote> = getData<iQuote>(quoteQueryBySlug, {
+        slug: 'quote-manos-vacias',
+    });
 
-export const articles: Promise<iArticlesResponse> = getData<iArticlesResponse>(
-    articlesByTagQuery,
-    {
-        tag: ['main_page'],
-    }
-);
-
-export default async function Index() {
+    const articles: Promise<iArticlesResponse> = getData<iArticlesResponse>(
+        articlesByTagQuery,
+        {
+            tag: ['main_page'],
+        }
+    );
     const [quote, contents] = await Promise.allSettled([mainquote, articles]);
     const mainQuote = quote.status === 'fulfilled' && (
         <div className="mx-auto hidden sm:flex px-4">
@@ -51,3 +50,5 @@ export default async function Index() {
         </Suspense>
     );
 }
+
+export default Index;
