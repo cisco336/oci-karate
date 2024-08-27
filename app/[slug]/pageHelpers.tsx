@@ -13,8 +13,8 @@ export const RenderArticle = (articleSegment: ArticleSegmentType) => {
         case 'heading-three':
             return RenderHeadingThree(articleSegment.children);
         case 'unordered-list':
-            return RenderUL(articleSegment.children);
         case 'numbered-list':
+        case 'bulleted-list':
             return RenderUL(articleSegment.children);
         case 'block-quote':
             return RenderQuote(articleSegment.children);

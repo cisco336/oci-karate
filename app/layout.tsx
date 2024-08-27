@@ -33,7 +33,7 @@ export default function RootLayout({
                     <div className="z-10">
                         <Nav />
                     </div>
-                    <main className="flex flex-col items-center flex-1">
+                    <main className="flex flex-col items-center flex-1 w-full h-full overflow-hidden">
                         {children}
                     </main>
                     <Footer />

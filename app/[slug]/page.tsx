@@ -37,17 +37,24 @@ const SingleArticleBySlug = async ({ params }: any) => {
             {content}
         </div>
     ) : (
-        <div className="max-w-[800px]">
-            <h1 className="text-6xl font-thin py-12">{articleTitle}</h1>
-            {articleContent.json.children.map(
-                (child: ArticleSegmentType, index: number) => {
-                    return (
-                        <React.Fragment key={index}>
-                            {RenderArticle(child)}
-                        </React.Fragment>
-                    );
-                }
-            )}
+        <div className="relative flex flex-col items-center w-full h-full">
+            <div className="max-w-[800px] z-10">
+                <h1 className="text-6xl font-thin py-12">{articleTitle}</h1>
+                {articleContent.json.children.map(
+                    (child: ArticleSegmentType, index: number) => {
+                        return (
+                            <React.Fragment key={index}>
+                                {RenderArticle(child)}
+                            </React.Fragment>
+                        );
+                    }
+                )}
+            </div>
+            <img
+                className="object-cover absolute blur-[60px] opacity-30"
+                src={asset.url}
+                alt={articleTitle}
+            />
         </div>
     );
 };
