@@ -1,7 +1,17 @@
 import { getData, getSingleArticleBySlug } from '@/services/hygraph.service';
 import React from 'react';
 import parse from 'html-react-parser';
-import { iArticle } from '@/components/shared/Card';
+import { RenderArticle } from './pageHelpers';
+
+export type ArticleSegmentChildType = {
+    text: string;
+    bold?: boolean;
+};
+
+export type ArticleSegmentType = {
+    type: string;
+    children: ArticleSegmentChildType[];
+};
 
 const SingleArticleBySlug = async ({ params }: any) => {
     const { articleSchema } = await getData<{ articleSchema: any }>(
@@ -21,10 +31,23 @@ const SingleArticleBySlug = async ({ params }: any) => {
         htmlContent,
     } = articleSchema;
     const content = parse(htmlContent ? htmlContent : articleContent.html);
-    return (
+    return articleContent.json.children.lenght > 0 ? (
         <div className="p-[2rem] max-w-[600px]">
             <h1 className="text-6xl mb-[2rem] font-thin">{articleTitle}</h1>
             {content}
+        </div>
+    ) : (
+        <div className="max-w-[800px]">
+            <h1 className="text-6xl font-thin py-12">{articleTitle}</h1>
+            {articleContent.json.children.map(
+                (child: ArticleSegmentType, index: number) => {
+                    return (
+                        <React.Fragment key={index}>
+                            {RenderArticle(child)}
+                        </React.Fragment>
+                    );
+                }
+            )}
         </div>
     );
 };
