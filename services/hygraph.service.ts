@@ -65,6 +65,7 @@ export const getSingleArticleBySlug = gql`
             }
             articleContent {
                 html
+                json
             }
             htmlContent
         }
