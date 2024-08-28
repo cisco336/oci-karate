@@ -21,9 +21,12 @@
 }
 
 @layer base {
-    // * {
-    //     @apply border-foreground/20 bg-zinc-900;
-    // }
+    main,
+    footer,
+    body > div {
+        @apply border-foreground/20 bg-zinc-900;
+        @apply text-gray-100;
+    }
 }
 
 .animate-in {
