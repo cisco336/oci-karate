@@ -101,8 +101,8 @@ module.exports = {
                 },
             },
             animation: {
-                fadein: 'fadeIn 5s ease-in-out',
-                fadeout: 'fadeOut 5s ease-in-out',
+                // fadein: 'fadeIn .5s ease-in-out',
+                // fadeout: 'fadeOut .5s ease-in-out',
                 'button-hover': 'hover:scale-105',
                 keyframes: {
                     fadeOut: {

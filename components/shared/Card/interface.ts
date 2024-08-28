@@ -6,6 +6,7 @@ export interface iArticle {
     slug: string;
     abstract?: string;
     tag?: string[];
+    category?: string[];
     asset?: {
         url: string;
     };

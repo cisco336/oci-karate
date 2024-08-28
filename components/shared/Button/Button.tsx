@@ -29,7 +29,10 @@ export const Button = ({
 
     return (
         <button
-            className={`${buttonClass({ color, variant })}`}
+            className={`${buttonClass({
+                color,
+                variant,
+            })}}`}
             type={buttonType}
             disabled={disabled || loading}
             onClick={click}>
