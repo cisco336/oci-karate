@@ -1,8 +1,10 @@
 import React from 'react';
-import AuthButton from './AuthButton';
+import AuthButton from '../AuthButton';
 import Link from 'next/link';
-import { Button, buttonColor } from './shared/Button';
+import { Button, buttonColor, buttonVariants } from '../shared/Button';
 import { auth } from '@/auth';
+
+import { FaToriiGate } from 'react-icons/fa';
 
 const Nav = async () => {
     const session = await auth();
@@ -11,17 +13,20 @@ const Nav = async () => {
         <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
             <div className="w-full max-w-[1200px] flex justify-between items-center p-3 text-sm">
                 <div className="flex gap-2 justify-start items-center">
-                    <span>Logo y nombre</span>
                     <Link href={'/'}>
-                        <Button color={buttonColor.Text}>Inicio</Button>
+                        <Button
+                            variant={buttonVariants.Ghost}
+                            color={buttonColor.Primary}>
+                            <FaToriiGate color={'#FF8080'} />
+                        </Button>
                     </Link>
-                    {session && (
+                    {/* {session && (
                         <Link href={'/dashboard'}>
                             <Button color={buttonColor.Text}>My panel</Button>
                         </Link>
-                    )}
+                    )} */}
                 </div>
-                <AuthButton />
+                {/* <AuthButton /> */}
             </div>
         </nav>
     );

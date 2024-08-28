@@ -17,7 +17,8 @@ export const buttonClass = tv({
             solid: 'border-opacity-0',
             outline:
                 'bg-opacity-0 border border-opacity-100 hover:bg-opacity-70 active:bg-opacity-20 text-gray-50',
-            ghost: 'bg-opacity-20 text-opacity-80 hover:bg-opacity-60 active:bg-opacity-70',
+            ghost: 'bg-opacity-20 text-opacity-90 hover:bg-opacity-60 active:bg-opacity-70',
+            link: 'bg-opacity-0 text-opacity-80 hover:text-opacity-100 active:text-opacity-100',
         },
     },
     defaultVariants: {
