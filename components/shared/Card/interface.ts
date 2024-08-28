@@ -14,5 +14,6 @@ export interface iArticle {
     };
     articleContent: {
         html: string;
+        json: object;
     };
 }

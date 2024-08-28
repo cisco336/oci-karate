@@ -44,8 +44,8 @@ export const articlesByTagQuery = gql`
             }
             articleContent {
                 html
+                json
             }
-            htmlContent
         }
     }
 `;
@@ -67,7 +67,29 @@ export const getSingleArticleBySlug = gql`
                 html
                 json
             }
-            htmlContent
+        }
+    }
+`;
+
+export const getArticlesByCategory = gql`
+    query ArticleByCategory($category: [Categories!]) {
+        articleSchemas(where: { category_contains_all: $category }) {
+            id
+            articleTitle
+            createdAt
+            slug
+            updatedAt
+            abstract
+            tag
+            asset {
+                url
+            }
+            images {
+                url
+            }
+            articleContent {
+                json
+            }
         }
     }
 `;

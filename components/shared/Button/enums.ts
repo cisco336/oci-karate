@@ -13,6 +13,7 @@ export enum buttonVariants {
     Solid = 'solid',
     Outline = 'outline',
     Ghost = 'ghost',
+    Link = 'link',
 }
 
 export enum buttonTypes {

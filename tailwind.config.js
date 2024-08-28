@@ -88,12 +88,32 @@ module.exports = {
             borderRadius: {
                 // ... your border radius definitions here ...
             },
+            boxShadow: {
+                DEFAULT: '0 50px 40px -45px #111',
+            },
             screens: {
-                // ... your screen breakpoints here ...
+                screens: {
+                    '2xl': { min: '1535px' },
+                    xl: { min: '1279px' },
+                    lg: { min: '1023px' },
+                    md: { min: '767px' },
+                    sm: { min: '639px' },
+                },
             },
             animation: {
-                // ... your custom animations here ...
+                fadein: 'fadeIn 5s ease-in-out',
+                fadeout: 'fadeOut 5s ease-in-out',
                 'button-hover': 'hover:scale-105',
+                keyframes: {
+                    fadeOut: {
+                        '0%': { opacity: 1 },
+                        '100%': { opacity: 0 },
+                    },
+                    fadeIn: {
+                        '0%': { opacity: 0 },
+                        '100%': { opacity: 1 },
+                    },
+                },
                 content: [
                     './app/**/*.{js,ts,jsx,tsx,mdx}',
                     './components/**/*.{js,ts,jsx,tsx,mdx}',

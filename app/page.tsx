@@ -3,19 +3,19 @@ import {
     quoteQueryBySlug,
     articlesByTagQuery,
 } from '../services/hygraph.service';
-import Card from '../components/shared/Card/Card';
 import Quote from '@/components/Quote';
 import { iQuote } from '../models/gqlModels';
 import { iArticle } from '@/components/shared/Card';
 import { Suspense } from 'react';
-import { ImportantArticles } from '@/components/ImportantArticles/ImportantArticles';
-import { ArticlesList } from '@/components/ArticlesList/ArticlesList';
+import { Carousel } from '@/components/Carousel/Carousel';
+import { categories } from '@/services/enums';
 
 export interface iArticlesResponse {
     articleSchemas: iArticle[];
 }
 
 async function Index() {
+    const categoriesNames = Object.values(categories);
     const mainquote: Promise<iQuote> = getData<iQuote>(quoteQueryBySlug, {
         slug: 'quote-manos-vacias',
     });
@@ -23,28 +23,20 @@ async function Index() {
     const articles: Promise<iArticlesResponse> = getData<iArticlesResponse>(
         articlesByTagQuery,
         {
-            tag: ['main_page'],
+            tag: ['carousel'],
         }
     );
     const [quote, contents] = await Promise.allSettled([mainquote, articles]);
-    const mainQuote = quote.status === 'fulfilled' && (
-        <div className="mx-auto hidden sm:flex px-4">
-            <Quote {...quote.value} />
-        </div>
-    );
-
+    console.log(contents);
     return (
         <Suspense fallback={<div className="text-white">Loading...</div>}>
             {contents.status === 'fulfilled' &&
                 quote.status === 'fulfilled' && (
-                    <div className="w-full flex flex-col gap-20 items-center py-4">
-                        <ImportantArticles
-                            articles={contents.value.articleSchemas}
-                        />
-                        {mainQuote}
-                        <ArticlesList
-                            articles={contents.value.articleSchemas}
-                        />
+                    <div className="w-full flex flex-col gap-20 items-center">
+                        <Carousel articles={contents.value.articleSchemas} />
+                        <div className="mx-auto flex p-6">
+                            <Quote {...quote.value} />
+                        </div>
                     </div>
                 )}
         </Suspense>
