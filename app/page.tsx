@@ -51,7 +51,7 @@ async function Index() {
         <Suspense fallback={<div className="text-white">Loading...</div>}>
             {contents.status === 'fulfilled' &&
                 quote.status === 'fulfilled' && (
-                    <div className="w-full flex flex-col gap-20 items-center">
+                    <div className="w-full flex flex-col gap-20 items-center animate-fade-in">
                         <Carousel articles={contents.value.articleSchemas} />
                         <div className="mx-auto flex p-6">
                             <Quote {...quote.value} />

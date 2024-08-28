@@ -128,6 +128,7 @@ export const getCategoryHeaders = gql`
             articleTitle
             createdAt
             slug
+            category
             updatedAt
             abstract
             tag

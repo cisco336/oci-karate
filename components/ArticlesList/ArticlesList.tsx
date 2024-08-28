@@ -20,7 +20,7 @@ export const ArticlesList = ({ articles }: { articles: iArticle[] }) => {
                         <p>{article.abstract}</p>
                     </div>
                     <span className="flex w-full justify-end pr-8">
-                        <Link href={`${article.slug}`}>
+                        <Link href={`/slug/${article.slug}`}>
                             <Button
                                 click={() => setLoading(true)}
                                 variant={buttonVariants.Ghost}

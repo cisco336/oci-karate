@@ -37,7 +37,7 @@ const SingleArticleBySlug = async ({ params }: any) => {
             {content}
         </div>
     ) : (
-        <div className="relative flex flex-col items-center w-full h-full">
+        <div className="relative flex flex-col items-center w-full h-full animate-fade-in">
             <div className="max-w-[800px] z-10">
                 <h1 className="text-6xl font-thin py-12">{articleTitle}</h1>
                 {articleContent.json.children.map(
