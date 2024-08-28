@@ -10,7 +10,7 @@ const Nav = async () => {
     const session = await auth();
 
     return (
-        <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
+        <nav className="w-full flex justify-center border-b border-b-gray-700 h-16">
             <div className="w-full max-w-[1200px] flex justify-between items-center p-3 text-sm">
                 <div className="flex gap-2 justify-start items-center">
                     <Link href={'/'}>
