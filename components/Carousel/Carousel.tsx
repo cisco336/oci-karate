@@ -24,7 +24,7 @@ export const Carousel = ({ articles }: { articles: iArticle[] }) => {
             <MdFiberManualRecord
                 key={i}
                 className={`text-sm ${
-                    current === i ? 'text-accent-300' : 'text-gray-500'
+                    current === i ? 'text-danger-300' : 'text-gray-400'
                 }`}
             />
         </Button>
@@ -56,7 +56,7 @@ export const Carousel = ({ articles }: { articles: iArticle[] }) => {
                             click={() => setLoading(true)}
                             variant={buttonVariants.Ghost}
                             loading={isLoading}>
-                            Read more {<MdOutlineArrowForwardIos />}
+                            Ver más <MdOutlineArrowForwardIos />
                         </Button>
                     </Link>
                 </span>

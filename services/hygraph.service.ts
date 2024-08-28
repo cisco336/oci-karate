@@ -108,9 +108,38 @@ export async function getData<T>(
     parameters?: {
         slug?: string;
         tag?: string[];
+        category?: string[];
     }
 ): Promise<T> {
     const data = await graphConnect.request<T>(query, parameters);
 
     return data;
 }
+
+export const getCategoryHeaders = gql`
+    query CategoryHeaders($category: [Categories!], $tag: [Tags!]) {
+        articleSchemas(
+            where: {
+                category_contains_some: $category
+                tag_contains_some: $tag
+            }
+        ) {
+            id
+            articleTitle
+            createdAt
+            slug
+            updatedAt
+            abstract
+            tag
+            asset {
+                url
+            }
+            images {
+                url
+            }
+            articleContent {
+                json
+            }
+        }
+    }
+`;

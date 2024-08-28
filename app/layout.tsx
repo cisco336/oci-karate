@@ -1,7 +1,7 @@
 import { GeistSans } from 'geist/font/sans';
 import './globals.scss';
-import Nav from '@/components/Nav';
-import Footer from '@/components/Footer';
+import Nav from '@/components/Nav/Nav';
+import Footer from '@/components/Footer/Footer';
 
 // import Font Awesome CSS
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -15,8 +15,8 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
     metadataBase: new URL(defaultUrl),
-    title: 'Next.js and Supabase Starter Kit',
-    description: 'The fastest way to build apps with Next.js and Supabase',
+    title: 'OCI',
+    description: 'OCI Karate',
 };
 
 export default function RootLayout({
@@ -26,7 +26,7 @@ export default function RootLayout({
 }) {
     return (
         <html
-            lang="en"
+            lang="es"
             className={GeistSans.className}>
             <body className="bg-background text-foreground flex flex-col min-h-screen">
                 <Providers>
