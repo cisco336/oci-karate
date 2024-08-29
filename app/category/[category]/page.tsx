@@ -1,12 +1,7 @@
-'use client';
 import { iArticlesResponse } from '@/app/page';
 import { ArticleSegmentType } from '@/app/slug/[slug]/page';
 import { RenderArticle } from '@/app/slug/[slug]/pageHelpers';
-import {
-    Button,
-    buttonColor,
-    buttonVariants,
-} from '@/components/shared/Button';
+import { Button, buttonVariants } from '@/components/shared/Button';
 import { capitalizeFirstLetter } from '@/helpers/capitalize';
 import { getData, getArticlesByCategory } from '@/services/hygraph.service';
 import Link from 'next/link';
@@ -15,11 +10,11 @@ import { MdOutlineArrowForwardIos } from 'react-icons/md';
 
 const CategoryArticleListPage = async ({ params }: any) => {
     const { category } = params;
-    const [loading, setLoading] = React.useState(false);
     const articleList = await getData<iArticlesResponse>(
         getArticlesByCategory,
         {
             category: [category],
+            tag: ['header'],
         }
     ).then((data) => data.articleSchemas);
 

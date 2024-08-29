@@ -72,8 +72,10 @@ export const getSingleArticleBySlug = gql`
 `;
 
 export const getArticlesByCategory = gql`
-    query ArticleByCategory($category: [Categories!]) {
-        articleSchemas(where: { category_contains_all: $category }) {
+    query ArticleByCategory($category: [Categories!], $tag: [Tags!]) {
+        articleSchemas(
+            where: { category_contains_all: $category, tag_contains_none: $tag }
+        ) {
             id
             articleTitle
             createdAt
