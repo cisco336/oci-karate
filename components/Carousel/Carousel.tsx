@@ -1,12 +1,11 @@
 'use client';
 import React from 'react';
-import { ArticleType } from '../shared/Card';
 import { Button, buttonVariants } from '../shared/Button';
-
 import { MdOutlineArrowBackIos } from 'react-icons/md';
 import { MdOutlineArrowForwardIos } from 'react-icons/md';
 import { MdFiberManualRecord } from 'react-icons/md';
 import Link from 'next/link';
+import { ArticleType } from '@/@types';
 
 export const Carousel = ({ articles }: { articles: ArticleType[] }) => {
     const [current, setCurrent] = React.useState(0);
@@ -91,7 +90,7 @@ export const Carousel = ({ articles }: { articles: ArticleType[] }) => {
                         <img
                             src={articles[current].asset?.url}
                             alt={articles[current].articleTitle}
-                            className="object-fit  w-[auto] h-[300px] rounded-lg col-[2] mx-auto opacity-0 z-[0] md:opacity-100 shadow"
+                            className="object-fit  w-[auto] h-[300px] rounded-lg col-[2] mx-auto opacity-0 z-[0] md:opacity-100 shadow hidden md:block"
                         />
                     </div>
                 ))}
@@ -100,7 +99,7 @@ export const Carousel = ({ articles }: { articles: ArticleType[] }) => {
     };
 
     return (
-        <div className="w-full relative grid grid-cols-[min-content_1fr_min-content] gap-4 gap-x-16 pt-4 md:p-8 max-w-[1200px]">
+        <div className="w-full relative grid grid-cols-[min-content_1fr_min-content] gap-4 md:gap-x-16 pt-4 md:p-8 max-w-[1200px] sm:gap-x-1">
             {controlBack}
             {slide()}
             {controlForward}

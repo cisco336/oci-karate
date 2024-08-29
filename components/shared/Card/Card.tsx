@@ -2,7 +2,6 @@
 import { ArticleType } from '@/@types';
 import React, { useState } from 'react';
 import { Button, buttonVariants } from '../Button';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { MdOutlineArrowForwardIos } from 'react-icons/md';
 import { z } from 'zod';
@@ -33,22 +32,22 @@ const Card = ({
     return (
         <div
             key={id}
-            className="relative border border-gray-700 rounded-lg p-8 flex flex-col gap-4 overflow-clip transform transition duration-500 md:hover:scale-110 backdrop-blur-lg md:hover:z-[10] z-1">
+            className="relative border border-gray-700 md:rounded-lg p-8 flex flex-col gap-4 overflow-clip transform transition duration-500 md:hover:scale-110 backdrop-blur-lg md:hover:z-[10] z-1">
             <h3 className="font-thin text-4xl">{articleTitle}</h3>
             <h1 className="font-bold opacity-10 text-[10rem] absolute -bottom-20 -right-30">
                 {articleTitle}
             </h1>
             <p>{abstract}</p>
-            <Link
-                href={`/category/${category?.[0]}`}
-                className="mt-auto">
+            <span className="">
                 <Button
                     variant={buttonVariants.Ghost}
                     click={() => handleClick(link)}
-                    loading={isLoading}>
+                    loading={isLoading}
+                    disabled={isLoading}>
                     Ver más <MdOutlineArrowForwardIos />
                 </Button>
-            </Link>
+            </span>
+
             <img
                 src={asset?.url}
                 className="h-[100%] w-[auto] blur-2xl object-fit opacity-50 absolute top-0 left-0 z-[-1]"

@@ -35,12 +35,15 @@ const CategoryArticleListPage = async ({ params }: any) => {
             </h1>
             {headerContent}
             <div className="grid md:grid-cols-[repeat(auto-fit,_minmax(400px,_1fr))] gap-4 p-8">
-                {articleList.map((article) => (
-                    <Card
-                        {...article}
-                        link={`/slug/${article?.slug}`}
-                    />
-                ))}
+                {articleList.map((article) => {
+                    console.log(article.slug);
+                    return (
+                        <Card
+                            {...article}
+                            link={`/slug/${article?.slug}`}
+                        />
+                    );
+                })}
             </div>
         </div>
     );
