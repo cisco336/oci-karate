@@ -2,7 +2,7 @@
 import { signIn } from 'next-auth/react';
 import BackButton from '@/components/BackButton';
 
-export default async function Login({
+export default function Login({
     searchParams,
 }: {
     searchParams: { message: string };
@@ -19,7 +19,7 @@ export default async function Login({
     };
 
     return (
-        <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
+        <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2 animate-fade-in">
             <div className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
                 <form
                     action={submit}
@@ -48,7 +48,7 @@ export default async function Login({
                         required
                     />
                     <div className="flex gap-2 items-stretch">
-                        <BackButton />
+                        {/* <BackButton /> */}
                         <button className="bg-green-700 rounded-md px-4 py-2 text-foreground flex-1">
                             Sign In
                         </button>

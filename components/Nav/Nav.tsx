@@ -17,7 +17,10 @@ const Nav = async () => {
                         <Button
                             variant={buttonVariants.Ghost}
                             color={buttonColor.Primary}>
-                            <FaToriiGate color={'#FF8080'} />
+                            <FaToriiGate
+                                color={'#FF8080'}
+                                size={'1.5rem'}
+                            />
                         </Button>
                     </Link>
                     {/* {session && (

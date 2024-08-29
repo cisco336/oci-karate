@@ -1,7 +1,7 @@
-import { iQuote } from '@/models/gqlModels';
+import { QuoteType } from '@/models/gqlModels';
 import React from 'react';
 
-const Quote = (props: iQuote) => {
+const Quote = (props: QuoteType) => {
     const { content, author } = props?.quoteSchema;
     return (
         <div

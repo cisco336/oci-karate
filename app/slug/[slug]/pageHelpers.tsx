@@ -2,7 +2,6 @@ import React from 'react';
 import { ArticleSegmentType, ArticleSegmentChildType } from './page';
 
 export const RenderArticle = (articleSegment: ArticleSegmentType) => {
-    console.log(articleSegment.type);
     switch (articleSegment.type) {
         case 'paragraph':
             return RenderParagraph(articleSegment.children);

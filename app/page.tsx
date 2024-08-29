@@ -5,21 +5,21 @@ import {
     getCategoryHeaders,
 } from '../services/hygraph.service';
 import Quote from '@/components/Quote/Quote';
-import { iQuote } from '../models/gqlModels';
-import { iArticle } from '@/components/shared/Card';
 import { Suspense } from 'react';
 import { Carousel } from '@/components/Carousel/Carousel';
 import { categories } from '@/services/enums';
 import { Headers } from '@/components/Categories/Headers';
+import { ArticleType } from '@/@types/Article';
+import { QuoteType } from '@/@types';
+import { Loader } from '@/components/shared/Loader/Loader';
 
-export interface iArticlesResponse {
-    articleSchemas: iArticle[];
+export interface ArticleTypesResponse {
+    articleSchemas: ArticleType[];
 }
 
 async function Index() {
     const categoriesNames = Object.values(categories).map((category) => {
-        console.log(category);
-        return getData<iArticlesResponse>(getCategoryHeaders, {
+        return getData<ArticleTypesResponse>(getCategoryHeaders, {
             tag: ['header'],
             category: [category],
         });
@@ -34,21 +34,18 @@ async function Index() {
             )
     );
 
-    const mainquote: Promise<iQuote> = getData<iQuote>(quoteQueryBySlug, {
+    const mainquote: Promise<QuoteType> = getData<QuoteType>(quoteQueryBySlug, {
         slug: 'quote-manos-vacias',
     });
 
-    const articles: Promise<iArticlesResponse> = getData<iArticlesResponse>(
-        articlesByTagQuery,
-        {
+    const articles: Promise<ArticleTypesResponse> =
+        getData<ArticleTypesResponse>(articlesByTagQuery, {
             tag: ['carousel'],
-        }
-    );
+        });
 
     const [quote, contents] = await Promise.allSettled([mainquote, articles]);
-    console.log(contents);
     return (
-        <Suspense fallback={<div className="text-white">Loading...</div>}>
+        <Suspense fallback={<Loader />}>
             {contents.status === 'fulfilled' &&
                 quote.status === 'fulfilled' && (
                     <div className="w-full flex flex-col gap-20 items-center animate-fade-in">
