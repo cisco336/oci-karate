@@ -8,6 +8,7 @@ import PersonalForm from './personalForm';
 import KarateForm from './karateForm';
 import { useSession } from 'next-auth/react';
 import { Button, buttonColor, buttonTypes } from '@/components/shared/Button';
+import { Loader } from '@/components/shared/Loader/Loader';
 
 export const Profile = () => {
     const sessionAuth = useSession();
@@ -38,7 +39,7 @@ export const Profile = () => {
     };
 
     if (!sessionAuth || sessionAuth?.status === 'loading' || !user) {
-        return <div>Loading...</div>;
+        return <Loader />;
     }
 
     return (

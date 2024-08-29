@@ -1,16 +1,14 @@
-import { iArticlesResponse } from '@/app/page';
+import { ArticleTypesResponse } from '@/app/page';
 import { ArticleSegmentType } from '@/app/slug/[slug]/page';
 import { RenderArticle } from '@/app/slug/[slug]/pageHelpers';
-import { Button, buttonVariants } from '@/components/shared/Button';
+import Card from '@/components/shared/Card/Card';
 import { capitalizeFirstLetter } from '@/helpers/capitalize';
 import { getData, getArticlesByCategory } from '@/services/hygraph.service';
-import Link from 'next/link';
 import React from 'react';
-import { MdOutlineArrowForwardIos } from 'react-icons/md';
 
 const CategoryArticleListPage = async ({ params }: any) => {
     const { category } = params;
-    const articleList = await getData<iArticlesResponse>(
+    const articleList = await getData<ArticleTypesResponse>(
         getArticlesByCategory,
         {
             category: [category],
@@ -38,28 +36,10 @@ const CategoryArticleListPage = async ({ params }: any) => {
             {headerContent}
             <div className="grid md:grid-cols-[repeat(auto-fit,_minmax(400px,_1fr))] gap-4 p-8">
                 {articleList.map((article) => (
-                    <div
-                        key={article.id}
-                        className="relative border border-gray-700 rounded-lg p-8 flex flex-col gap-4 overflow-clip transform transition duration-500 md:hover:scale-110 backdrop-blur-lg md:hover:z-[10] z-1">
-                        <h3 className="font-thin text-4xl">
-                            {article?.articleTitle}
-                        </h3>
-                        <h1 className="font-bold opacity-10 text-[10rem] absolute -bottom-20 -right-30">
-                            {article?.articleTitle}
-                        </h1>
-                        <p>{article?.abstract}</p>
-                        <Link
-                            href={`/slug/${article?.slug}`}
-                            className="mt-auto">
-                            <Button variant={buttonVariants.Ghost}>
-                                Ver artículo <MdOutlineArrowForwardIos />
-                            </Button>
-                        </Link>
-                        <img
-                            src={article.asset?.url}
-                            className="h-[100%] w-[auto] blur-2xl object-fit opacity-50 absolute top-0 left-0 z-[-1]"
-                        />
-                    </div>
+                    <Card
+                        {...article}
+                        link={`/slug/${article?.slug}`}
+                    />
                 ))}
             </div>
         </div>

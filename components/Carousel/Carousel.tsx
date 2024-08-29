@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { iArticle } from '../shared/Card';
+import { ArticleType } from '../shared/Card';
 import { Button, buttonVariants } from '../shared/Button';
 
 import { MdOutlineArrowBackIos } from 'react-icons/md';
@@ -8,8 +8,7 @@ import { MdOutlineArrowForwardIos } from 'react-icons/md';
 import { MdFiberManualRecord } from 'react-icons/md';
 import Link from 'next/link';
 
-export const Carousel = ({ articles }: { articles: iArticle[] }) => {
-    console.log(articles[0].articleContent.json);
+export const Carousel = ({ articles }: { articles: ArticleType[] }) => {
     const [current, setCurrent] = React.useState(0);
     const [isLoading, setLoading] = React.useState(false);
 

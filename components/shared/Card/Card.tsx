@@ -1,42 +1,58 @@
 'use client';
-import { iArticle } from '.';
+import { ArticleType } from '@/@types';
 import React, { useState } from 'react';
-import { Button, buttonColor, buttonVariants } from '../Button';
+import { Button, buttonVariants } from '../Button';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { MdOutlineArrowForwardIos } from 'react-icons/md';
+import { z } from 'zod';
 
-const Card = ({ articleTitle, abstract, asset, slug }: iArticle) => {
+const zCard = ArticleType.extend({
+    link: z.string().optional(),
+});
+
+export type CardType = z.TypeOf<typeof zCard>;
+
+const Card = ({
+    id,
+    articleTitle,
+    abstract,
+    asset,
+    slug,
+    category,
+    link,
+}: CardType) => {
+    const router = useRouter();
     const [isLoading, setLoading] = useState(false);
+    const handleClick = (url?: string) => {
+        if (url) {
+            setLoading(true);
+            router.push(url);
+        }
+    };
     return (
-        <div className="flex flex-col overflow-clip justify-center sm:min-h-[500px] md:w-1/4 sm:w-1/3 md:w-10:rem relative group/item">
-            {asset?.url && (
-                <img
-                    className="object-cover w-auto h-full grayscale-0 
-                    relative
-                    group-hover/item:grayscale"
-                    src={asset?.url}
-                    alt={asset?.url}
-                />
-            )}
-            <div className="transition absolute w-full h-full p-4 group/content backdrop-brightness-[0.2] translate-y-3/4 group-hover/item:translate-y-0 ease-out duration-300">
-                <h1 className="h-1/4 group-hover/item:h-auto mb-4">
-                    {articleTitle}
-                </h1>
-                <p className="">{abstract}</p>
-            </div>
-            <div className="absolute bottom-0 right-0 p-4">
-                <Link href={`${slug}`}>
-                    <Button
-                        click={() => {
-                            setLoading(!isLoading);
-                            setTimeout(() => setLoading(false), 3000);
-                        }}
-                        color={buttonColor.Primary}
-                        variant={buttonVariants.Outline}
-                        loading={isLoading}>
-                        {'Ver más'}
-                    </Button>
-                </Link>
-            </div>
+        <div
+            key={id}
+            className="relative border border-gray-700 rounded-lg p-8 flex flex-col gap-4 overflow-clip transform transition duration-500 md:hover:scale-110 backdrop-blur-lg md:hover:z-[10] z-1">
+            <h3 className="font-thin text-4xl">{articleTitle}</h3>
+            <h1 className="font-bold opacity-10 text-[10rem] absolute -bottom-20 -right-30">
+                {articleTitle}
+            </h1>
+            <p>{abstract}</p>
+            <Link
+                href={`/category/${category?.[0]}`}
+                className="mt-auto">
+                <Button
+                    variant={buttonVariants.Ghost}
+                    click={() => handleClick(link)}
+                    loading={isLoading}>
+                    Ver más <MdOutlineArrowForwardIos />
+                </Button>
+            </Link>
+            <img
+                src={asset?.url}
+                className="h-[100%] w-[auto] blur-2xl object-fit opacity-50 absolute top-0 left-0 z-[-1]"
+            />
         </div>
     );
 };
