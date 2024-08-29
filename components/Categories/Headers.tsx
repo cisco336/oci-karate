@@ -1,4 +1,3 @@
-'use client';
 import { iArticlesResponse } from '@/app/page';
 import React from 'react';
 import { iArticle } from '../shared/Card';
@@ -11,7 +10,6 @@ export const Headers = ({
 }: {
     data: PromiseSettledResult<iArticlesResponse>[];
 }) => {
-    const [loading, setLoading] = React.useState(false);
     const value = data
         .map((dat) => (dat as unknown as { value: iArticlesResponse }).value)
         .map((value: iArticlesResponse) => value.articleSchemas)
@@ -33,14 +31,9 @@ export const Headers = ({
                     </h1>
                     <p>{article?.abstract}</p>
                     <Link
-                        href={`/category/${
-                            article?.category?.[0] ?? 'general'
-                        }`}
+                        href={`/category/${article?.category?.[0]}`}
                         className="mt-auto">
-                        <Button
-                            variant={buttonVariants.Ghost}
-                            loading={loading}
-                            click={() => setLoading(true)}>
+                        <Button variant={buttonVariants.Ghost}>
                             Ver más <MdOutlineArrowForwardIos />
                         </Button>
                     </Link>
