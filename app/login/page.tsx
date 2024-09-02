@@ -1,5 +1,6 @@
 'use client';
-import { signIn } from 'next-auth/react';
+import { useSession, signIn, signOut } from 'next-auth/react';
+
 import BackButton from '@/components/BackButton';
 
 export default function Login({

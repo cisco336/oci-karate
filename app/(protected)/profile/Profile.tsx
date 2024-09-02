@@ -7,13 +7,21 @@ import 'react-datepicker/dist/react-datepicker.css';
 import PersonalForm from './personalForm';
 import KarateForm from './karateForm';
 import { useSession } from 'next-auth/react';
-import { Button, buttonColor, buttonTypes } from '@/components/shared/Button';
+import {
+    Button,
+    buttonColor,
+    buttonTypes,
+    buttonVariants,
+} from '@/components/shared/Button';
 import { Loader } from '@/components/shared/Loader/Loader';
+import { User } from 'next-auth';
 
 export const Profile = () => {
     const sessionAuth = useSession();
+    console.log('useSession', sessionAuth);
     const [user, setUser] = useState<iSessionData | null>(null);
     const [session, setSession] = useState<any | null>(null);
+
     useEffect(() => {
         setSession(sessionAuth);
         if (session?.data?.user != null) {
@@ -41,6 +49,14 @@ export const Profile = () => {
     if (!sessionAuth || sessionAuth?.status === 'loading' || !user) {
         return <Loader />;
     }
+
+    return (
+        <Formik
+            onSubmit={handleSubmit}
+            initialValues={{ ...user.personalData }}>
+            <PersonalForm />
+        </Formik>
+    );
 
     return (
         <>
@@ -86,27 +102,30 @@ export const Profile = () => {
                 }}>
                 {(formProps) => {
                     return (
-                        <Form className="max-w-[1200px] py-[2rem]">
+                        <Form className="max-w-[1200px] py-[2rem] text-gray-900 flex flex-col gap-6 [&_label]:text-gray-300 [&_label]:font-thin">
                             <div className="grid md:grid-cols-2 gap-4">
-                                <h2 className="col-span-full">
+                                <h2 className="col-span-full text-gray-300 text-4xl font-thin">
                                     Información personal
                                 </h2>
                                 <PersonalForm />
                             </div>
                             <div className="grid md:grid-cols-3 gap-4">
-                                <h2 className="col-span-full">
+                                <h2 className="col-span-full text-gray-300 text-4xl font-thin">
                                     Información de Karate
                                 </h2>
                                 <KarateForm />
                             </div>
-                            <Button
-                                color={buttonColor.Primary}
-                                buttonType={buttonTypes.Submit}
-                                disabled={
-                                    !formProps.isValid || !formProps.dirty
-                                }>
-                                Guardar cambios
-                            </Button>
+                            <span className="flex justify-end">
+                                <Button
+                                    color={buttonColor.Accent}
+                                    variant={buttonVariants.Solid}
+                                    buttonType={buttonTypes.Submit}
+                                    disabled={
+                                        !formProps.isValid || !formProps.dirty
+                                    }>
+                                    Guardar cambios
+                                </Button>
+                            </span>
                         </Form>
                     );
                 }}

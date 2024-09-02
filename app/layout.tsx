@@ -6,7 +6,7 @@ import Footer from '@/components/Footer/Footer';
 // import Font Awesome CSS
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
-import Providers from './providers';
+import { SessionProvider } from 'next-auth/react';
 config.autoAddCss = false;
 
 const defaultUrl = process.env.VERCEL_URL
@@ -29,7 +29,7 @@ export default function RootLayout({
             lang="es"
             className={GeistSans.className}>
             <body className="bg-background text-foreground flex flex-col min-h-screen">
-                <Providers>
+                <SessionProvider>
                     <div className="z-10">
                         <Nav />
                     </div>
@@ -37,7 +37,7 @@ export default function RootLayout({
                         {children}
                     </main>
                     <Footer />
-                </Providers>
+                </SessionProvider>
             </body>
         </html>
     );

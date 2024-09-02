@@ -23,13 +23,15 @@ const Nav = async () => {
                             />
                         </Button>
                     </Link>
-                    {/* {session && (
+                </div>
+                <div className="flex gap-2">
+                    {session && (
                         <Link href={'/dashboard'}>
                             <Button color={buttonColor.Text}>My panel</Button>
                         </Link>
-                    )} */}
+                    )}
+                    <AuthButton />
                 </div>
-                {/* <AuthButton /> */}
             </div>
         </nav>
     );
