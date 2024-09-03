@@ -17,7 +17,6 @@ import { Loader } from '@/components/shared/Loader/Loader';
 
 export const Profile = () => {
     const sessionAuth = useSession();
-    const [session, setSession] = useState<any | null>(null);
 
     const { data, status, update } = sessionAuth;
 
@@ -28,17 +27,16 @@ export const Profile = () => {
                 'content-type': 'application/json',
             },
             body: JSON.stringify({
-                id: session?.data?.user?.id,
-                karateId: session?.data?.user?.karateData?.id,
-                personalDataId: session?.data?.user?.personalData?.id,
+                id: (data as iSessionData)?.id,
+                karateId: (data as iSessionData)?.karateData?.id,
+                personalDataId: (data as iSessionData)?.personalData?.id,
                 ...values,
             }),
         });
         const parsedResponse = await response.json();
-        await sessionAuth.update({ ...sessionAuth, user: { ...values } });
+        console.log(parsedResponse);
+        await update({ ...sessionAuth, user: { ...values } });
     };
-
-    console.log(sessionAuth?.data);
 
     if (!data || (status as 'loading' | 'authneticated') === 'loading') {
         return <Loader />;
@@ -60,10 +58,35 @@ export const Profile = () => {
                     (data as iSessionData)?.karateData?.dan ?? kyuDan.NA
                 ],
             }}>
-            <>
-                <PersonalForm />
-                <KarateForm />
-            </>
+            {(formProps) => {
+                return (
+                    <Form className="max-w-[1200px] py-[2rem] text-gray-900 flex flex-col gap-6 [&_label]:text-gray-300 [&_label]:font-thin">
+                        <div className="grid md:grid-cols-2 gap-4">
+                            <h2 className="col-span-full text-gray-300 text-4xl font-thin">
+                                Información personal
+                            </h2>
+                            <PersonalForm />
+                        </div>
+                        <div className="grid md:grid-cols-3 gap-4">
+                            <h2 className="col-span-full text-gray-300 text-4xl font-thin">
+                                Información de Karate
+                            </h2>
+                            <KarateForm />
+                        </div>
+                        <span className="flex justify-end">
+                            <Button
+                                color={buttonColor.Accent}
+                                variant={buttonVariants.Solid}
+                                buttonType={buttonTypes.Submit}
+                                disabled={
+                                    !formProps.isValid || !formProps.dirty
+                                }>
+                                Guardar cambios
+                            </Button>
+                        </span>
+                    </Form>
+                );
+            }}
         </Formik>
     );
 };

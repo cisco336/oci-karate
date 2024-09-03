@@ -85,6 +85,13 @@ const UpdateUserData = gql`
             where: { id: $id }
         ) {
             id
+            personalData {
+                id
+                firstName
+            }
+            karateData {
+                cinturon
+            }
         }
     }
 `;
@@ -103,9 +110,9 @@ export async function POST(req: NextRequest) {
             phone: data.phone,
             secondName: data.secondName,
             birthDay: new Date(data.birthDay || new Date()),
-            idType: data.userNationalIDType,
-            idNumber: data.userNationalID,
-            belt: data.cinturon,
+            idType: data.idType,
+            idNumber: data.idNumber,
+            cinturon: data.cinturon,
             dan: data.dan,
             kyu: data.kyu,
             isChild: Boolean(data.isChild),

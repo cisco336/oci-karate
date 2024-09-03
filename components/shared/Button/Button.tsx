@@ -6,6 +6,9 @@ import {
     iButton,
     buttonClass,
 } from '.';
+import { z } from 'zod';
+
+export type ButtonProps = z.infer<typeof iButton>;
 
 export const Button = ({
     label,
@@ -17,7 +20,7 @@ export const Button = ({
     variant = buttonVariants.Solid,
     buttonType = buttonTypes.Button,
     children,
-}: PropsWithChildren<iButton>) => {
+}: PropsWithChildren<ButtonProps>) => {
     const loadingIndicator = (
         <span className="bg-transparent absolute flex h- w-3 top-[-5px] right-[-5px]">
             <span

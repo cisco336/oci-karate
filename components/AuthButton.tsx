@@ -3,20 +3,27 @@ import Link from 'next/link';
 import { Button, buttonColor } from './shared/Button';
 import DropDown from './shared/DropDown';
 import { signOut, useSession } from 'next-auth/react';
+import { iSessionData } from '@/models/entity.models';
 
 export default function AuthButton() {
-    const user = useSession();
+    const { data, status } = useSession();
 
     const loginOut = () => {
         signOut({ redirect: true, callbackUrl: '/' });
     };
+
+    console.log(data);
 
     const dropdown = (
         <DropDown
             isOpen={false}
             position={'up'}
             closeOnSelect={false}
-            label={`Hola ${user?.data?.user?.personalData?.firstName}`}>
+            label={`${
+                data
+                    ? `Hola ${(data as iSessionData)?.personalData?.firstName}`
+                    : 'Loading'
+            }`}>
             <Link href="/profile">
                 <Button color={buttonColor.Text}>Mi cuenta</Button>
             </Link>
@@ -35,5 +42,5 @@ export default function AuthButton() {
         </Link>
     );
 
-    return user?.status === 'authenticated' ? dropdown : login;
+    return status === 'authenticated' ? dropdown : login;
 }
