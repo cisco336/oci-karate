@@ -37,23 +37,23 @@ const PersonalForm = () => {
                 />
             </div>
             <div className="flex flex-col gap-1 mb-[1rem]">
-                <label htmlFor="userNationalID">Cédula / Pasaporte</label>
+                <label htmlFor="idNumber">Cédula / Pasaporte</label>
                 <Field
                     className="border border-slate-500 rounded-md py-2 px-3"
                     type="text"
-                    name="userNationalID"
+                    name="idNumber"
                 />
                 <ErrorMessage
-                    name="userNationalID"
+                    name="idNumber"
                     component="div"
                 />
             </div>
             <div className="flex flex-col gap-1 mb-[1rem]">
-                <label htmlFor="userNationalIDType">Tipo Cédula</label>
+                <label htmlFor="idType">Tipo Cédula</label>
                 <Field
                     className="border border-slate-500 rounded-md py-2 px-3"
                     type="text"
-                    name="userNationalIDType"
+                    name="idType"
                     component="select">
                     {IDTypes.map((c) => (
                         <option
@@ -66,15 +66,15 @@ const PersonalForm = () => {
                     ))}
                 </Field>
                 <ErrorMessage
-                    name="userNationalIDType"
+                    name="idType"
                     component="div"
                 />
             </div>
             <div className="flex flex-col gap-1 mb-[1rem]">
-                <label htmlFor="birthDate">Cumpleaños</label>
+                <label htmlFor="birthDay">Cumpleaños</label>
                 <Field
                     type="date"
-                    name="birthDate">
+                    name="birthDay">
                     {(props: FieldProps) => {
                         return (
                             <DatePicker
@@ -93,7 +93,7 @@ const PersonalForm = () => {
                     }}
                 </Field>
                 <ErrorMessage
-                    name="birthDate"
+                    name="birthDay"
                     component="div"
                 />
             </div>

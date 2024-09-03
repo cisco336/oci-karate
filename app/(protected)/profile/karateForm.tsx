@@ -15,11 +15,11 @@ const KarateForm = () => {
     return (
         <>
             <div className="flex flex-col gap-1 mb-[1rem]">
-                <label htmlFor="belt">Cinturon</label>
+                <label htmlFor="cinturon">Cinturon</label>
                 <Field
                     className="border border-slate-500 rounded-md py-2 px-3"
                     type="text"
-                    name="belt"
+                    name="cinturon"
                     component="select">
                     {colors.map((c) => (
                         <option
@@ -30,7 +30,7 @@ const KarateForm = () => {
                     ))}
                 </Field>
                 <ErrorMessage
-                    name="belt"
+                    name="cinturon"
                     component="div"
                 />
             </div>
