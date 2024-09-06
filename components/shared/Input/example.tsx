@@ -1,7 +1,7 @@
 import React from 'react';
 import { inputColor, inputVariants } from './enums';
 import { capitalizeFirstLetter } from '@/helpers/capitalize';
-import { inputClass } from './Input';
+import { Input, inputClass } from './Input';
 
 export const InputExample = () => {
   const variants = Object.values(inputVariants);
@@ -22,12 +22,13 @@ export const InputExample = () => {
                 key={input}
                 className="flex flex-col gap-4">
                 <label htmlFor={input}>{capitalizeFirstLetter(input)}</label>
-                <input
+                <Input
                   type="text"
                   name={input}
                   id={input}
+                  variant={variant}
                   placeholder={capitalizeFirstLetter(input)}
-                  className={`${inputClass({ color: input, variant })}`}
+                  color={input}
                 />
               </div>
             ))}

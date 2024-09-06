@@ -90,6 +90,14 @@ module.exports = {
       },
       boxShadow: {
         DEFAULT: '0 50px 40px -45px #111',
+        gray: '0 0 10px #777',
+        primary: '0 0 10px rgba(38, 127, 255, 0.5)',
+        secondary: '0 0 10px rgba(102, 140, 255, 0.5)',
+        danger: '0 0 10px rgba(255, 26, 26, 0.5)',
+        info: '0 0 10px rgba(26, 191, 255, 0.5)',
+        warning: '0 0 10px rgba(255, 212, 26, 0.5)',
+        accent: '0 0 10px rgba(156, 26, 255, 0.5)',
+        success: '0 0 10px rgba(26, 255, 26, 0.5)',
       },
       screens: {
         screens: {
