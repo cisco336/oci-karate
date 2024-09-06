@@ -4,6 +4,7 @@ import { Button, buttonColor } from './shared/Button';
 import DropDown from './shared/DropDown';
 import { signOut, useSession } from 'next-auth/react';
 import { iSessionData } from '@/models/entity.models';
+import { MdLogin } from 'react-icons/md';
 
 export default function AuthButton() {
   const { data, status } = useSession();
@@ -38,7 +39,9 @@ export default function AuthButton() {
 
   const login = (
     <Link href="/login">
-      <Button color={buttonColor.Text}>Iniciar sesión</Button>
+      <Button color={buttonColor.Text}>
+        Iniciar sesión <MdLogin size={'24'} />
+      </Button>
     </Link>
   );
 
