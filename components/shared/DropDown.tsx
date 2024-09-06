@@ -4,25 +4,23 @@ import React, { PropsWithChildren, useState } from 'react';
 import { Button } from './Button/Button';
 
 const DropDown = (props: PropsWithChildren<iDropdown>) => {
-    const {
-        loading,
-        disabled,
-        label,
-        icon,
-        color,
-        isOpen,
-        position,
-        closeOnSelect,
-        children,
-    } = props;
-    const [open, toggleOpen] = useState(false);
-    return (
-        <div className="relative">
-            <Button click={() => toggleOpen(!open)}>
-                {label || 'Dropdown'}
-            </Button>
-            <div
-                className={`absolute
+  const {
+    loading,
+    disabled,
+    label,
+    icon,
+    color,
+    isOpen,
+    position,
+    closeOnSelect,
+    children,
+  } = props;
+  const [open, toggleOpen] = useState(false);
+  return (
+    <div className="relative">
+      <Button click={() => toggleOpen(!open)}>{label || 'Dropdown'}</Button>
+      <div
+        className={`absolute
                 z-3
                 animate-out
                 w-[100%]
@@ -34,10 +32,10 @@ const DropDown = (props: PropsWithChildren<iDropdown>) => {
                 overflow-hidden
                 ${open ? 'flex-col' : 'hidden'}
             `}>
-                {children}
-            </div>
-        </div>
-    );
+        {children}
+      </div>
+    </div>
+  );
 };
 
 export default DropDown;
