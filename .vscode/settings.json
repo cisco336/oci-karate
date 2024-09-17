@@ -1,3 +1,10 @@
 {
-    "prisma.fileWatcher": true
+  "prisma.fileWatcher": true,
+  "editor.tabSize": 2,
+  "editor.indentSize": "tabSize",
+  "prettier.tabWidth": 2,
+  "indentRainbow.indentSetter": {
+    "tabSize": 2,
+    "indentSize": "tabSize"
+  }
 }

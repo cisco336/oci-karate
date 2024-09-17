@@ -2,97 +2,32 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+@import './styles/animations';
+@import './styles/headers';
+
 @layer base {
+  :root {
+    --background: 200 20% 98%;
+    --btn-background: 200 10% 91%;
+    --btn-background-hover: 200 10% 89%;
+    --foreground: 200 50% 3%;
+  }
+
+  @media (prefers-color-scheme: dark) {
     :root {
-        --background: 200 20% 98%;
-        --btn-background: 200 10% 91%;
-        --btn-background-hover: 200 10% 89%;
-        --foreground: 200 50% 3%;
+      --background: 200 50% 3%;
+      --btn-background: 200 10% 9%;
+      --btn-background-hover: 200 10% 12%;
+      --foreground: 200 20% 96%;
     }
-
-    @media (prefers-color-scheme: dark) {
-        :root {
-            --background: 200 50% 3%;
-            --btn-background: 200 10% 9%;
-            --btn-background-hover: 200 10% 12%;
-            --foreground: 200 20% 96%;
-        }
-    }
+  }
 }
 
 @layer base {
-    main,
-    footer,
-    body > div {
-        @apply border-foreground/20 bg-zinc-900;
-        @apply text-gray-100;
-    }
-}
-
-.animate-in {
-    animation: animateIn 0.3s ease 0.15s both;
-}
-
-.animate-out {
-    animation: animateOut 0.3s ease 0.15s both;
-}
-
-.animate-fade-in {
-    animation: fadeIn 0.5s ease 0.15s both;
-}
-
-.animate-fade-out {
-    animation: fadeOut 0.5s ease 0.15s both;
-}
-
-.animate-grow {
-    animation: grow 0.3s ease 0.15s both;
-}
-
-@keyframes animateIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes animateOut {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes fadeOut {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-    }
-}
-
-@keyframes grow {
-    to {
-        transform: scale(1.1);
-    }
+  main,
+  footer,
+  body > div {
+    @apply border-foreground/20 bg-zinc-900;
+    @apply text-gray-100;
+  }
 }

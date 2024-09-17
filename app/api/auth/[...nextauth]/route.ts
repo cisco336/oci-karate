@@ -7,6 +7,6 @@ export { POST };
 
 // Showcasing advanced initialization in Route Handlers
 export async function GET(request: NextRequest) {
-    const response = await AuthGET(request);
-    return response;
+  const response = await AuthGET(request);
+  return response;
 }

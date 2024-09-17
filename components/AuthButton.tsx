@@ -3,37 +3,47 @@ import Link from 'next/link';
 import { Button, buttonColor } from './shared/Button';
 import DropDown from './shared/DropDown';
 import { signOut, useSession } from 'next-auth/react';
+import { iSessionData } from '@/models/entity.models';
+import { MdLogin } from 'react-icons/md';
 
 export default function AuthButton() {
-    const user = useSession();
+  const { data, status } = useSession();
 
-    const loginOut = () => {
-        signOut({ redirect: true, callbackUrl: '/' });
-    };
+  const loginOut = () => {
+    signOut({ redirect: true, callbackUrl: '/' });
+  };
 
-    const dropdown = (
-        <DropDown
-            isOpen={false}
-            position={'up'}
-            closeOnSelect={false}
-            label={`Hola ${user?.data?.user?.personalData?.firstName}`}>
-            <Link href="/profile">
-                <Button color={buttonColor.Text}>Mi cuenta</Button>
-            </Link>
-            <hr />
-            <Button
-                color={buttonColor.Text}
-                click={() => loginOut()}>
-                Cerrar sesión
-            </Button>
-        </DropDown>
-    );
+  console.log(data);
 
-    const login = (
-        <Link href="/login">
-            <Button color={buttonColor.Text}>Iniciar sesión</Button>
-        </Link>
-    );
+  const dropdown = (
+    <DropDown
+      isOpen={false}
+      position={'up'}
+      closeOnSelect={false}
+      label={`${
+        data
+          ? `Hola ${(data as iSessionData)?.personalData?.firstName}`
+          : 'Loading'
+      }`}>
+      <Link href="/profile">
+        <Button color={buttonColor.Text}>Mi cuenta</Button>
+      </Link>
+      <hr />
+      <Button
+        color={buttonColor.Text}
+        click={() => loginOut()}>
+        Cerrar sesión
+      </Button>
+    </DropDown>
+  );
 
-    return user?.status === 'authenticated' ? dropdown : login;
+  const login = (
+    <Link href="/login">
+      <Button color={buttonColor.Text}>
+        Iniciar sesión <MdLogin size={'24'} />
+      </Button>
+    </Link>
+  );
+
+  return status === 'authenticated' ? dropdown : login;
 }
