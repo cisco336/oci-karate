@@ -7,7 +7,7 @@ const iDropdown = iButton.extend({
   closeOnSelect: z.boolean(),
 });
 
-export const iCheckBox = z.object({
+export const zCheckBox = z.object({
   id: z.string().optional(),
   checked: z.boolean().optional(),
   name: z.string().optional(),
@@ -19,3 +19,5 @@ export const iCheckBox = z.object({
     .optional(),
   callback: z.function().optional(),
 });
+
+export type iCheckBox = z.infer<typeof zCheckBox>;

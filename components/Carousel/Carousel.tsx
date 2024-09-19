@@ -62,6 +62,7 @@ export const Carousel = ({ articles }: { articles: ArticleType[] }) => {
       <React.Fragment>
         {articles.map((article, i) => (
           <div
+            key={i}
             className={`grid grid-cols-[1] md:grid-cols-[1fr_300px] gap-6 ${
               current === i ? 'animate-fade-in' : 'animate-fade-out hidden'
             }`}>

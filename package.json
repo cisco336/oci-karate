@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "dev": "netlify dev",
-    "dev:next": "next dev",
+    "dev:next": "PORT=3005 next dev",
     "build": "prisma generate && next build",
     "start": "netlify start",
     "postinstall": "prisma generate",
