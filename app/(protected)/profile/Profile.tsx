@@ -34,7 +34,6 @@ export const Profile = () => {
       }),
     });
     const parsedResponse = await response.json();
-    console.log(parsedResponse);
     await update({ ...sessionAuth, user: { ...values } });
   };
 
