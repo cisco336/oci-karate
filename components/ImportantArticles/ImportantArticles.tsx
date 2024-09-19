@@ -1,6 +1,6 @@
 import React from 'react';
-import { ArticleType } from '../shared/Card';
 import Card from '../shared/Card/Card';
+import { ArticleType } from '@/@types';
 
 export const ImportantArticles = ({
   articles,

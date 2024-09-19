@@ -1,4 +1,4 @@
-import { QuoteType } from '@/models/gqlModels';
+import { QuoteType } from '@/@types';
 import React from 'react';
 
 const Quote = (props: QuoteType) => {

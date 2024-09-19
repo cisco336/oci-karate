@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { iButton } from '@/components/shared/Button';
 
-const iDropdown = iButton.extend({
+export const zDropdown = iButton.extend({
   isOpen: z.boolean(),
   position: z.enum(['up', 'down', 'left', 'right']),
   closeOnSelect: z.boolean(),
@@ -21,3 +21,4 @@ export const zCheckBox = z.object({
 });
 
 export type iCheckBox = z.infer<typeof zCheckBox>;
+export type iDropdown = z.infer<typeof zDropdown>;
