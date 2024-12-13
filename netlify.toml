@@ -1,6 +1,6 @@
 [dev]
-  targetPort = 3006
-  port = 8088
+  targetPort = 3005
+  port = 8080
 
 [build]
   functions = "lambda"
