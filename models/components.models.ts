@@ -1,13 +1,13 @@
 import { z } from 'zod';
 import { iButton } from '@/components/shared/Button';
 
-const iDropdown = iButton.extend({
+export const zDropdown = iButton.extend({
   isOpen: z.boolean(),
   position: z.enum(['up', 'down', 'left', 'right']),
   closeOnSelect: z.boolean(),
 });
 
-export const iCheckBox = z.object({
+export const zCheckBox = z.object({
   id: z.string().optional(),
   checked: z.boolean().optional(),
   name: z.string().optional(),
@@ -19,3 +19,6 @@ export const iCheckBox = z.object({
     .optional(),
   callback: z.function().optional(),
 });
+
+export type iCheckBox = z.infer<typeof zCheckBox>;
+export type iDropdown = z.infer<typeof zDropdown>;
