@@ -1,15 +1,17 @@
 'use client';
 import React from 'react';
 import { Button, buttonVariants } from '../shared/Button';
-import { MdOutlineArrowBackIos } from 'react-icons/md';
-import { MdOutlineArrowForwardIos } from 'react-icons/md';
-import { MdFiberManualRecord } from 'react-icons/md';
+import {
+  MdOutlineArrowBackIos,
+  MdOutlineArrowForwardIos,
+  MdFiberManualRecord,
+} from 'react-icons/md';
 import Link from 'next/link';
 import { ArticleType } from '@/@types';
 
 export const Carousel = ({ articles }: { articles: ArticleType[] }) => {
-  const [current, setCurrent] = React.useState(0);
-  const [isLoading, setLoading] = React.useState(false);
+  const [current, setCurrent] = React.useState<number>(0);
+  const [isLoading, setLoading] = React.useState<boolean>(false);
 
   const forward = () =>
     setCurrent((prev) => (prev + 1 > articles.length - 1 ? 0 : prev + 1));
@@ -47,10 +49,7 @@ export const Carousel = ({ articles }: { articles: ArticleType[] }) => {
           variant={buttonVariants.Link}
           click={() => setCurrent(i)}>
           <MdFiberManualRecord
-            key={i}
-            className={`text-sm ${
-              current === i ? 'text-danger-300' : 'text-gray-400'
-            }`}
+            className={`text-sm ${current === i ? 'text-danger-300' : 'text-gray-400'}`}
           />
         </Button>
       ))}
@@ -63,17 +62,15 @@ export const Carousel = ({ articles }: { articles: ArticleType[] }) => {
         {articles.map((article, i) => (
           <div
             key={i}
-            className={`grid grid-cols-[1] md:grid-cols-[1fr_300px] gap-6 ${
-              current === i ? 'animate-fade-in' : 'animate-fade-out hidden'
-            }`}>
+            className={`grid grid-cols-[1] md:grid-cols-[1fr_300px] gap-6 ${current === i ? 'animate-fade-in' : 'animate-fade-out hidden'}`}>
             <img
               src={articles[current].asset?.url}
               alt={articles[current].articleTitle}
               className={`absolute object-cover opacity-50 blur-[100px] col-[1/-1] row-[1/-1] z-[-1]`}
             />
             <div className="col-[1] row-[1/-1] flex flex-col gap-4 items-center md:items-start justify-end">
-              <h3 className="">{articles[current].articleTitle}</h3>
-              <p className="">{articles[current].abstract}</p>
+              <h3>{articles[current].articleTitle}</h3>
+              <p>{articles[current].abstract}</p>
               <span className="flex md:justify-end">
                 <Link href={`/slug/${articles[current].slug}`}>
                   <Button
@@ -88,7 +85,7 @@ export const Carousel = ({ articles }: { articles: ArticleType[] }) => {
             <img
               src={articles[current].asset?.url}
               alt={articles[current].articleTitle}
-              className="object-fit  w-[auto] h-[300px] rounded-lg col-[2] mx-auto opacity-0 z-[0] md:opacity-100 shadow hidden md:block"
+              className="object-fit w-[auto] h-[300px] rounded-lg col-[2] mx-auto opacity-0 z-[0] md:opacity-100 shadow hidden md:block"
             />
           </div>
         ))}
