@@ -10,4 +10,5 @@ export const iButton = z.object({
   variant: z.nativeEnum(buttonVariants).optional(),
   buttonType: z.nativeEnum(buttonTypes).optional(),
   click: z.function().optional(),
+  extraClasses: z.string().optional(),
 });

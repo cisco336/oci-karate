@@ -5,6 +5,7 @@ import { Button, buttonColor, buttonVariants } from '../shared/Button';
 import { auth } from '@/auth';
 
 import { FaToriiGate } from 'react-icons/fa';
+import HamburguerMenu from '../hamburguerMenu/hamburguerMenu';
 
 const Nav = async () => {
   const session = await auth();
@@ -31,6 +32,7 @@ const Nav = async () => {
             </Link>
           )}
           <AuthButton />
+          {/* <HamburguerMenu /> */}
         </div>
       </div>
     </nav>
