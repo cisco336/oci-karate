@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const ArticleType = z.object({
+export const zArticleType = z.object({
   id: z.string(),
   articleTitle: z.string(),
   createdAt: z.string(),
@@ -25,4 +25,4 @@ export const ArticleType = z.object({
   }),
 });
 
-export type ArticleType = z.infer<typeof ArticleType>;
+export type ArticleType = z.infer<typeof zArticleType>;

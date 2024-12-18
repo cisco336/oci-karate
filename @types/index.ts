@@ -1,3 +1,3 @@
-export * from './Quote.d';
-export * from './Article.d';
-export * from './next-auth.d';
+export * from './Quote';
+export * from './Article';
+export * from './next-auth';

@@ -1,12 +1,12 @@
 'use client';
-import { ArticleType } from '@/@types';
+import { zArticleType } from '@/@types';
 import React, { useState } from 'react';
 import { Button, buttonVariants } from '../Button';
 import { useRouter } from 'next/navigation';
 import { MdOutlineArrowForwardIos } from 'react-icons/md';
 import { z } from 'zod';
 
-const zCard = ArticleType.extend({
+const zCard = zArticleType.extend({
   link: z.string().optional(),
 });
 
