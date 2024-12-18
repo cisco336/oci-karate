@@ -82,8 +82,14 @@ export const Input = ({
         name={name}
         className={`${inputClass({ color, variant })}`}
         placeholder={`${variant !== inputVariants.Underline ? placeholder : ''}`}
+        type={type}>
+        {/* {options} TODO spread and style options */}
+      </Field>
+      <ErrorMessage
+        className="text-red-400 text-sm px-2"
+        name={name ?? ''}
+        component={'div'}
       />
-      <ErrorMessage name={name ?? ''} />
     </div>
   );
 };

@@ -9,6 +9,7 @@ import {
   buttonVariants,
 } from '@/components/shared/Button';
 import * as Yup from 'yup';
+import { auth } from '@/auth';
 
 export default function Login({
   searchParams,
@@ -17,13 +18,24 @@ export default function Login({
 }) {
   const submit = async (values: { email: string; password: string }) => {
     const { email, password } = values;
-    console.log('##########', values);
-    await signIn('credentials', {
+    const response = await signIn('credentials', {
       email,
       password,
-      redirect: true,
-      callbackUrl: '/',
+      redirect: false,
     });
+
+    if (response?.error) {
+      console.log(response.error);
+      return;
+    }
+    const { agreedTerms } = await (auth() as unknown as {
+      agreedTerms: boolean;
+    });
+
+    if (!agreedTerms) {
+      console.log('Terms not agreed');
+      return;
+    }
   };
 
   const loginForm = (
