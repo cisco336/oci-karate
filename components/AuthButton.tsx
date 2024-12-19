@@ -4,7 +4,13 @@ import { Button, buttonColor } from './shared/Button';
 import DropDown from './shared/DropDown';
 import { signOut, useSession } from 'next-auth/react';
 import { iSessionData } from '@/models/entity.models';
-import { MdLogin } from 'react-icons/md';
+import {
+  MdLogin,
+  MdLogout,
+  MdArrowDropDown,
+  MdAccountBox,
+  MdDashboard,
+} from 'react-icons/md';
 
 export default function AuthButton() {
   const { data, status } = useSession();
@@ -22,16 +28,31 @@ export default function AuthButton() {
       closeOnSelect={false}
       label={`${
         data
-          ? `Hola ${(data as iSessionData)?.personalData?.firstName}`
+          ? `Hola ${(data as iSessionData)?.personalData?.firstName ?? 'karateca'}`
           : 'Loading'
-      }`}>
+      }`}
+      icon={<MdArrowDropDown size={'24'} />}>
+      {data && (
+        <Link href={'/dashboard'}>
+          <Button
+            color={buttonColor.Text}
+            icon={<MdDashboard size={'12'} />}>
+            Mi panel
+          </Button>
+        </Link>
+      )}
       <Link href="/profile">
-        <Button color={buttonColor.Text}>Mi cuenta</Button>
+        <Button
+          color={buttonColor.Text}
+          icon={<MdAccountBox size={'12'} />}>
+          Mi cuenta
+        </Button>
       </Link>
-      <hr />
+      <hr className="border-info-500" />
       <Button
         color={buttonColor.Text}
-        click={() => loginOut()}>
+        click={() => loginOut()}
+        icon={<MdLogout size={'12'} />}>
         Cerrar sesión
       </Button>
     </DropDown>

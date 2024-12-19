@@ -1,10 +1,12 @@
 import { z } from 'zod';
 import { iButton } from '@/components/shared/Button';
+import { ReactElement } from 'react';
 
 export const zDropdown = iButton.extend({
   isOpen: z.boolean(),
   position: z.enum(['up', 'down', 'left', 'right']),
   closeOnSelect: z.boolean(),
+  icon: z.custom<ReactElement>().optional(),
 });
 
 export const zCheckBox = z.object({

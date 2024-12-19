@@ -18,7 +18,11 @@ const DropDown = (props: PropsWithChildren<iDropdown>) => {
   const [open, toggleOpen] = useState(false);
   return (
     <div className="relative">
-      <Button click={() => toggleOpen(!open)}>{label || 'Dropdown'}</Button>
+      <Button
+        extraClasses="pr-[5px]"
+        click={() => toggleOpen(!open)}>
+        {label || 'Dropdown'} {icon}
+      </Button>
       <div
         className={`absolute
                 z-3
@@ -30,6 +34,8 @@ const DropDown = (props: PropsWithChildren<iDropdown>) => {
                 border-1 border-sky-500
                 rounded-md
                 overflow-hidden
+                bg-midnight-950
+                shadow-xl
                 ${open ? 'flex-col' : 'hidden'}
             `}>
         {children}
