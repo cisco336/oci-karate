@@ -16,7 +16,7 @@ const CheckBox = (props: PropsWithChildren<iCheckBox>) => {
   const [isChecked, setIsChecked] = useState(checked);
   const changeHandler = () => {
     setIsChecked(!isChecked);
-    callback && callback();
+    callback && callback(!isChecked);
   };
   return (
     <label

@@ -1,7 +1,5 @@
 'use client';
 import Link from 'next/link';
-import { Button, buttonColor } from './shared/Button';
-import DropDown from './shared/DropDown';
 import { signOut, useSession } from 'next-auth/react';
 import { iSessionData } from '@/models/entity.models';
 import {
@@ -11,6 +9,8 @@ import {
   MdAccountBox,
   MdDashboard,
 } from 'react-icons/md';
+import { Button, buttonColor } from '../shared/Button';
+import DropDown from '../shared/DropDown/DropDown';
 
 export default function AuthButton() {
   const { data, status } = useSession();
@@ -19,13 +19,13 @@ export default function AuthButton() {
     signOut({ redirect: true, callbackUrl: '/' });
   };
 
-  console.log(data);
-
   const dropdown = (
     <DropDown
       isOpen={false}
       position={'up'}
-      closeOnSelect={false}
+      closeOnSelect={() => {
+        console.log('HERE');
+      }}
       label={`${
         data
           ? `Hola ${(data as iSessionData)?.personalData?.firstName ?? 'karateca'}`

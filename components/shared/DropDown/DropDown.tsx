@@ -1,7 +1,7 @@
 'use client';
 import { iDropdown } from '@/models/components.models';
 import React, { PropsWithChildren, useState } from 'react';
-import { Button } from './Button/Button';
+import { Button } from '../Button/Button';
 
 const DropDown = (props: PropsWithChildren<iDropdown>) => {
   const {

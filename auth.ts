@@ -70,7 +70,11 @@ const CreateNextUserByEmail = gql`
 `;
 
 export const config = {
-  session: { strategy: 'jwt' },
+  session: {
+    strategy: 'jwt',
+    maxAge: 60 * 10,
+    updateAge: 60 * 10,
+  },
   providers: [
     CredentialsProvider({
       name: 'Credentials',
