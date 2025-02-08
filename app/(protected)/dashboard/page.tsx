@@ -18,7 +18,7 @@ const Dashboard = async () => {
       <h1 className="text-6xl mb-[2rem] font-thin mr-auto">
         Hola {session && session?.user?.personalData?.firstName}
       </h1>
-      <TermsAgreement />
+      {/* <TermsAgreement /> */}
     </div>
   );
 };

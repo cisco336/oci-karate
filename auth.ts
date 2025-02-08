@@ -65,6 +65,7 @@ const CreateNextUserByEmail = gql`
   mutation CreateNextUserByEmail($email: String!, $password: String!) {
     newUser: createUserModel(data: { email: $email, password: $password }) {
       id
+      activated
     }
   }
 `;
@@ -94,35 +95,43 @@ export const config = {
         credentials: Partial<Record<'email' | 'password', unknown>>,
         req: Request,
       ): Promise<User | null> => {
-        const { user } = await client.request<Promise<{ user: any }>>(
+        const response = await client.request<Promise<{ user: any }>>(
           GetUserByEmail,
           {
             email: credentials.email,
           },
         );
 
-        if (!user && typeof credentials.password === 'string') {
-          const { newUser } = await client.request<Promise<iSessionData | any>>(
-            CreateNextUserByEmail,
-            {
-              email: credentials.email,
-              password: await hash(credentials.password, 12),
-            },
-          );
+        const { user } = response;
 
-          return {
-            // user: {
-            id: newUser.id,
-            email: newUser.email,
-            role: newUser.role,
-            agreedTerms: newUser.agreedTerms,
-            setPasswd: newUser.setPasswd,
-            isChild: newUser.isChild,
-            personalData: newUser.personalData,
-            karateData: newUser.karateData,
-            medicalData: newUser.medicalData,
-            // },
-          };
+        console.log('RESPONSE AUTH: ', response);
+
+        if (!user && typeof credentials.password === 'string') {
+          throw new Error('Wrong credentials. Try again.');
+          // const { newUser } = await client.request<Promise<iSessionData | any>>(
+          //   CreateNextUserByEmail,
+          //   {
+          //     email: credentials.email,
+          //     password: await hash(credentials.password, 12),
+          //   },
+          // );
+
+          // console.log('newUser', newUser);
+
+          // return {
+          //   id: newUser.id,
+          //   user: {
+          //     activated: newUser.activated,
+          //     email: newUser.email,
+          //     role: newUser.role,
+          //     agreedTerms: newUser.agreedTerms,
+          //     setPasswd: newUser.setPasswd,
+          //     isChild: newUser.isChild,
+          //     personalData: newUser.personalData,
+          //     karateData: newUser.karateData,
+          //     medicalData: newUser.medicalData,
+          //   },
+          // };
         }
 
         const isValid =
@@ -135,17 +144,18 @@ export const config = {
         }
 
         return {
-          // user: {
           id: user.id,
-          email: user.email,
-          role: user.role,
-          isChild: user.isChild,
-          agreedTerms: user.agreedTerms,
-          setPasswd: user.setPasswd,
-          personalData: user.personalData,
-          karateData: user.karateData,
-          medicalData: user.medicalData,
-          // },
+          user: {
+            activated: user.activated,
+            email: user.email,
+            role: user.role,
+            agreedTerms: user.agreedTerms,
+            setPasswd: user.setPasswd,
+            isChild: user.isChild,
+            personalData: user.personalData,
+            karateData: user.karateData,
+            medicalData: user.medicalData,
+          },
         };
       },
     }),

@@ -116,7 +116,18 @@ export async function getData<T>(
   },
 ): Promise<T> {
   const data = await graphConnect.request<T>(query, parameters);
-  debugger;
+  return data;
+}
+
+export async function mutateData<T>(
+  mutation: string,
+  parameters: {
+    id: string;
+    agreedTerms: boolean;
+  },
+): Promise<T> {
+  const data = await graphConnect.request<T>(mutation, parameters);
+  console.log('DATA', data);
   return data;
 }
 

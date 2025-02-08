@@ -30,32 +30,32 @@ const SingleArticleBySlug = async ({ params }: any) => {
     articleContent,
     htmlContent,
   } = articleSchema;
+  const createdDate = new Date(createdAt).toLocaleString();
+  const updatedDate = new Date(createdAt).toLocaleString();
   const content = parse(htmlContent ? htmlContent : articleContent.html);
-  return articleContent.json.children.lenght > 0 ? (
-    <div className="p-[2rem] max-w-[600px]">
-      <h1 className="text-6xl mb-[2rem] font-thin">{articleTitle}</h1>
-      {content}
-    </div>
-  ) : (
-    <div className="relative flex flex-col items-center w-full h-full animate-fade-in">
-      <div className="max-w-[800px] z-10">
-        <h1 className="text-6xl font-thin py-12">{articleTitle}</h1>
-        {articleContent.json.children.map(
-          (child: ArticleSegmentType, index: number) => {
-            return (
-              <React.Fragment key={index}>
-                {RenderArticle(child)}
-              </React.Fragment>
-            );
-          },
-        )}
+  return (
+    <>
+      <div className="p-[2rem] max-w-[600px]">
+        <h1 className="text-6xl mb-[2rem] font-thin">{articleTitle}</h1>
+        <img
+          src={asset.url}
+          alt={asset.alt}
+          className="w-full h-auto object-cover my-8"
+        />
+        <div className="[&_h3]:mt-8 [&_h3]:mb-4 [&_p]:mb-4 [&_ol]:pb-4 [&_li]:list-decimal [&_li]:pt-4">
+          {content}
+        </div>
+        <div className="flex flex-col items-end justify-end mt-8 font-thin italic text-sm">
+          <div>Creado el: {createdDate}</div>
+          <div>Actualizado el: {updatedDate}</div>
+        </div>
       </div>
       <img
-        className="object-cover absolute blur-[60px] opacity-30"
         src={asset.url}
-        alt={articleTitle}
+        alt={asset.alt}
+        className="h-[100%] w-[auto] blur-2xl object-fit opacity-10 absolute top-0 left-0 z-[0]"
       />
-    </div>
+    </>
   );
 };
 

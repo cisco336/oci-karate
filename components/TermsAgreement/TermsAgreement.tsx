@@ -4,7 +4,11 @@ import CheckBox from '../CheckBox';
 import { Button } from '../shared/Button';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { getData, userAgreedTerms } from '@/services/hygraph.service';
+import {
+  getData,
+  mutateData,
+  userAgreedTerms,
+} from '@/services/hygraph.service';
 import { User } from 'next-auth';
 
 export const TermsAgreement = () => {
@@ -16,15 +20,14 @@ export const TermsAgreement = () => {
   const handleCheck = async (e: boolean) => {
     setChecked(e);
     try {
-      const result = await getData<User>(userAgreedTerms, {
+      const result = await mutateData<User>(userAgreedTerms, {
         id: (session as unknown as { id: string }).id,
         agreedTerms: e,
       });
 
-      console.log(result);
+      console.log('RESULT', result);
     } catch (error) {
-      debugger;
-      console.log(error);
+      console.log('ERROR', error);
     }
   };
 
