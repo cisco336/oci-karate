@@ -111,10 +111,23 @@ export async function getData<T>(
     slug?: string;
     tag?: string[];
     category?: string[];
+    id?: string;
+    agreedTerms?: boolean;
   },
 ): Promise<T> {
   const data = await graphConnect.request<T>(query, parameters);
+  return data;
+}
 
+export async function mutateData<T>(
+  mutation: string,
+  parameters: {
+    id: string;
+    agreedTerms: boolean;
+  },
+): Promise<T> {
+  const data = await graphConnect.request<T>(mutation, parameters);
+  console.log('DATA', data);
   return data;
 }
 
@@ -140,6 +153,16 @@ export const getCategoryHeaders = gql`
       articleContent {
         json
       }
+    }
+  }
+`;
+
+export const userAgreedTerms = gql`
+  mutation SetAgreedTerms($id: ID!, $agreedTerms: Boolean!) {
+    updateUserModel(data: { agreedTerms: $agreedTerms }, where: { id: $id }) {
+      id
+      agreedTerms
+      email
     }
   }
 `;

@@ -20,6 +20,7 @@ export const Button = ({
   variant = buttonVariants.Solid,
   buttonType = buttonTypes.Button,
   children,
+  extraClasses,
 }: PropsWithChildren<ButtonProps>) => {
   const loadingIndicator = (
     <span className="bg-transparent absolute flex h- w-3 top-[-5px] right-[-5px]">
@@ -35,7 +36,7 @@ export const Button = ({
       className={`${buttonClass({
         color,
         variant,
-      })}}`}
+      })}} ${extraClasses}`}
       type={buttonType}
       disabled={disabled || loading}
       onClick={click}>

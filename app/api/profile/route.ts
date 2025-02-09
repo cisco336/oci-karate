@@ -10,7 +10,7 @@ const client = new GraphQLClient(
   process.env.HYGRAPH_URL ? process.env.HYGRAPH_URL : '',
   {
     headers: {
-      Authorization: `Bearer ${process.env.HYGRAPH_TOKEN}`,
+      Authorization: `Bearer ${process.env.HYGRAPH_PAT_TOKEN}`,
     },
   },
 );
@@ -31,8 +31,8 @@ const UpdateUserData = gql`
     $secondName: String
     $birthDay: Date
     $phone: String
-    $idType: IdType!
-    $idNumber: String!
+    $idType: IdType
+    $idNumber: String
     $belt: Cinturon
     $dan: KyuDan
     $kyu: KyuDan
@@ -100,27 +100,33 @@ const UpdateUserData = gql`
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-    const query = await client.request<Promise<{} | any>>(UpdateUserData, {
-      id: data.id,
-      bio: data.bio,
-      role: [data.role],
-      firstName: data.firstName,
-      lastName: data.lastName,
-      motherFamilyName: data.motherFamilyName,
-      phone: data.phone,
-      secondName: data.secondName,
-      birthDay: new Date(data.birthDay || new Date()),
-      idType: data.idType,
-      idNumber: data.idNumber,
-      cinturon: data.cinturon,
-      dan: data.dan,
-      kyu: data.kyu,
-      isChild: Boolean(data.isChild),
-      setPasswd: Boolean(data.setPasswd),
-      agreedTerms: Boolean(data.agreedTerms),
-      karateId: data.karateId,
-      personalDataId: data.personalDataId,
-    });
+    const query = await client.request<Promise<{} | any>>(
+      UpdateUserData,
+      {
+        id: data.id,
+        bio: data.bio,
+        role: [data.role],
+        firstName: data.firstName,
+        lastName: data.lastName,
+        motherFamilyName: data.motherFamilyName,
+        phone: data.phone,
+        secondName: data.secondName,
+        birthDay: new Date(data.birthDay || new Date()),
+        idType: data.idType,
+        idNumber: data.idNumber,
+        cinturon: data.cinturon,
+        dan: data.dan,
+        kyu: data.kyu,
+        isChild: Boolean(data.isChild),
+        setPasswd: Boolean(data.setPasswd),
+        agreedTerms: Boolean(data.agreedTerms),
+        karateId: data.karateId,
+        personalDataId: data.personalDataId,
+      },
+      {
+        ...req.headers,
+      },
+    );
     return NextResponse.json(query);
   } catch (e) {
     return NextResponse.json(e);

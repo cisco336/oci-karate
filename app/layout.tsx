@@ -28,9 +28,9 @@ export default function RootLayout({
     <html
       lang="es"
       className={GeistSans.className}>
-      <body className="bg-background text-foreground flex flex-col min-h-screen">
+      <body className="bg-background text-foreground flex flex-col min-h-screen relative">
         <SessionProvider>
-          <div className="z-10">
+          <div className="z-10 sticky top-0">
             <Nav />
           </div>
           <main className="flex flex-col items-center flex-1 w-full h-full overflow-hidden">

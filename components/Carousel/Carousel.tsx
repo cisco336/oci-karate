@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, buttonVariants } from '../shared/Button';
 import { MdOutlineArrowBackIos } from 'react-icons/md';
 import { MdOutlineArrowForwardIos } from 'react-icons/md';
@@ -26,6 +26,13 @@ export const Carousel = ({ articles }: { articles: ArticleType[] }) => {
       </Button>
     </span>
   );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      forward();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [current]);
 
   const controlForward = (
     <span className="col-[3] row-[1/4] flex items-strech z-[20]">

@@ -2,7 +2,6 @@ import NextAuth, { NextAuthConfig, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { compare, hash } from 'bcryptjs';
 import { GraphQLClient, gql } from 'graphql-request';
-import { iSessionData } from './models/entity.models';
 
 const client = new GraphQLClient(
   process.env.HYGRAPH_URL ? process.env.HYGRAPH_URL : '',
@@ -34,6 +33,7 @@ const GetUserByEmail = gql`
   query GetUserByEmail($email: String!) {
     user: userModel(where: { email: $email }, stage: DRAFT) {
       id
+      activated
       password
       role
       isChild
@@ -62,15 +62,47 @@ const GetUserByEmail = gql`
 `;
 
 const CreateNextUserByEmail = gql`
-  mutation CreateNextUserByEmail($email: String!, $password: String!) {
-    newUser: createUserModel(data: { email: $email, password: $password }) {
+  mutation CreateNextUserByEmail(
+    $email: String!
+    $password: String!
+    $firstName: String!
+    $secondName: String!
+    $lastName: String!
+    $motherFamilyName: String!
+  ) {
+    user: createUserModel(
+      data: {
+        email: $email
+        password: $password
+        personalData: {
+          create: {
+            firstName: $firstName
+            lastName: $lastName
+            secondName: $secondName
+            motherFamilyName: $motherFamilyName
+          }
+        }
+      }
+    ) {
       id
+      email
+      activated
+      personalData {
+        firstName
+        secondName
+        lastName
+        motherFamilyName
+      }
     }
   }
 `;
 
 export const config = {
-  session: { strategy: 'jwt' },
+  session: {
+    strategy: 'jwt',
+    maxAge: 60 * 10,
+    updateAge: 60 * 10,
+  },
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -87,62 +119,59 @@ export const config = {
         },
       },
       authorize: async (
-        credentials: Partial<Record<'email' | 'password', unknown>>,
+        credentials: Partial<
+          Record<
+            | 'email'
+            | 'password'
+            | 'firstName'
+            | 'secondName'
+            | 'lastName'
+            | 'motherFamilyName',
+            unknown
+          >
+        >,
         req: Request,
       ): Promise<User | null> => {
-        const { user } = await client.request<Promise<{ user: any }>>(
-          GetUserByEmail,
-          {
-            email: credentials.email,
-          },
-        );
+        const response =
+          !credentials.firstName || credentials.firstName === ''
+            ? await client.request<Promise<{ user: any }>>(
+                GetUserByEmail,
+                {
+                  email: credentials.email,
+                },
+                {
+                  Authorization: `Bearer ${process.env.HYGRAPH_PAT_TOKEN}`,
+                },
+              )
+            : await client.request<Promise<{ user: any }>>(
+                CreateNextUserByEmail,
+                {
+                  email: credentials.email,
+                  password: await hash(credentials.password as string, 12),
+                  firstName: credentials.firstName,
+                  secondName: credentials.secondName,
+                  lastName: credentials.lastName,
+                  motherFamilyName: credentials.motherFamilyName,
+                },
+                {
+                  Authorization: `Bearer ${process.env.HYGRAPH_PAT_TOKEN}`,
+                },
+              );
 
-        if (!user && typeof credentials.password === 'string') {
-          const { newUser } = await client.request<Promise<iSessionData | any>>(
-            CreateNextUserByEmail,
-            {
-              email: credentials.email,
-              password: await hash(credentials.password, 12),
-            },
-          );
+        const { user } = response;
 
-          return {
-            // user: {
-            id: newUser.id,
-            email: newUser.email,
-            role: newUser.role,
-            agreedTerms: newUser.agreedTerms,
-            setPasswd: newUser.setPasswd,
-            isChild: newUser.isChild,
-            personalData: newUser.personalData,
-            karateData: newUser.karateData,
-            medicalData: newUser.medicalData,
-            // },
-          };
+        if (!credentials.firstName || credentials.firstName === '') {
+          const isValid =
+            credentials.password && typeof credentials.password === 'string'
+              ? await compare(credentials.password, user.password)
+              : false;
+
+          if (!isValid) {
+            throw new Error('Wrong credentials. Try again.');
+          }
         }
 
-        const isValid =
-          credentials.password && typeof credentials.password === 'string'
-            ? await compare(credentials.password, user.password)
-            : false;
-
-        if (!isValid) {
-          throw new Error('Wrong credentials. Try again.');
-        }
-
-        return {
-          // user: {
-          id: user.id,
-          email: user.email,
-          role: user.role,
-          isChild: user.isChild,
-          agreedTerms: user.agreedTerms,
-          setPasswd: user.setPasswd,
-          personalData: user.personalData,
-          karateData: user.karateData,
-          medicalData: user.medicalData,
-          // },
-        };
+        return user;
       },
     }),
   ],

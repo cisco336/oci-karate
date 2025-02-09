@@ -19,6 +19,8 @@ declare module 'next-auth' {
     token?: string;
     error?: string;
     user?: User;
+    personalData?: iPersonalData | null;
+    activated?: boolean;
   }
 
   export interface User {
@@ -28,7 +30,7 @@ declare module 'next-auth' {
     motherFamilyName?: any;
     idType?: IdType;
     idNumber?: string;
-    email: string;
+    email?: string;
     id?: string;
     phone?: string;
     birthDay?: string;

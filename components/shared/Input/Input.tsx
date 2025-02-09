@@ -78,14 +78,18 @@ export const Input = ({
         htmlFor={`${label}`}>
         {label}
       </label>
-      <input
+      <Field
         name={name}
         className={`${inputClass({ color, variant })}`}
-        placeholder={`${variant !== inputVariants.Underline ? placeholder : ''}`}></input>
-      {/* <ErrorMessage
-                name="cinturon"
-                component="div"
-            /> */}
+        placeholder={`${variant !== inputVariants.Underline ? placeholder : ''}`}
+        type={type}>
+        {/* {options} TODO spread and style options */}
+      </Field>
+      <ErrorMessage
+        className="text-red-400 text-sm px-2"
+        name={name ?? ''}
+        component={'div'}
+      />
     </div>
   );
 };

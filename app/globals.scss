@@ -30,4 +30,18 @@
     @apply border-foreground/20 bg-zinc-900;
     @apply text-gray-100;
   }
+
+  .border-gradient {
+    background:
+      linear-gradient(#18181b, #18181b) padding-box,
+      linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.7) -0%,
+          rgba(57, 57, 65, 0.6) 80%,
+          // rgba(24, 24, 27, 0.8) 100%
+        )
+        border-box;
+    border-radius: 10px;
+    border: 1px solid transparent;
+  }
 }
