@@ -50,7 +50,7 @@ export const Profile = () => {
         ...(data as iSessionData)?.karateData,
         isChild: (data as iSessionData)?.isChild,
         parents: (data as iSessionData)?.parents ?? [],
-        role: Role[(data as iSessionData)?.role[0]] ?? Role.STUDENT,
+        role: Role[(data as iSessionData)?.role?.[0]] ?? Role.STUDENT,
         kyu: kyuDan[(data as iSessionData)?.karateData?.kyu ?? kyuDan.NA],
         dan: kyuDan[(data as iSessionData)?.karateData?.dan ?? kyuDan.NA],
       }}>

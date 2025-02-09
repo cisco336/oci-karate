@@ -9,12 +9,12 @@ import {
   buttonVariants,
 } from '@/components/shared/Button';
 import * as Yup from 'yup';
-import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import path from '../img/path.jpg';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
-  const { data: session, status } = useSession();
+  const router = useRouter();
   const submit = async (
     values: {
       email: string;
@@ -66,6 +66,7 @@ export default function Login() {
 
     if (response?.ok) {
       resetForm();
+      router.push('/dashboard');
       return;
     }
   };

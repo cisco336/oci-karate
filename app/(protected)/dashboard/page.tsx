@@ -1,13 +1,15 @@
-import { auth } from '@/auth';
+'use client';
 import { redirect } from 'next/navigation';
 import React from 'react';
+import { useSession } from 'next-auth/react';
 
-const Dashboard = async () => {
-  const session = await auth();
-
+const Dashboard = () => {
+  const { data: session } = useSession();
   if (!session) {
     return redirect('/');
   }
+
+  console.log(session);
 
   const unactivatedMessage = (
     <div className="max-w-[600px]">

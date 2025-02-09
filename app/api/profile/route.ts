@@ -10,7 +10,7 @@ const client = new GraphQLClient(
   process.env.HYGRAPH_URL ? process.env.HYGRAPH_URL : '',
   {
     headers: {
-      Authorization: `Bearer ${process.env.HYGRAPH_TOKEN}`,
+      Authorization: `Bearer ${process.env.HYGRAPH_PAT_TOKEN}`,
     },
   },
 );
@@ -31,8 +31,8 @@ const UpdateUserData = gql`
     $secondName: String
     $birthDay: Date
     $phone: String
-    $idType: IdType!
-    $idNumber: String!
+    $idType: IdType
+    $idNumber: String
     $belt: Cinturon
     $dan: KyuDan
     $kyu: KyuDan

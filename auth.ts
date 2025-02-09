@@ -33,6 +33,7 @@ const GetUserByEmail = gql`
   query GetUserByEmail($email: String!) {
     user: userModel(where: { email: $email }, stage: DRAFT) {
       id
+      activated
       password
       role
       isChild
