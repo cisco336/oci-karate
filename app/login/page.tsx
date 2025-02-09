@@ -9,33 +9,63 @@ import {
   buttonVariants,
 } from '@/components/shared/Button';
 import * as Yup from 'yup';
-import { auth } from '@/auth';
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import path from '../img/path.jpg';
 
-export default function Login({
-  searchParams,
-}: {
-  searchParams: { message: string };
-}) {
-  const submit = async (values: { email: string; password: string }) => {
-    const { email, password } = values;
-    const response = await signIn('credentials', {
+export default function Login() {
+  const { data: session, status } = useSession();
+  const submit = async (
+    values: {
+      email: string;
+      password: string;
+      firstName: string;
+      secondName: string;
+      lastName: string;
+      motherFamilyName: string;
+    },
+    {
+      setErrors,
+      resetForm,
+    }: {
+      setErrors: (errors: { [key: string]: string }) => void;
+      resetForm: () => void;
+    },
+  ) => {
+    const {
       email,
       password,
+      firstName,
+      secondName,
+      lastName,
+      motherFamilyName,
+    } = values;
+
+    const data = !register
+      ? {
+          email,
+          password,
+        }
+      : {
+          email,
+          password,
+          firstName,
+          secondName,
+          lastName,
+          motherFamilyName,
+        };
+    const response = await signIn('credentials', {
+      ...data,
       redirect: false,
     });
 
-    console.log('RESPONSE: ', response);
     if (response?.error) {
+      setErrors({ password: 'El usuario o la contraseña son incorrectas.' });
       return;
     }
-    const { agreedTerms } = await (auth() as unknown as {
-      agreedTerms: boolean;
-    });
 
-    if (!agreedTerms) {
-      console.log('Terms not agreed');
+    if (response?.ok) {
+      resetForm();
       return;
     }
   };
@@ -95,7 +125,14 @@ export default function Login({
           onSubmit={submit}
           validateOnBlur={true}
           validateOnChange={true}
-          initialValues={{ email: '', password: '' }}
+          initialValues={{
+            email: '',
+            password: '',
+            firstName: '',
+            secondName: '',
+            lastName: '',
+            motherFamilyName: '',
+          }}
           validationSchema={Yup.object().shape({
             email: Yup.string().email().required(),
             password: Yup.string().required(),
