@@ -1,63 +1,53 @@
-import {
-  getData,
-  quoteQueryBySlug,
-  articlesByTagQuery,
-  getCategoryHeaders,
-} from '../services/hygraph.service';
+import { getData } from '../services/hygraph.service';
 import Quote from '@/components/Quote/Quote';
-import { Suspense } from 'react';
 import { Carousel } from '@/components/Carousel/Carousel';
-import { categories } from '@/services/enums';
 import { Headers } from '@/components/Categories/Headers';
 import { ArticleType } from '@/@types/Article';
-import { QuoteType } from '@/@types';
-import { Loader } from '@/components/shared/Loader/Loader';
+import {
+  articlesByTagQuery,
+  articlesByTagQueryPrivate,
+} from '@/services/queries';
+import { auth } from '@/auth';
 
 export interface ArticleTypesResponse {
   articleSchemas: ArticleType[];
 }
 
 async function Index() {
-  const categoriesNames = Object.values(categories).map((category) => {
-    return getData<ArticleTypesResponse>(getCategoryHeaders, {
-      tag: ['header'],
-      category: [category],
-    });
-  });
+  const session = await auth();
+  const articlesByTag: ArticleTypesResponse =
+    session && session.activated
+      ? await getData<ArticleTypesResponse>(articlesByTagQueryPrivate, {
+          tag: ['header', 'carousel', 'main_quote'],
+        })
+      : await getData<ArticleTypesResponse>(articlesByTagQuery, {
+          tag: ['header', 'carousel', 'main_quote'],
+        });
 
-  const categoryHeader = await Promise.allSettled([...categoriesNames]).then(
-    (responses) =>
-      responses.filter(
-        (response) =>
-          response.status === 'fulfilled' &&
-          response.value.articleSchemas.length,
-      ),
+  const carouselArticles = articlesByTag.articleSchemas.filter((article) =>
+    article?.tag?.includes('carousel'),
   );
 
-  const mainquote: Promise<QuoteType> = getData<QuoteType>(quoteQueryBySlug, {
-    slug: 'quote-manos-vacias',
-  });
-
-  const articles: Promise<ArticleTypesResponse> = getData<ArticleTypesResponse>(
-    articlesByTagQuery,
-    {
-      tag: ['carousel'],
-    },
+  const mainQuote = articlesByTag.articleSchemas.find((article) =>
+    article?.tag?.includes('main_quote'),
   );
 
-  const [quote, contents] = await Promise.allSettled([mainquote, articles]);
+  const headerArticles = articlesByTag.articleSchemas.filter((article) => {
+    return article?.tag?.includes('header');
+  });
+
   return (
-    <Suspense fallback={<Loader />}>
-      {contents.status === 'fulfilled' && quote.status === 'fulfilled' && (
-        <div className="w-full flex flex-col gap-20 items-center animate-fade-in">
-          <Carousel articles={contents.value.articleSchemas} />
-          <div className="mx-auto flex p-6">
-            <Quote {...quote.value} />
+    <div className="w-full flex flex-col gap-20 items-center animate-fade-in">
+      <Carousel articles={carouselArticles} />
+      <div className="mx-auto flex p-6 flex-col gap-20">
+        {mainQuote && (
+          <div className="w-full flex justify-center">
+            <Quote {...mainQuote} />
           </div>
-          <Headers data={categoryHeader} />
-        </div>
-      )}
-    </Suspense>
+        )}
+        {headerArticles && <Headers data={headerArticles} />}
+      </div>
+    </div>
   );
 }
 
