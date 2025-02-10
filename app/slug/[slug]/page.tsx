@@ -1,7 +1,9 @@
-import { getData, getSingleArticleBySlug } from '@/services/hygraph.service';
+import { getData } from '@/services/hygraph.service';
 import React from 'react';
 import parse from 'html-react-parser';
-import { RenderArticle } from './pageHelpers';
+import { getSingleArticleBySlug } from '@/services/queries';
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
 
 export type ArticleSegmentChildType = {
   text: string;
@@ -20,6 +22,7 @@ const SingleArticleBySlug = async ({ params }: any) => {
       slug: params?.slug,
     },
   );
+  const session = await auth();
   const {
     articleTitle,
     createdAt,
@@ -33,6 +36,11 @@ const SingleArticleBySlug = async ({ params }: any) => {
   const createdDate = new Date(createdAt).toLocaleString();
   const updatedDate = new Date(createdAt).toLocaleString();
   const content = parse(htmlContent ? htmlContent : articleContent.html);
+  const articleIsPrivate = tag?.includes('private');
+  if (articleIsPrivate && !session) {
+    redirect('/');
+  }
+
   return (
     <>
       <div className="p-[2rem] max-w-[600px]">

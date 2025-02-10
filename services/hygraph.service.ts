@@ -26,51 +26,6 @@ export const articlesQuery = gql`
   }
 `;
 
-export const articlesByTagQuery = gql`
-  query Articles($tag: [Tags!]) {
-    articleSchemas(where: { tag_contains_all: $tag }) {
-      id
-      articleTitle
-      createdAt
-      slug
-      updatedAt
-      abstract
-      tag
-      asset {
-        url
-      }
-      images {
-        url
-      }
-      articleContent {
-        html
-        json
-      }
-    }
-  }
-`;
-
-export const getSingleArticleBySlug = gql`
-  query Article($slug: String!) {
-    articleSchema(where: { slug: $slug }) {
-      articleTitle
-      createdAt
-      updatedAt
-      tag
-      asset {
-        url
-      }
-      images {
-        url
-      }
-      articleContent {
-        html
-        json
-      }
-    }
-  }
-`;
-
 export const getArticlesByCategory = gql`
   query ArticleByCategory($category: [Categories!], $tag: [Tags!]) {
     articleSchemas(
@@ -90,7 +45,7 @@ export const getArticlesByCategory = gql`
         url
       }
       articleContent {
-        json
+        html
       }
     }
   }
@@ -151,7 +106,7 @@ export const getCategoryHeaders = gql`
         url
       }
       articleContent {
-        json
+        html
       }
     }
   }

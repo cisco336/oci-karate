@@ -32,35 +32,24 @@ export default function Login() {
       resetForm: () => void;
     },
   ) => {
-    const {
-      email,
-      password,
-      firstName,
-      secondName,
-      lastName,
-      motherFamilyName,
-    } = values;
-
-    const data = !register
-      ? {
-          email,
-          password,
-        }
-      : {
-          email,
-          password,
-          firstName,
-          secondName,
-          lastName,
-          motherFamilyName,
-        };
     const response = await signIn('credentials', {
-      ...data,
+      ...values,
+      register,
       redirect: false,
     });
-
     if (response?.error) {
-      setErrors({ password: 'El usuario o la contraseña son incorrectas.' });
+      console.log('error: ', response.error);
+
+      if (response.error === 'Configuration') {
+        setErrors({ password: 'El usuario o la contraseña son incorrectas.' });
+      }
+
+      if (response.error === 'AccessDenied') {
+        setErrors({
+          email:
+            'Ya existe una cuenta con ese email, por favor intenta iniciar sessión o comunicate con el administrador del sitio web.',
+        });
+      }
       return;
     }
 
@@ -148,7 +137,10 @@ export default function Login() {
                       buttonType={buttonTypes.Button}
                       label={register ? 'inicia sesión' : 'registrate'}
                       color={buttonColor.Accent}
-                      click={() => setRegister(!register)}
+                      click={() => {
+                        setRegister(!register);
+                        resetForm();
+                      }}
                       loading={isSubmitting}
                       variant={buttonVariants.Solid}
                     />

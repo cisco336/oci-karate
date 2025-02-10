@@ -28,9 +28,9 @@ declare module 'next-auth' {
     secondName?: any;
     lastName?: string;
     motherFamilyName?: any;
-    idType?: IdType;
+    idType?: string;
     idNumber?: string;
-    email?: string;
+    email?: string | null | undefined;
     id?: string;
     phone?: string;
     birthDay?: string;
@@ -48,10 +48,7 @@ declare module 'next-auth' {
     children?: any[] | null;
     parents?: any[] | null;
   }
-}
 
-declare module 'next-auth/jwt' {
-  /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
   export interface JWT {
     refreshTokenExpires?: number;
     accessTokenExpires?: number;
