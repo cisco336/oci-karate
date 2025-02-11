@@ -4,7 +4,7 @@ import { Role, BeltColors, kyuDan, IdType } from '@prisma/client';
 import { Formik, Form } from 'formik';
 import React, { useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
-import PersonalForm from './personalForm';
+import PersonalForm from './personalForm/personalForm';
 import KarateForm from './karateForm';
 import { useSession } from 'next-auth/react';
 import {
@@ -55,6 +55,7 @@ export const Profile = () => {
         dan: kyuDan[(data as iSessionData)?.karateData?.dan ?? kyuDan.NA],
       }}>
       {(formProps) => {
+        // console.log(data);
         return (
           <Form className="max-w-[1200px] py-[2rem] text-gray-900 flex flex-col gap-6 [&_label]:text-gray-300 [&_label]:font-thin">
             <div className="grid md:grid-cols-2 gap-4">

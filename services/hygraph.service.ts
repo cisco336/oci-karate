@@ -68,6 +68,7 @@ export async function getData<T>(
     category?: string[];
     id?: string;
     agreedTerms?: boolean;
+    name?: string;
   },
 ): Promise<T> {
   const data = await graphConnect.request<T>(query, parameters);
