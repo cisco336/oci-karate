@@ -4,8 +4,8 @@ import { Role, BeltColors, kyuDan, IdType } from '@prisma/client';
 import { Formik, Form } from 'formik';
 import React, { useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
-import PersonalForm from './personalForm/personalForm';
-import KarateForm from './karateForm';
+import { PersonalForm } from './personalForm/personalForm';
+import KarateForm from './karateForm/karateForm';
 import { useSession } from 'next-auth/react';
 import {
   Button,
@@ -57,15 +57,9 @@ export const Profile = () => {
       {(formProps) => {
         // console.log(data);
         return (
-          <Form className="max-w-[1200px] py-[2rem] text-gray-900 flex flex-col gap-6 [&_label]:text-gray-300 [&_label]:font-thin">
-            <div className="grid md:grid-cols-2 gap-4">
-              <h2 className="col-span-full ">Información personal</h2>
-              <PersonalForm />
-            </div>
-            <div className="grid md:grid-cols-3 gap-4">
-              <h2 className="col-span-full ">Información de Karate</h2>
-              <KarateForm />
-            </div>
+          <Form className="max-w-[800px] py-[2rem] text-gray-900 flex flex-col gap-6 [&_label]:text-gray-300 [&_label]:font-thin">
+            <PersonalForm />
+            <KarateForm />
             <span className="flex justify-end">
               <Button
                 color={buttonColor.Accent}

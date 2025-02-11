@@ -20,14 +20,15 @@ export const FIELDS = [
     type: 'text',
   },
   {
-    name: 'idNumber',
-    label: 'Cédula / Pasaporte',
-    type: 'text',
+    name: 'idType',
+    label: 'Tipo de identificación',
+    type: 'select',
+    enumName: 'IdType',
   },
   {
-    name: 'idType',
-    label: 'Tipo Cédula',
-    type: 'select',
+    name: 'idNumber',
+    label: 'Número de identificación',
+    type: 'text',
   },
   {
     name: 'birthDay',
