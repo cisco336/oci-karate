@@ -1,22 +1,12 @@
 export const FIELDS = [
   {
-    name: 'firstName',
-    label: 'Primer nombre',
+    name: 'names',
+    label: 'Nombres',
     type: 'text',
   },
   {
-    name: 'secondName',
-    label: 'Segundo nombre',
-    type: 'text',
-  },
-  {
-    name: 'lastName',
-    label: 'Primer apellido',
-    type: 'text',
-  },
-  {
-    name: 'motherFamilyName',
-    label: 'Segundo apellido',
+    name: 'lastNames',
+    label: 'Apellidos',
     type: 'text',
   },
   {
@@ -31,7 +21,7 @@ export const FIELDS = [
     type: 'text',
   },
   {
-    name: 'birthDay',
+    name: 'birthday',
     label: 'Cumpleaños',
     type: 'date',
   },
@@ -39,15 +29,5 @@ export const FIELDS = [
     name: 'phone',
     label: 'Teléfono',
     type: 'text',
-  },
-  {
-    name: 'isChild',
-    label: 'Menor de edad?',
-    type: 'checkbox',
-  },
-  {
-    name: 'bio',
-    label: 'Bio',
-    type: 'textarea',
   },
 ];

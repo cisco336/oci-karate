@@ -7,6 +7,7 @@ export const renderField = (
     label: string;
     type: string;
     enumName?: string;
+    disabled?: boolean;
   },
   enums: { [key: string]: string[] },
 ) => {
@@ -25,6 +26,7 @@ export const renderField = (
           className={fieldClassNames}
           type={field.type}
           name={field.name}
+          disabled={Boolean(field.disabled)}
         />
       ) : (
         <Field
@@ -33,7 +35,7 @@ export const renderField = (
           name={field.name}
           component="select">
           {field.enumName &&
-            enums[field.enumName].map((c) => (
+            enums[field.enumName ?? ''].map((c) => (
               <option
                 key={c}
                 value={c}>

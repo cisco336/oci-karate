@@ -4,7 +4,14 @@ import { getData } from '@/services/hygraph.service';
 import { GetEnumsValuesType, getEnumValues } from '@/services/queries';
 
 const getEnums = async () => {
-  const ENUMS_NAMES = ['Categories', 'IdType', 'Role', 'Kata', 'KyuDan'];
+  const ENUMS_NAMES = [
+    'Categories',
+    'IdType',
+    'Role',
+    'Kata',
+    'KyuDan',
+    'Cinturon',
+  ];
   const enums = await Promise.allSettled(
     ENUMS_NAMES.map((name) => {
       return getData<GetEnumsValuesType>(getEnumValues, { name });

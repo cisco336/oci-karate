@@ -31,24 +31,18 @@ export type tokenType = {
 
 const GetUserByEmail = gql`
   query GetUserByEmail($email: String!) {
-    user: userModel(where: { email: $email }, stage: DRAFT) {
+    user: userModel(where: { email: $email }) {
       id
       activated
       password
-      role
-      isChild
       agreedTerms
-      setPasswd
       personalData {
         id
         idType
-        lastName
-        motherFamilyName
-        secondName
-        firstName
+        names
+        lastNames
         birthDay
         idNumber
-        bio
         phone
       }
       karateData {
@@ -65,22 +59,16 @@ const CreateNextUserByEmail = gql`
   mutation CreateNextUserByEmail(
     $email: String!
     $password: String!
-    $firstName: String!
-    $secondName: String!
-    $lastName: String!
-    $motherFamilyName: String!
+    $names: String!
+    $lastNames: String!
+    $birthday: String!
   ) {
     user: createUserModel(
       data: {
         email: $email
         password: $password
         personalData: {
-          create: {
-            firstName: $firstName
-            lastName: $lastName
-            secondName: $secondName
-            motherFamilyName: $motherFamilyName
-          }
+          create: { names: $names, lastNames: $lastNames, birthday: $birthday }
         }
       }
     ) {
@@ -88,10 +76,9 @@ const CreateNextUserByEmail = gql`
       email
       activated
       personalData {
-        firstName
-        secondName
-        lastName
-        motherFamilyName
+        names
+        lastNames
+        birthday
       }
     }
   }
@@ -101,24 +88,27 @@ const userLogin = async (
   email: string,
   password: string,
 ): Promise<User | null> => {
-  const response = await client.request<Promise<{ user: any }>>(
-    GetUserByEmail,
-    {
-      email,
-    },
-    {
-      Authorization: `Bearer ${process.env.HYGRAPH_PAT_TOKEN}`,
-    },
-  );
-  const { user } = response;
+  try {
+    const response = await client.request<Promise<{ user: any }>>(
+      GetUserByEmail,
+      {
+        email,
+      },
+      {
+        Authorization: `Bearer ${process.env.HYGRAPH_PAT_TOKEN}`,
+      },
+    );
+    const { user } = response;
 
-  const isValid = password ? await compare(password, user.password) : false;
+    const isValid = password ? await compare(password, user.password) : false;
 
-  if (!isValid) {
-    throw new Error('Wrong credentials. Try again.');
+    if (!isValid) {
+      throw new Error('Wrong credentials. Try again.');
+    }
+    return user;
+  } catch (error) {
+    return null;
   }
-
-  return user;
 };
 
 export const config = {
@@ -147,10 +137,9 @@ export const config = {
           Record<
             | 'email'
             | 'password'
-            | 'firstName'
-            | 'secondName'
-            | 'lastName'
-            | 'motherFamilyName'
+            | 'names'
+            | 'lastNames'
+            | 'birthday'
             | 'register',
             unknown
           >
@@ -182,10 +171,9 @@ export const config = {
             {
               email: credentials.email,
               password: await hash(credentials.password as string, 12),
-              firstName: credentials.firstName,
-              secondName: credentials.secondName,
-              lastName: credentials.lastName,
-              motherFamilyName: credentials.motherFamilyName,
+              names: credentials.names,
+              lastNames: credentials.lastNames,
+              birthday: credentials.birthday,
             },
             {
               Authorization: `Bearer ${process.env.HYGRAPH_PAT_TOKEN}`,
@@ -213,7 +201,10 @@ export const config = {
       email?: { verificationRequest?: boolean };
       credentials?: Record<string, any>;
     }) {
-      if (credentials?.register === 'true') {
+      if (
+        credentials?.register === 'true' &&
+        (user as unknown as { error: string }).error
+      ) {
         throw new Error((user as unknown as { error: string }).error);
       }
 

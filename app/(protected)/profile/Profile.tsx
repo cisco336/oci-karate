@@ -1,8 +1,7 @@
 'use client';
 import { iSessionData } from '@/models/entity.models';
-import { Role, BeltColors, kyuDan, IdType } from '@prisma/client';
 import { Formik, Form } from 'formik';
-import React, { useState } from 'react';
+import React from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import { PersonalForm } from './personalForm/personalForm';
 import KarateForm from './karateForm/karateForm';
@@ -14,10 +13,11 @@ import {
   buttonVariants,
 } from '@/components/shared/Button';
 import { Loader } from '@/components/shared/Loader/Loader';
+import { capitalizeFirstLetter } from '@/helpers/capitalize';
+import { checkCinturon } from './helpers/checkCinturon';
 
 export const Profile = () => {
   const sessionAuth = useSession();
-
   const { data, status, update } = sessionAuth;
 
   const handleSubmit = async (values: any) => {
@@ -50,16 +50,19 @@ export const Profile = () => {
         ...(data as iSessionData)?.karateData,
         isChild: (data as iSessionData)?.isChild,
         parents: (data as iSessionData)?.parents ?? [],
-        role: Role[(data as iSessionData)?.role?.[0]] ?? Role.STUDENT,
-        kyu: kyuDan[(data as iSessionData)?.karateData?.kyu ?? kyuDan.NA],
-        dan: kyuDan[(data as iSessionData)?.karateData?.dan ?? kyuDan.NA],
+        kyu: capitalizeFirstLetter(
+          (data as iSessionData)?.karateData?.kyu ?? 'NOVENO',
+        ),
+        dan: (data as iSessionData)?.karateData?.dan ?? 'NA',
       }}>
       {(formProps) => {
-        // console.log(data);
+        console.log(formProps.values.dan);
+        const updatedValues = checkCinturon(formProps.values);
+        formProps.values = updatedValues as typeof formProps.values;
         return (
           <Form className="max-w-[800px] py-[2rem] text-gray-900 flex flex-col gap-6 [&_label]:text-gray-300 [&_label]:font-thin">
-            <PersonalForm />
-            <KarateForm />
+            <PersonalForm {...formProps.values} />
+            <KarateForm {...formProps.values} />
             <span className="flex justify-end">
               <Button
                 color={buttonColor.Accent}

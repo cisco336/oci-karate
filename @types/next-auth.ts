@@ -24,10 +24,8 @@ declare module 'next-auth' {
   }
 
   export interface User {
-    firstName?: string;
-    secondName?: any;
-    lastName?: string;
-    motherFamilyName?: any;
+    names?: string;
+    lastNames?: string;
     idType?: string;
     idNumber?: string;
     email?: string | null | undefined;
@@ -40,7 +38,6 @@ declare module 'next-auth' {
     personalData?: iPersonalData | null;
     karateData?: iKarateData | null;
     medicalData?: iMedicalData | null;
-    role: Role[];
     isChild: boolean;
     agreedTerms?: boolean;
     setPasswd?: boolean;
