@@ -16,11 +16,13 @@ declare module 'next-auth' {
     refreshTokenExpires?: number;
     accessTokenExpires?: string;
     refreshToken?: string;
+    id?: string;
     token?: string;
     error?: string;
     user?: User;
     personalData?: iPersonalData | null;
     activated?: boolean;
+    agreedTerms?: boolean;
   }
 
   export interface User {
