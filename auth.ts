@@ -1,13 +1,15 @@
 import NextAuth, { Account, NextAuthConfig, Profile, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { compare, hash } from 'bcryptjs';
-import { GraphQLClient, gql } from 'graphql-request';
+import { GraphQLClient } from 'graphql-request';
+import { GetUserByEmail } from './services/queries';
+import { CreateNextUserByEmail } from './services/mutations';
 
 const client = new GraphQLClient(
   process.env.HYGRAPH_URL ? process.env.HYGRAPH_URL : '',
   {
     headers: {
-      Authorization: `Bearer ${process.env.HYGRAPH_TOKEN}`,
+      Authorization: `Bearer ${process.env.HYGRAPH_PAT_TOKEN}`,
     },
   },
 );
@@ -28,61 +30,6 @@ export type tokenType = {
   exp: number;
   jti: string;
 };
-
-const GetUserByEmail = gql`
-  query GetUserByEmail($email: String!) {
-    user: userModel(where: { email: $email }) {
-      id
-      activated
-      password
-      agreedTerms
-      personalData {
-        id
-        idType
-        names
-        lastNames
-        birthDay
-        idNumber
-        phone
-      }
-      karateData {
-        id
-        cinturon
-        dan
-        kyu
-      }
-    }
-  }
-`;
-
-const CreateNextUserByEmail = gql`
-  mutation CreateNextUserByEmail(
-    $email: String!
-    $password: String!
-    $names: String!
-    $lastNames: String!
-    $birthday: String!
-  ) {
-    user: createUserModel(
-      data: {
-        email: $email
-        password: $password
-        personalData: {
-          create: { names: $names, lastNames: $lastNames, birthday: $birthday }
-        }
-      }
-    ) {
-      id
-      email
-      activated
-      personalData {
-        names
-        lastNames
-        birthday
-      }
-    }
-  }
-`;
 
 const userLogin = async (
   email: string,
@@ -105,6 +52,7 @@ const userLogin = async (
     if (!isValid) {
       throw new Error('Wrong credentials. Try again.');
     }
+    delete user.password;
     return user;
   } catch (error) {
     return null;

@@ -38,7 +38,7 @@ export default function RootLayout({
             <main className="flex flex-col items-center flex-1 w-full h-full overflow-hidden">
               {children}
             </main>
-            <Footer />
+            {/* <Footer /> */}
           </EnumsProvider>
         </SessionProvider>
       </body>

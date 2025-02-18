@@ -79,10 +79,11 @@ export async function mutateData<T>(
   mutation: string,
   parameters: {
     id: string;
-    agreedTerms: boolean;
   },
 ): Promise<T> {
-  const data = await graphConnect.request<T>(mutation, parameters);
+  const data = await graphConnect.request<T>(mutation, parameters, {
+    Authorization: `Bearer ${process.env.HYGRAPH_PAT_TOKEN}`,
+  });
   console.log('DATA', data);
   return data;
 }
