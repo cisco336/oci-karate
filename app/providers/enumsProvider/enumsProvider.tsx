@@ -5,12 +5,14 @@ import { GetEnumsValuesType, getEnumValues } from '@/services/queries';
 
 const getEnums = async () => {
   const ENUMS_NAMES = [
+    'BloodTypes',
     'Categories',
+    'Cinturon',
     'IdType',
-    'Role',
     'Kata',
     'KyuDan',
-    'Cinturon',
+    'Role',
+    'Tags',
   ];
   const enums = await Promise.allSettled(
     ENUMS_NAMES.map((name) => {
@@ -29,6 +31,9 @@ const getEnums = async () => {
     (e) =>
       (e as unknown as { status: string; value: GetEnumsValuesType }).value,
   );
+
+  console.log('parsedEnums:', parsedEnums);
+
   return parsedEnums;
 };
 

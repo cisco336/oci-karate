@@ -14,23 +14,6 @@ const client = new GraphQLClient(
   },
 );
 
-export type sessionType = {
-  user: {
-    name?: string;
-    email: string;
-  };
-  expires: string;
-};
-
-export type tokenType = {
-  sub: string;
-  user: User;
-  id: string;
-  iat: number;
-  exp: number;
-  jti: string;
-};
-
 const userLogin = async (
   email: string,
   password: string,
@@ -82,6 +65,7 @@ export const config = {
       },
       authorize: async (
         credentials: Partial<
+          // TODO: fix this type
           Record<
             | 'email'
             | 'password'
@@ -178,6 +162,6 @@ export const config = {
   },
 } satisfies NextAuthConfig;
 
-const protectedRoutes = ['/dashboard', '/profile'];
+const protectedRoutes = ['/dashboard', '/profile', '/terms'];
 
 export const { handlers, auth } = NextAuth(config);
