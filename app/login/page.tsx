@@ -19,10 +19,9 @@ export default function Login() {
     values: {
       email: string;
       password: string;
-      firstName: string;
-      secondName: string;
-      lastName: string;
-      motherFamilyName: string;
+      names: string;
+      lastNames: string;
+      birthday: string;
     },
     {
       setErrors,
@@ -40,7 +39,10 @@ export default function Login() {
     if (response?.error) {
       console.log('error: ', response.error);
 
-      if (response.error === 'Configuration') {
+      if (
+        response.error === 'Configuration' ||
+        response.error === 'CredentialsSignin'
+      ) {
         setErrors({ password: 'El usuario o la contraseña son incorrectas.' });
       }
 
@@ -82,28 +84,21 @@ export default function Login() {
   const registerForm = (
     <>
       <Input
-        label="Primer nombre"
-        name="firstName"
+        label="Nombres"
+        name="names"
         type="text"
-        placeholder="Tu primer nombre"
+        placeholder="Tu nombre(s)"
       />
       <Input
-        label="Segundo nombre"
-        name="secondName"
+        label="Apellidos"
+        name="lastNames"
         type="text"
-        placeholder="Tu segundo nombre"
+        placeholder="Tu apellido(s)"
       />
       <Input
-        label="Primer apellido"
-        name="lastName"
-        type="text"
-        placeholder="Tu primer apellido"
-      />
-      <Input
-        label="Segundo apellido"
-        name="motherFamilyName"
-        type="text"
-        placeholder="Tu segundo apellido"
+        label="Fecha de nacimiento"
+        name="birthday"
+        type="date"
       />
     </>
   );
@@ -118,10 +113,9 @@ export default function Login() {
           initialValues={{
             email: '',
             password: '',
-            firstName: '',
-            secondName: '',
-            lastName: '',
-            motherFamilyName: '',
+            names: '',
+            lastNames: '',
+            birthday: '',
           }}
           validationSchema={Yup.object().shape({
             email: Yup.string().email().required(),

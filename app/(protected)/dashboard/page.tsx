@@ -5,8 +5,13 @@ import { useSession } from 'next-auth/react';
 
 const Dashboard = () => {
   const { data: session } = useSession();
+
   if (!session) {
     return redirect('/');
+  }
+
+  if (session && !session.agreedTerms) {
+    return redirect('/terms');
   }
 
   console.log(session);
@@ -23,7 +28,7 @@ const Dashboard = () => {
   return (
     <div className="p-[2rem] min-w-[100%] flex flex-col">
       <h1 className="text-6xl mb-[2rem] font-thin mr-auto">
-        Hola {session && session?.personalData?.firstName}
+        Hola {session && session?.personalData?.names}
       </h1>
       {session && !session?.activated && unactivatedMessage}
     </div>

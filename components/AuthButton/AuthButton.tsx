@@ -28,7 +28,7 @@ export default function AuthButton() {
       }}
       label={`${
         data
-          ? `Hola ${(data as iSessionData)?.personalData?.firstName ?? 'karateca'}`
+          ? `Hola ${(data as iSessionData)?.personalData?.names ?? 'karateca'}`
           : 'Loading'
       }`}
       icon={<MdArrowDropDown size={'24'} />}>

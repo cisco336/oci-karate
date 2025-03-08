@@ -54,9 +54,9 @@ const CategoryArticleListPage = async ({
       {headerContent}
       <div className="flex gap-4 flex-col md:flex-row">
         <div className="grow max-w-[800px] flex flex-col gap-6">
-          <h1 className="font-thin">
+          <h2 className="font-thin">
             {capitalizeFirstLetter(articleSchema.articleTitle)}
-          </h1>
+          </h2>
           {content}
         </div>
         {articleSchema.asset.url && (

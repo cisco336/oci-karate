@@ -6,6 +6,8 @@ import { ArticleType } from '@/@types/Article';
 import {
   articlesByTagQuery,
   articlesByTagQueryPrivate,
+  GetEnumsValuesType,
+  getEnumValues,
 } from '@/services/queries';
 import { auth } from '@/auth';
 
@@ -15,6 +17,7 @@ export interface ArticleTypesResponse {
 
 async function Index() {
   const session = await auth();
+
   const articlesByTag: ArticleTypesResponse =
     session && session.activated
       ? await getData<ArticleTypesResponse>(articlesByTagQueryPrivate, {

@@ -7,6 +7,7 @@ import Footer from '@/components/Footer/Footer';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { SessionProvider } from 'next-auth/react';
+import { EnumsProvider } from './providers/enumsProvider/enumsProvider';
 config.autoAddCss = false;
 
 const defaultUrl = process.env.VERCEL_URL
@@ -30,13 +31,15 @@ export default function RootLayout({
       className={GeistSans.className}>
       <body className="bg-background text-foreground flex flex-col min-h-screen relative">
         <SessionProvider>
-          <div className="z-10 sticky top-0">
-            <Nav />
-          </div>
-          <main className="flex flex-col items-center flex-1 w-full h-full overflow-hidden">
-            {children}
-          </main>
-          <Footer />
+          <EnumsProvider>
+            <div className="z-10 sticky top-0">
+              <Nav />
+            </div>
+            <main className="flex flex-col items-center flex-1 w-full h-full overflow-hidden">
+              {children}
+            </main>
+            {/* <Footer /> */}
+          </EnumsProvider>
         </SessionProvider>
       </body>
     </html>

@@ -37,12 +37,9 @@ export interface iKarateData {
 export interface iPersonalData {
   id: string;
   idType: IdType;
-  lastName: string;
-  motherFamilyName?: any;
-  bio?: string;
-  secondName?: any;
-  firstName: string;
-  birthDay: string;
+  lastNames: string;
+  names: string;
+  birthday: string;
   idNumber: string;
   phone?: string;
 }
