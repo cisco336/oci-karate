@@ -34,14 +34,17 @@ export const renderField = (
           type={field.type}
           name={field.name}
           component="select">
-          {field.enumName &&
-            enums[field.enumName ?? ''].map((c) => (
-              <option
-                key={c}
-                value={c}>
-                {capitalizeFirstLetter(c.replaceAll('_', ' ').toString())}
-              </option>
-            ))}
+          {field.enumName && enums[field.enumName ?? '']
+            ? enums[field.enumName ?? ''].map((c) => {
+                return (
+                  <option
+                    key={c}
+                    value={c}>
+                    {capitalizeFirstLetter(c.replaceAll('_', ' ').toString())}
+                  </option>
+                );
+              })
+            : null}
         </Field>
       )}
       <ErrorMessage

@@ -1,4 +1,6 @@
-export const FIELDS = [
+import { FieldDataType } from '../types';
+
+export const FIELDS: FieldDataType[] = [
   {
     name: 'names',
     label: 'Nombres',

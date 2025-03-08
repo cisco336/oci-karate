@@ -13,6 +13,8 @@ const getEnums = async () => {
     'KyuDan',
     'Role',
     'Tags',
+    'Eps',
+    'PMedicine',
   ];
   const enums = await Promise.allSettled(
     ENUMS_NAMES.map((name) => {
@@ -32,7 +34,7 @@ const getEnums = async () => {
       (e as unknown as { status: string; value: GetEnumsValuesType }).value,
   );
 
-  console.log('parsedEnums:', parsedEnums);
+  console.log(parsedEnums);
 
   return parsedEnums;
 };

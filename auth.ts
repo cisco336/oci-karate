@@ -152,7 +152,10 @@ export const config = {
     async session({ session, token }) {
       return { ...session, ...token };
     },
-    async jwt({ token, user }) {
+    async jwt({ token, trigger, session, user }) {
+      if (trigger === 'update') {
+        token = { ...token, ...session };
+      }
       return { ...token, ...user };
     },
   },

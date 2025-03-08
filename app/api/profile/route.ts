@@ -1,5 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { GraphQLClient, gql } from 'graphql-request';
+import { GraphQLClient } from 'graphql-request';
+import { UpsertUserProfile } from '@/services/mutations/upsertUserProfile';
 
 // To handle a GET request to /api
 // export async function GET(request: Request) {
@@ -15,120 +16,41 @@ const client = new GraphQLClient(
   },
 );
 
-const UpdateUserData = gql`
-  mutation UpdateUserData(
-    $id: ID
-    $karateId: ID
-    $personalDataId: ID
-    $role: [Role!]
-    $isChild: Boolean
-    $setPasswd: Boolean
-    $agreedTerms: Boolean
-    $bio: String
-    $firstName: String
-    $lastName: String
-    $motherFamilyName: String
-    $secondName: String
-    $birthDay: Date
-    $phone: String
-    $idType: IdType
-    $idNumber: String
-    $belt: Cinturon
-    $dan: KyuDan
-    $kyu: KyuDan
-  ) {
-    updateUserModel(
-      data: {
-        role: $role
-        isChild: $isChild
-        setPasswd: $setPasswd
-        agreedTerms: $agreedTerms
-        personalData: {
-          upsert: {
-            data: {
-              create: {
-                firstName: $firstName
-                secondName: $secondName
-                lastName: $lastName
-                motherFamilyName: $motherFamilyName
-                birthDay: $birthDay
-                bio: $bio
-                idType: $idType
-                idNumber: $idNumber
-                phone: $phone
-              }
-              update: {
-                firstName: $firstName
-                secondName: $secondName
-                lastName: $lastName
-                motherFamilyName: $motherFamilyName
-                birthDay: $birthDay
-                bio: $bio
-                idType: $idType
-                idNumber: $idNumber
-                phone: $phone
-              }
-            }
-            where: { id: $personalDataId }
-          }
-        }
-        karateData: {
-          upsert: {
-            data: {
-              create: { cinturon: $belt, dan: $dan, kyu: $kyu }
-              update: { cinturon: $belt, dan: $dan, kyu: $kyu }
-            }
-            where: { id: $karateId }
-          }
-        }
-      }
-      where: { id: $id }
-    ) {
-      id
-      personalData {
-        id
-        firstName
-      }
-      karateData {
-        cinturon
-      }
-    }
-  }
-`;
-
 // To handle a POST request to /api
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
     const query = await client.request<Promise<{} | any>>(
-      UpdateUserData,
+      UpsertUserProfile,
       {
-        id: data.id,
-        bio: data.bio,
-        role: [data.role],
-        firstName: data.firstName,
-        lastName: data.lastName,
-        motherFamilyName: data.motherFamilyName,
-        phone: data.phone,
-        secondName: data.secondName,
-        birthDay: new Date(data.birthDay || new Date()),
-        idType: data.idType,
-        idNumber: data.idNumber,
+        userId: data.id,
+        karateId: data.karateId ?? data.id,
+        personalDataId: data.personalDataId ?? data.id,
+        medicalDataId: data.medicalDataId ?? data.id,
         cinturon: data.cinturon,
         dan: data.dan,
         kyu: data.kyu,
-        isChild: Boolean(data.isChild),
-        setPasswd: Boolean(data.setPasswd),
-        agreedTerms: Boolean(data.agreedTerms),
-        karateId: data.karateId,
-        personalDataId: data.personalDataId,
+        idNumber: data.idNumber,
+        idType: data.idType,
+        birthDay: data.birthDay,
+        phone: data.phone,
+        names: data.names,
+        lastNames: data.lastNames,
+        bloodType: data.bloodType,
+        emergencyContactName: data.emergencyContactName,
+        emergencyContactPhone: data.emergencyContactPhone,
+        eps: data.eps,
+        prepaidMedicine: data.prepaidMedicine,
+        specialConditions: data.specialConditions,
       },
       {
         ...req.headers,
       },
     );
+    console.log('success: ', query);
     return NextResponse.json(query);
   } catch (e) {
+    console.log('error: ', e);
     return NextResponse.json(e);
   }
 }
