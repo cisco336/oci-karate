@@ -6,6 +6,7 @@ import { MdOutlineArrowForwardIos } from 'react-icons/md';
 import { MdFiberManualRecord } from 'react-icons/md';
 import Link from 'next/link';
 import { ArticleType } from '@/@types';
+import Image from 'next/image';
 
 export const Carousel = ({ articles }: { articles: ArticleType[] }) => {
   const [current, setCurrent] = React.useState(0);
@@ -92,11 +93,16 @@ export const Carousel = ({ articles }: { articles: ArticleType[] }) => {
                 </Link>
               </span>
             </div>
-            <img
-              src={articles[current].asset?.url}
-              alt={articles[current].articleTitle}
-              className="object-fit  w-[auto] h-[300px] rounded-lg col-[2] mx-auto opacity-0 z-[0] md:opacity-100 shadow hidden md:block"
-            />
+            {articles[current].asset?.url ? (
+              <Image
+                src={articles[current].asset.url}
+                alt={articles[current].articleTitle}
+                width={400}
+                height={300}
+                className="object-fit  w-[auto] h-[300px] rounded-lg col-[2] mx-auto opacity-0 z-[0] md:opacity-100 shadow hidden md:block"
+                priority={current === 0}
+              />
+            ) : null}
           </div>
         ))}
       </React.Fragment>

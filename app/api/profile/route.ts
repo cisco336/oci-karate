@@ -16,11 +16,16 @@ const client = new GraphQLClient(
   },
 );
 
-// To handle a POST request to /api
-export async function POST(req: NextRequest) {
+/**
+ * Handles POST requests to upsert user profile data.
+ * @param req - Next.js API request object
+ * @returns NextResponse with the result or error
+ */
+export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const data = await req.json();
-    const query = await client.request<Promise<{} | any>>(
+    // TODO: Sanitize and validate input data here
+    const query = await client.request<Promise<Record<string, any>>>(
       UpsertUserProfile,
       {
         userId: data.id,
@@ -50,7 +55,10 @@ export async function POST(req: NextRequest) {
     console.log('success: ', query);
     return NextResponse.json(query);
   } catch (e) {
-    console.log('error: ', e);
-    return NextResponse.json(e);
+    console.error('Profile API error:', e);
+    return NextResponse.json({
+      error: 'Failed to update profile',
+      details: e instanceof Error ? e.message : e,
+    });
   }
 }

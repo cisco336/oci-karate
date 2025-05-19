@@ -93,11 +93,11 @@ export const Profile = () => {
         const updatedValues = checkCinturon(formProps.values);
         formProps.values = updatedValues as typeof formProps.values;
         return (
-          <Form className="max-w-[800px] py-[2rem] text-gray-900 flex flex-col gap-6 [&_label]:text-gray-300 [&_label]:font-thin">
+          <Form className="max-w-2xl mx-auto py-8 px-4 bg-zinc-900/80 rounded-xl text-gray-900 flex flex-col gap-10 [&_label]:text-gray-300 [&_label]:font-thin">
             <PersonalForm {...formProps.values} />
             <KarateForm {...formProps.values} />
             <MedicalForm {...formProps.values} />
-            <span className="flex justify-end">
+            <span className="flex justify-end mt-4">
               <Button
                 color={buttonColor.Accent}
                 variant={buttonVariants.Solid}

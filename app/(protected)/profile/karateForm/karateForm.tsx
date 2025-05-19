@@ -11,10 +11,14 @@ const KarateForm = (props: any) => {
       : [...FIELDS];
 
   return (
-    <div className="flex flex-col border-b border-slate-500 pb-8">
-      <h4 className="ml-auto">Información de Karate</h4>
-      <div>{filteredFields.map((field) => renderField(field, enums))}</div>
-    </div>
+    <section className="border-b border-slate-500 pb-8 mb-8">
+      <h4 className="ml-auto mb-6 text-2xl font-semibold text-accent-400">
+        Información de Karate
+      </h4>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {filteredFields.map((field) => renderField(field, enums))}
+      </div>
+    </section>
   );
 };
 

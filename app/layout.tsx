@@ -2,6 +2,8 @@ import { GeistSans } from 'geist/font/sans';
 import './globals.scss';
 import Nav from '@/components/Nav/Nav';
 import Footer from '@/components/Footer/Footer';
+import ErrorBoundary from '@/components/ErrorBoundary/index';
+import Breadcrumb from '@/components/Breadcrumb';
 
 // import Font Awesome CSS
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -35,9 +37,12 @@ export default function RootLayout({
             <div className="z-10 sticky top-0">
               <Nav />
             </div>
-            <main className="flex flex-col items-center flex-1 w-full h-full overflow-hidden">
-              {children}
-            </main>
+            <ErrorBoundary>
+              <Breadcrumb show={false} />
+              <main className="flex flex-col items-center flex-1 w-full h-full overflow-hidden">
+                {children}
+              </main>
+            </ErrorBoundary>
             {/* <Footer /> */}
           </EnumsProvider>
         </SessionProvider>

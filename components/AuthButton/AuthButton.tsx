@@ -11,9 +11,11 @@ import {
 } from 'react-icons/md';
 import { Button, buttonColor } from '../shared/Button';
 import DropDown from '../shared/DropDown/DropDown';
+import React, { useState } from 'react';
 
 export default function AuthButton() {
   const { data, status } = useSession();
+  const [isOpen, setIsOpen] = useState(false);
 
   const loginOut = () => {
     signOut({ redirect: true, callbackUrl: '/' });
@@ -21,12 +23,11 @@ export default function AuthButton() {
 
   const dropdown = (
     <DropDown
-      isOpen={false}
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
       position={'up'}
-      closeOnSelect={() => {
-        console.log('HERE');
-      }}
-      label={`${
+      closeOnSelect={() => setIsOpen(false)}
+      label={`$${
         data
           ? `Hola ${(data as iSessionData)?.personalData?.names ?? 'karateca'}`
           : 'Loading'
