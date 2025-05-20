@@ -8,6 +8,7 @@ import { ArticleType } from '@/@types';
 import { Loader } from '@/components/shared/Loader/Loader';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import RichTextRenderer from '@/components/RichText';
 
 const Terms = () => {
   const [terms, setTerms] = React.useState<ArticleType | null>(null);
@@ -54,7 +55,13 @@ const Terms = () => {
             <h2 className="font-thin mb-8">
               {capitalizeFirstLetter(terms?.articleTitle ?? '')}
             </h2>
-            <div>{parse(terms?.articleContent.html ?? '')}</div>
+            <div>
+              {terms?.articleContent?.json ? (
+                <RichTextRenderer content={terms.articleContent.json} />
+              ) : (
+                parse(terms?.articleContent.html ?? '')
+              )}
+            </div>
             <div className="ml-auto flex gap-4 mb-[1rem] focus-within:[&_label]:translate-y-0">
               <label
                 className={''}

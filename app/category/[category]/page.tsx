@@ -7,6 +7,7 @@ import parse from 'html-react-parser';
 import { auth } from '@/auth';
 import { getSingleArticleBySlug } from '@/services/queries';
 import { redirect } from 'next/navigation';
+import RichTextRenderer from '@/components/RichText';
 
 const CategoryArticleListPage = async ({
   params,
@@ -47,7 +48,11 @@ const CategoryArticleListPage = async ({
     parse(headerArticleData ?? '') ||
     'No header content found for this category';
 
-  const content = parse(articleSchema?.articleContent?.html);
+  const content = articleSchema?.articleContent?.json ? (
+    <RichTextRenderer content={articleSchema.articleContent.json} />
+  ) : (
+    parse(articleSchema?.articleContent?.html)
+  );
 
   return (
     <div className="flex flex-col gap-4 py-8 items-start w-full animate-fade-in max-w-[1200px]">

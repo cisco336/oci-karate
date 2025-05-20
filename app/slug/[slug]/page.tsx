@@ -4,6 +4,7 @@ import parse from 'html-react-parser';
 import { getSingleArticleBySlug } from '@/services/queries';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
+import RichTextRenderer from '@/components/RichText';
 
 export type ArticleSegmentChildType = {
   text: string;
@@ -35,7 +36,13 @@ const SingleArticleBySlug = async ({ params }: any) => {
   } = articleSchema;
   const createdDate = new Date(createdAt).toLocaleString();
   const updatedDate = new Date(createdAt).toLocaleString();
-  const content = parse(htmlContent ? htmlContent : articleContent.html);
+  const content = htmlContent ? (
+    <RichTextRenderer content={htmlContent} />
+  ) : articleContent?.json ? (
+    <RichTextRenderer content={articleContent.json} />
+  ) : (
+    parse(articleContent?.html)
+  );
   const articleIsPrivate = tag?.includes('private');
   if (articleIsPrivate && !session) {
     redirect('/');

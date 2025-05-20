@@ -497,6 +497,14 @@
     "@graphcms/rich-text-types" "^0.5.0"
     escape-html "^1.0.3"
 
+"@graphcms/rich-text-react-renderer@^0.6.2":
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/@graphcms/rich-text-react-renderer/-/rich-text-react-renderer-0.6.2.tgz#e7489c652330fd8b531aa9354cf3f795a4e55e6c"
+  integrity sha512-eQpHtAixJZwKM61/tvucKMJ+fCEv0WRXJoTGAG/AW3Xalg3BFZhsp3x/mQJra+DpS6H0hjG+h8cXzDwq/lQPfA==
+  dependencies:
+    "@graphcms/rich-text-types" "^0.5.0"
+    escape-html "^1.0.3"
+
 "@graphcms/rich-text-types@^0.5.0":
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/@graphcms/rich-text-types/-/rich-text-types-0.5.1.tgz#8d94fa7e16dbf12b70ca5fc2d170e08082c464c9"

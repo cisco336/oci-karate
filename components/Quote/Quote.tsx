@@ -1,9 +1,14 @@
 import { ArticleType } from '@/@types';
+import RichTextRenderer from '@/components/RichText';
 import parse from 'html-react-parser';
 import React from 'react';
 
 const Quote = (props: ArticleType) => {
-  const content = parse(props.articleContent.html);
+  const content = props.articleContent?.json ? (
+    <RichTextRenderer content={props.articleContent.json} />
+  ) : (
+    parse(props.articleContent.html)
+  );
   return (
     <div
       className="flex flex-col p-2
