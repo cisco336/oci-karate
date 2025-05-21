@@ -123,3 +123,5 @@ export const userAgreedTerms = gql`
     }
   }
 `;
+
+export { graphConnect };
